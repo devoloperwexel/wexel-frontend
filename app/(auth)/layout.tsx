@@ -1,11 +1,8 @@
-// These styles apply to every route in the application
-import "swiper/css";
-import "swiper/css/navigation";
-import "../public/assets/css/style.css";
-import "node_modules/react-modal-video/scss/modal-video.scss";
-
 import { Metadata } from "next";
-import { SessionProviderWrapper } from "utils/session-provider-wrapper";
+import AuthWrapper from "utils/auth-warpper";
+import { ReactNode } from "react";
+import { Barlow } from "next/font/google";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 const title = "Next.js Prisma Postgres Auth Starter";
 const description =
@@ -20,23 +17,22 @@ export const metadata: Metadata = {
     description,
   },
   metadataBase: new URL("https://nextjs-postgres-auth.vercel.app"),
-  creator: "shadcn",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
 };
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+type AuthLayoutProps = {
+  children: ReactNode;
+};
+const barlow = Barlow({ weight: "400", subsets: ["latin"] });
+export default async function Layout({ children }: Readonly<AuthLayoutProps>) {
   return (
-    <SessionProviderWrapper>
-      <html lang="en">
-        <body className=" font-siliguri">{children}</body>
-      </html>
-    </SessionProviderWrapper>
+    <AuthWrapper>
+      <div className={barlow.className}>
+        <DashboardLayout>{children}</DashboardLayout>
+      </div>
+    </AuthWrapper>
   );
 }
