@@ -21,7 +21,7 @@ const menuItems = [
   },
   {
     label: "My Appointments",
-    href: "/my-appointments",
+    href: "/appointments",
     icon: <ListAltOutlinedIcon />,
   },
   {

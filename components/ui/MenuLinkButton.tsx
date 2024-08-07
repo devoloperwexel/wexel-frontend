@@ -21,7 +21,7 @@ const MenuLinkButton = ({ label, icon, href }: MenuLinkButtonProps) => {
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
 
-  const isSelected = path === href;
+  const isSelected = path.startsWith(href);
   const handleOnClick = () => {
     router.push(href);
   };
