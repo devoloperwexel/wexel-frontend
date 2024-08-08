@@ -30,11 +30,11 @@ TABLE CONTENT
   --title-color: #1e1e1e;
   --sub-title-color: #3d565f;
   --primary-color: #a51008;
-  --secondery-color: #A51008;
+  --secondery-color: #a51008;
   --white-color: white;
 }
 
-@import url(https://fonts.bunny.net/css?family=chivo:700|Poppins:400,500,700,800|shippori-mincho:700,800);  
+@import url(https://fonts.bunny.net/css?family=chivo:700|Poppins:400,500,700,800|shippori-mincho:700,800);
 /*import vendors*/
 @import url(../css/vendors/normalize.css);
 @import url(../css/vendors/bootstrap.min.css);
@@ -6317,7 +6317,7 @@ footer a {
   z-index: 1;
   width: 400px;
   height: 400px;
-  /* background: url(../images/page/homepage2/bg-plan-bottom.png) no-repeat bottom */ 
+  /* background: url(../images/page/homepage2/bg-plan-bottom.png) no-repeat bottom */
   background-size: contain;
 }
 
@@ -6461,7 +6461,7 @@ footer a {
   content: "";
   height: 100%;
   width: 100%;
-  /* background: url(../images/page/homepage3/bg-testimonials.svg) no-repeat right */ 
+  /* background: url(../images/page/homepage3/bg-testimonials.svg) no-repeat right */
   position: absolute;
   background-size: contain;
   z-index: 1;
@@ -6640,7 +6640,7 @@ footer a {
   border-radius: 16px;
 }
 
-.box-video-banner .backdrop{
+.box-video-banner .backdrop {
   position: absolute;
   inset: 0;
   background-color: #a5100836;
@@ -10152,4 +10152,10 @@ footer.footer-4 {
   .lives-text {
     font-size: 13px;
   }
+}
+
+.MuiTypography-root {
+  font-family: inherit !important ;
+  color: "#464255";
+  font-weight: "500";
 }
