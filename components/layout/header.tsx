@@ -33,7 +33,8 @@ const Header = ({ handleOpen, handleRemove, openClass, addClass }: any) => {
                   </li>
 
                   <li>
-                    <Link href="#" onClick={()=>signIn("cognito", { callbackUrl: "/dashboard" })}>Services</Link>
+                    {/* <Link href="#" onClick={()=>signIn("cognito", { callbackUrl: "/dashboard" })}>Services</Link> */}
+                    <Link href="/dashboard">Services</Link>
                   </li>
                   <li>
                     <Link href="/">About</Link>
