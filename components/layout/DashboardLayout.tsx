@@ -9,7 +9,6 @@ import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { ReactNode } from "react";
-import ENVIRONMENT from "@/config/environment";
 import { signOut } from "next-auth/react";
 
 const drawerWidth = 280;
@@ -75,7 +74,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               marginBottom={4}
             >
               <Image
-                src={`${ENVIRONMENT.NEXT_PUBLIC_APP_URL}/images/logo.png`}
+                src={`/images/logo.png`}
                 alt="logo"
                 width={120}
                 height={80}
