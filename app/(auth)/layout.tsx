@@ -29,10 +29,8 @@ type AuthLayoutProps = {
 const barlow = Barlow({ weight: "400", subsets: ["latin"] });
 export default async function Layout({ children }: Readonly<AuthLayoutProps>) {
   return (
-    <AuthWrapper>
-      <div className={barlow.className}>
-        <DashboardLayout>{children}</DashboardLayout>
-      </div>
-    </AuthWrapper>
+    <div className={barlow.className}>
+      <DashboardLayout>{children}</DashboardLayout>
+    </div>
   );
 }
