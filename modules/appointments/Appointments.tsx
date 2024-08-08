@@ -9,7 +9,7 @@ const appointments = [
     doctorDetail: {
       id: "4JtPzXaB",
       name: "John Doe",
-      specialty: "Cardiology",
+      specialty: "Physiotherapist",
       profileImageUrl: "https://example.com/images/doc1.jpg",
     },
     note: "Patient has a history of heart disease.",
@@ -23,7 +23,7 @@ const appointments = [
     doctorDetail: {
       id: "9cNp4a6W",
       name: "Jane Smith",
-      specialty: "Dermatology",
+      specialty: "Physiotherapist",
       profileImageUrl: "https://example.com/images/doc2.jpg",
     },
     createdAt: "2024-08-02T09:00:00Z",
@@ -36,7 +36,7 @@ const appointments = [
     doctorDetail: {
       id: "5kG4d3fL",
       name: "Emily Johnson",
-      specialty: "Pediatrics",
+      specialty: "Physiotherapist",
       profileImageUrl: "https://example.com/images/doc3.jpg",
     },
     note: "Follow-up on previous consultation.",
@@ -50,7 +50,7 @@ const appointments = [
     doctorDetail: {
       id: "8sK7l4cV",
       name: "Michael Brown",
-      specialty: "Orthopedics",
+      specialty: "Physiotherapist",
       profileImageUrl: "https://example.com/images/doc4.jpg",
     },
     createdAt: "2024-08-04T11:00:00Z",
