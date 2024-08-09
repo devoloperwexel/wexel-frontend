@@ -1,11 +1,12 @@
 "use client";
 
-import { Avatar, Button, Divider, Typography } from "@mui/material";
+import { Avatar, Divider, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import DoctorDetail from "models/doctor-detail.model";
-import ContainedButton from "@/components/ui/ContainedButton"
+import ContainedButton from "@/components/ui/ContainedButton";
 import { truncateText } from "utils/strings";
+import { useRouter } from "next/navigation";
 
 const StyledBox = styled(Box)({
   width: "90%",
@@ -18,6 +19,7 @@ const StyledBox = styled(Box)({
   flexDirection: "column",
   alignItems: "center",
   overflow: "hidden",
+  cursor: "pointer",
 });
 
 const StyledTypography = styled(Typography)({
@@ -31,12 +33,15 @@ type DoctorDetailCardProp = {
 };
 
 export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
-  const { name, specialty, profileImageUrl } = doctorDetail;
+  const router = useRouter();
+  const { id, name, specialty, profileImageUrl } = doctorDetail;
+
+  const handleOnclick = () => router.push(`/dashboard/doctor/${id}`);
+
   return (
-    <StyledBox>
+    <StyledBox onClick={handleOnclick}>
       <Avatar
         src={profileImageUrl}
-        
         sx={{
           width: 120,
           height: 120,
@@ -64,10 +69,7 @@ export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
           sx={{ color: "#00000033", marginY: 2, borderBottomWidth: "1px" }}
           flexItem
         />
-        <ContainedButton
-        >
-          Book Now
-        </ContainedButton>
+        <ContainedButton>Book Now</ContainedButton>
       </Box>
     </StyledBox>
   );

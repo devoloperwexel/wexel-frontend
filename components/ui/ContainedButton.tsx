@@ -3,10 +3,12 @@ import { Button, ButtonProps } from "@mui/material";
 
 interface ContainedButtonProps extends ButtonProps {
   children?: ReactNode;
+  backgroundColor?: string;
 }
 
 const ContainedButton: React.FC<ContainedButtonProps> = ({
   children,
+  backgroundColor = "#A51008",
   ...props
 }) => {
   return (
@@ -15,9 +17,10 @@ const ContainedButton: React.FC<ContainedButtonProps> = ({
       variant="contained"
       sx={{
         textTransform: "none",
-        bgcolor: "#A51008",
+        backgroundColor,
         "&:hover": {
-          backgroundColor: "#c9342e",
+          backgroundColor,
+          opacity: 0.7,
         },
       }}
       {...props}
