@@ -19,7 +19,6 @@ const StyledBox = styled(Box)({
   flexDirection: "column",
   alignItems: "center",
   overflow: "hidden",
-  cursor: "pointer",
 });
 
 const StyledTypography = styled(Typography)({
@@ -39,7 +38,7 @@ export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
   const handleOnclick = () => router.push(`/dashboard/doctor/${id}`);
 
   return (
-    <StyledBox onClick={handleOnclick}>
+    <StyledBox>
       <Avatar
         src={profileImageUrl}
         sx={{
@@ -69,7 +68,7 @@ export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
           sx={{ color: "#00000033", marginY: 2, borderBottomWidth: "1px" }}
           flexItem
         />
-        <ContainedButton>Book Now</ContainedButton>
+        <ContainedButton onClick={handleOnclick}>Book Now</ContainedButton>
       </Box>
     </StyledBox>
   );
