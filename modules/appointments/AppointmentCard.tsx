@@ -6,8 +6,8 @@ import { styled } from "@mui/material/styles";
 import { truncateText } from "utils/strings";
 import Appointment from "models/appointment.model";
 import { formatISODateTime } from "utils/time";
-import Row from "./Row";
 import { useRouter } from "next/navigation";
+import Row from "@/components/ui/Row";
 
 const StyledBox = styled(Box)({
   width: "90%",
@@ -71,12 +71,22 @@ export const AppointmentCard = ({ appointment }: AppointmentCardProp) => {
           sx={{ color: "#00000033", marginY: 2, borderBottomWidth: "1px" }}
           flexItem
         />
-        <Row column1="ID" column2={id} color="#1B1999" />
-        <Row
-          column1={formattedDate}
-          column2={formattedTime}
-          color="#00000099"
-        />
+        <Row width="200px">
+          <Typography color="#1B1999" fontSize={13}>
+            ID{" "}
+          </Typography>
+          <Typography color="#1B1999" fontSize={13}>
+            {id}
+          </Typography>
+        </Row>
+        <Row width="200px">
+          <Typography color="#00000099" fontSize={13}>
+            {formattedDate}
+          </Typography>
+          <Typography color="#00000099" fontSize={13}>
+            {formattedTime}
+          </Typography>
+        </Row>
       </Box>
     </StyledBox>
   );
