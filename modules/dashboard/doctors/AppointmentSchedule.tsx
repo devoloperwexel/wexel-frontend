@@ -7,7 +7,7 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import ContainedButton from "@/components/ui/ContainedButton";
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { TimePickerModal, TimePickerModalHandler } from "./TimePickerModal";
 
 const CustomDateCalendar = styled(DateCalendar)(({ theme }) => ({
@@ -34,26 +34,44 @@ const CustomDateCalendar = styled(DateCalendar)(({ theme }) => ({
   },
 
   "& .MuiYearCalendar-root .MuiPickersYear-yearButton": {
-    color: "#A51008", 
+    color: "#A51008",
     "&.Mui-selected": {
-      backgroundColor: "#A51008", 
+      backgroundColor: "#A51008",
       color: "#ffffff",
     },
     "&:hover": {
-      backgroundColor: "#A510081A", 
+      backgroundColor: "#A510081A",
     },
   },
 }));
 
-export const AppointmentSchedule = () => {
-  const [date, setDate] = useState();
-  const [time, setTime] = useState<string>();
+type Prop = {
+  time?: string;
+  date?: string;
+  setDate: (value: string) => void;
+  setTime: (value: string) => void;
+  setIsPayment: (value: boolean) => void;
+};
+export const AppointmentSchedule = ({
+  date,
+  time,
+  setDate,
+  setTime,
+  setIsPayment,
+}: Prop) => {
   const timePickerRef = useRef<TimePickerModalHandler>(null);
 
   const handleDateChange = (dataValue: any) => {
     timePickerRef.current?.show();
     setDate(dataValue.format("YYYY-MM-DD"));
   };
+
+  const handleOnclick = () => {
+    if (time && date) {
+      setIsPayment(true);
+    }
+  };
+
   return (
     <Box
       display="flex"
@@ -81,7 +99,11 @@ export const AppointmentSchedule = () => {
           <Typography fontWeight="600">{time || "Not Selected"}</Typography>
         </Box>
       </div>
-      <ContainedButton fullWidth backgroundColor="#000000">
+      <ContainedButton
+        fullWidth
+        backgroundColor="#000000"
+        onClick={handleOnclick}
+      >
         Continue
       </ContainedButton>
     </Box>

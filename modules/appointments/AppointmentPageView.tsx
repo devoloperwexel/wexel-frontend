@@ -1,3 +1,5 @@
+"use client";
+
 import ContainedButton from "@/components/ui/ContainedButton";
 import { Box, Typography } from "@mui/material";
 import Appointment from "models/appointment.model";
@@ -5,17 +7,27 @@ import Image from "next/image";
 import { truncateText } from "utils/strings";
 import { formatISODateTime } from "utils/time";
 import Note from "./Note";
+import BackButton from "@/components/ui/BackButton";
+import { useRouter } from "next/navigation";
+import VideocamIcon from "@mui/icons-material/Videocam";
 
 type Props = {
   appointment: Appointment;
 };
 const AppointmentPageView = ({ appointment }: Props) => {
+  const router = useRouter();
+
   const { id, doctorDetail, note, appointmentTime } = appointment;
 
   const { formattedDate, formattedTime } = formatISODateTime(appointmentTime);
 
+  const handleBackClick = () => {
+    router.push("/appointments");
+  };
+
   return (
-    <Box paddingTop={5} paddingBottom={3} paddingLeft={2} paddingRight={4}>
+    <Box paddingTop={0.5} paddingBottom={1.8} paddingLeft={2} paddingRight={4}>
+      <BackButton onClick={handleBackClick} />
       <Box
         display="flex"
         flexDirection="row"
@@ -23,6 +35,7 @@ const AppointmentPageView = ({ appointment }: Props) => {
         height="85vh"
         bgcolor="#ffffff"
         borderRadius={2}
+        marginTop={2.5}
         padding={3}
       >
         <Box
@@ -44,23 +57,30 @@ const AppointmentPageView = ({ appointment }: Props) => {
             fontSize="22px"
             marginTop={2}
           >{`Dr. ${truncateText(doctorDetail.name, 50)}`}</Typography>
-          <Typography color="#A51008" fontWeight="500" fontSize="17">
+          <Typography color="#A51008" fontWeight="500">
             {doctorDetail.specialty}
           </Typography>
           <Typography
             color="#1B1999"
             fontWeight="500"
-            fontSize="17"
+            fontSize={18}
             marginTop={2}
           >
             {`Appointment ID: ${id}`}
           </Typography>
-          <Typography fontWeight="500" fontSize="17">
+          <Typography fontWeight="500" fontSize={18}>
             {formattedDate}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formattedTime}
           </Typography>
           <ContainedButton
+            startIcon={<VideocamIcon />}
             backgroundColor="#009BFF"
-            sx={{ borderRadius: 2, textTransform: "none", marginTop: 2 }}
+            sx={{
+              borderRadius: 2,
+              textTransform: "none",
+              marginTop: 2,
+              paddingX: 2,
+              paddingY: 1,
+            }}
           >
             Join Now
           </ContainedButton>
