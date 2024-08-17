@@ -7,8 +7,8 @@ import {
 } from "@stripe/react-stripe-js";
 import { Box, CircularProgress, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import ContainedButton from "@/components/ui/ContainedButton";
 import LoadingButton from "@/components/ui/LoadingButton";
+import ENVIRONMENT from "@/config/environment";
 
 type Props = {
   amount: number;
@@ -21,6 +21,7 @@ const Checkout = ({ amount }: Props) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    //TODO: use axios 
     fetch("/api/create-payment-intent", {
       method: "POST",
       headers: {
@@ -53,7 +54,7 @@ const Checkout = ({ amount }: Props) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://www.localhost:3000/payment-success`,
+        return_url: `${ENVIRONMENT.APP_URL}/payment-success`,
       },
     });
 

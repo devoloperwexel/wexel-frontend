@@ -7,8 +7,6 @@ import { truncateText } from "utils/strings";
 import { AppointmentSchedule } from "./AppointmentSchedule";
 import { useState } from "react";
 import Payment from "./Payment";
-import ContainedButton from "@/components/ui/ContainedButton";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useRouter } from "next/navigation";
 import BackButton from "@/components/ui/BackButton";
 
