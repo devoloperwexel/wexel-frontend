@@ -1,66 +1,20 @@
+import API from "constants/appointment";
 import Appointments from "modules/appointments/Appointments";
+import { notFound } from "next/navigation";
+import { auth } from "utils/auth";
+import request from "utils/request";
 
-const appointments = [
-  {
-    id: "8djb3zYA",
-    videoCallUrl: "https://videocall.example.com/apt1",
-    appointmentTime: "2024-08-10T14:00:00Z",
-    doctorDetail: {
-      id: "4JtPzXaB",
-      name: "John Doe",
-      specialty: "Physiotherapist",
-      hourlyRate: 20,
-      profileImageUrl: "https://example.com/images/doc1.jpg",
-    },
-    note: "Patient has a history of heart disease.",
-    createdAt: "2024-08-01T08:00:00Z",
-    updatedAt: "2024-08-01T08:00:00Z",
-  },
-  {
-    id: "3sPa1fK9",
-    videoCallUrl: "https://videocall.example.com/apt2",
-    appointmentTime: "2024-08-11T15:30:00Z",
-    doctorDetail: {
-      id: "9cNp4a6W",
-      name: "Jane Smith",
-      specialty: "Physiotherapist",
-      hourlyRate: 20,
-      profileImageUrl: "https://example.com/images/doc2.jpg",
-    },
-    createdAt: "2024-08-02T09:00:00Z",
-    updatedAt: "2024-08-02T09:00:00Z",
-  },
-  {
-    id: "7a3Bc5dH",
-    videoCallUrl: "https://videocall.example.com/apt3",
-    appointmentTime: "2024-08-12T10:00:00Z",
-    doctorDetail: {
-      id: "5kG4d3fL",
-      name: "Emily Johnson",
-      specialty: "Physiotherapist",
-      hourlyRate: 20,
-      profileImageUrl: "https://example.com/images/doc3.jpg",
-    },
-    note: "Follow-up on previous consultation.",
-    createdAt: "2024-08-03T10:00:00Z",
-    updatedAt: "2024-08-03T10:00:00Z",
-  },
-  {
-    id: "6pD2j9dF",
-    videoCallUrl: "https://videocall.example.com/apt4",
-    appointmentTime: "2024-08-13T11:00:00Z",
-    doctorDetail: {
-      id: "8sK7l4cV",
-      name: "Michael Brown",
-      specialty: "Physiotherapist",
-      hourlyRate: 20,
-      profileImageUrl: "https://example.com/images/doc4.jpg",
-    },
-    createdAt: "2024-08-04T11:00:00Z",
-    updatedAt: "2024-08-04T11:00:00Z",
-  },
-];
 
-export default function page() {
-  return <Appointments appointments={appointments} />;
+export default async function page() {
+  try {
+    const { user } = await auth();
+     
+    const appointments = await request(API.GET_APPOINTMENTS, {
+      userId: user.id,
+    });
+    return <Appointments appointments={appointments?.data?.results} />;
+  } catch (error) {
+    console.log(error);
+    notFound();
+  }
 }

@@ -33,14 +33,14 @@ type DoctorDetailCardProp = {
 
 export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
   const router = useRouter();
-  const { id, name, specialty, profileImageUrl } = doctorDetail;
+  const { id, specialty, user } = doctorDetail;
 
   const handleOnclick = () => router.push(`/dashboard/doctor/${id}`);
 
   return (
     <StyledBox>
       <Avatar
-        src={profileImageUrl}
+        src={user.profilePictureUrl}
         sx={{
           width: 120,
           height: 120,
@@ -49,7 +49,7 @@ export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
           marginBottom: 1.5,
         }}
       >
-        {name[0]}
+        {user.name[0]}
       </Avatar>
       <Box
         display="flex"
@@ -58,7 +58,7 @@ export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
         paddingX={1}
       >
         <Typography fontWeight="700">{`Dr. ${truncateText(
-          name,
+          user.name,
           30
         )}`}</Typography>
         <StyledTypography color="#A51008" fontSize={14}>

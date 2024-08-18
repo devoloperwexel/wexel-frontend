@@ -36,6 +36,8 @@ type AppointmentCardProp = {
 
 export const AppointmentCard = ({ appointment }: AppointmentCardProp) => {
   const { id, appointmentTime, doctorDetail } = appointment;
+  const { profilePictureUrl, name } = doctorDetail.user;
+  //
   const router = useRouter();
   const { formattedDate, formattedTime } = formatISODateTime(appointmentTime);
 
@@ -43,7 +45,7 @@ export const AppointmentCard = ({ appointment }: AppointmentCardProp) => {
   return (
     <StyledBox onClick={handleOnclick}>
       <Avatar
-        src={doctorDetail.profileImageUrl}
+        src={profilePictureUrl}
         sx={{
           width: 120,
           height: 120,
@@ -52,7 +54,7 @@ export const AppointmentCard = ({ appointment }: AppointmentCardProp) => {
           marginBottom: 1.5,
         }}
       >
-        {doctorDetail.name[0]}
+        {name[0]}
       </Avatar>
       <Box
         display="flex"
@@ -61,7 +63,7 @@ export const AppointmentCard = ({ appointment }: AppointmentCardProp) => {
         paddingX={1}
       >
         <Typography fontWeight="700">{`Dr. ${truncateText(
-          doctorDetail.name,
+          name,
           30
         )}`}</Typography>
         <StyledTypography color="#A51008" fontSize={14}>

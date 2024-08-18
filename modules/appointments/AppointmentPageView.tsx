@@ -46,7 +46,7 @@ const AppointmentPageView = ({ appointment }: Props) => {
         >
           <Image
             alt=""
-            src={doctorDetail.profileImageUrl}
+            src={doctorDetail.user.profilePictureUrl}
             width={0}
             height={0}
             sizes="100vw"
@@ -56,7 +56,7 @@ const AppointmentPageView = ({ appointment }: Props) => {
             fontWeight="700"
             fontSize="22px"
             marginTop={2}
-          >{`Dr. ${truncateText(doctorDetail.name, 50)}`}</Typography>
+          >{`Dr. ${truncateText(doctorDetail.user.name, 50)}`}</Typography>
           <Typography color="#A51008" fontWeight="500">
             {doctorDetail.specialty}
           </Typography>

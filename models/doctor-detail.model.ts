@@ -1,8 +1,9 @@
+import User from "./user.model";
+
 export default interface DoctorDetail {
   id: string;
-  name: string;
+  user: User;
   specialty: string;
-  hourlyRate:number;
+  hourlyRate: number;
   description?: string;
-  profileImageUrl: string;
 }

@@ -19,8 +19,9 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
   const [time, setTime] = useState<string>();
   const [isPayment, setIsPayment] = useState(false);
   const router = useRouter();
-  const { specialty, profileImageUrl, description, hourlyRate, name } =
-    doctorDetail;
+  const { specialty, description, hourlyRate } = doctorDetail;
+
+  const { profilePictureUrl, name } = doctorDetail.user;
 
   const formattedCurrencyAmount =
     new Intl.NumberFormat("en-US", {
@@ -69,7 +70,7 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
               >
                 <Image
                   alt=""
-                  src={profileImageUrl}
+                  src={profilePictureUrl}
                   width={0}
                   height={0}
                   sizes="100vw"
