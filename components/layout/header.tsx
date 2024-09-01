@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 const Header = ({ handleOpen, handleRemove, openClass, addClass }: any) => {
   const [scroll, setScroll] = useState(0);
@@ -33,8 +32,7 @@ const Header = ({ handleOpen, handleRemove, openClass, addClass }: any) => {
                   </li>
 
                   <li>
-                    {/* <Link href="#" onClick={()=>signIn("cognito", { callbackUrl: "/dashboard" })}>Services</Link> */}
-                    <Link href="/dashboard">Services</Link>
+                    <Link href="/signin">Services</Link>
                   </li>
                   <li>
                     <Link href="/">About</Link>
