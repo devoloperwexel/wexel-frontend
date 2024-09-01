@@ -16,16 +16,22 @@ import MicrosoftSvg from "@/components/icons/MicrosoftSvg";
 import Link from "next/link";
 import PasswordFelid from "@/components/ui/PasswordField";
 import ContainedButton from "@/components/ui/ContainedButton";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import SignupBanner from "./SignupBanner";
+import axios from "axios";
+import ENVIRONMENT from "@/config/environment";
 
 const validationSchema = yup.object({
   name: yup.string().required("Enter your name"),
   email: yup.string().email("Enter valid email").required("Enter your email"),
   password: yup.string().required("Enter your password"),
+
+  confirmPassword: yup
+    .string()
+    .required("Re-type your password")
+    .oneOf([yup.ref("password")], "Passwords must match"),
 });
 
 const SignupPageView = () => {
@@ -38,27 +44,42 @@ const SignupPageView = () => {
     isAgree: false,
   };
 
-  const { values, touched, errors, handleChange, handleSubmit } = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: async (values, { resetForm }) => {
-      console.log(values);
-
-      resetForm({});
-    },
-  });
+  const { values, touched, errors, isSubmitting, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      validationSchema,
+      onSubmit: async (values, { resetForm, setSubmitting }) => {
+        setSubmitting(true);
+        const { isAgree, email, password, name } = values;
+        if (isAgree) {
+          try {
+            await axios.post(`${ENVIRONMENT.BASE_URL}/auth/signup`, {
+              email,
+              password,
+              name,
+            });
+            router.push("/signin");
+          } catch (error) {
+            resetForm({});
+          }
+        }
+        setSubmitting(false);
+      },
+    });
   return (
-    <Box
-      height="100vh"
-      display="flex"
-      alignItems="center"
-    >
+    <Box height="100vh" display="flex" alignItems="center">
       <SignupBanner />
-      <div style={{height:"100%", width:"60%", paddingTop:"16px", paddingLeft:"140px"}}>
+      <div
+        style={{
+          height: "100%",
+          width: "60%",
+          paddingTop: "16px",
+          paddingLeft: "140px",
+        }}
+      >
         <Box
           display="flex"
           width="100%"
-       
           justifyContent="end"
           paddingX={16}
           //paddingY={1.6}
@@ -175,6 +196,7 @@ const SignupPageView = () => {
             <ContainedButton
               fullWidth
               type="submit"
+              disabled={isSubmitting}
               sx={{ height: "42px", fontWeight: 600 }}
             >
               Sign Up

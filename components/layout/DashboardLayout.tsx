@@ -40,7 +40,7 @@ type DashboardLayoutProps = {
 };
 
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
-  const handleSignout = () => signOut({ callbackUrl: "/" });
+  const handleSignout = () => signOut({ callbackUrl: "/signin" });
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />

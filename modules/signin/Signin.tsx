@@ -18,6 +18,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { signIn } from "next-auth/react";
 
 const validationSchema = yup.object({
   email: yup.string().email("Enter valid email").required("Enter your email"),
@@ -31,15 +32,24 @@ const SigninPageView = () => {
     password: "",
   };
 
-  const { values, touched, errors, handleChange, handleSubmit } = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: async (values, { resetForm }) => {
-      console.log(values);
-
-      resetForm({});
-    },
-  });
+  const { values, touched, errors, isSubmitting, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      validationSchema,
+      onSubmit: async (values, { resetForm, setSubmitting }) => {
+        setSubmitting(true);
+        const response = await signIn("credentials", {
+          username: values.email,
+          password: values.password,
+          redirect: false,
+        });
+        if (response?.ok) {
+          router.push("/dashboard");
+        }
+        setSubmitting(false);
+        resetForm({});
+      },
+    });
   return (
     <Box
       height="100vh"
@@ -139,6 +149,7 @@ const SigninPageView = () => {
           <ContainedButton
             fullWidth
             type="submit"
+            disabled={isSubmitting}
             sx={{ height: "42px", fontWeight: 600 }}
           >
             Login and Continue
