@@ -15,7 +15,9 @@ const ContainedButton: React.FC<ContainedButtonProps> = ({
     <Button
       disableElevation
       variant="contained"
+      {...props}
       sx={{
+        ...props.sx,
         textTransform: "none",
         backgroundColor,
         "&:hover": {
@@ -23,7 +25,6 @@ const ContainedButton: React.FC<ContainedButtonProps> = ({
           opacity: 0.7,
         },
       }}
-      {...props}
     >
       {children}
     </Button>
