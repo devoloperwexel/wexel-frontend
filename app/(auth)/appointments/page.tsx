@@ -4,13 +4,12 @@ import { notFound } from "next/navigation";
 import { auth } from "utils/auth";
 import request from "utils/request";
 
-
 export default async function page() {
   try {
-    const { user } = await auth();
-     
+    const authRes = await auth();
+
     const appointments = await request(API.GET_APPOINTMENTS, {
-      userId: user.id,
+      userId: authRes?.user.id,
     });
     return <Appointments appointments={appointments?.data?.results} />;
   } catch (error) {

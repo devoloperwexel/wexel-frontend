@@ -6,9 +6,10 @@ import request from "utils/request";
 
 export default async function page({ params }: { params: { id: string } }) {
   try {
-    const { user } = await auth();
+    const authRes = await auth();
+
     const appointment = await request(API.GET_APPOINTMENT, {
-      userId: user.id,
+      userId: authRes?.user.id,
       appointmentId: params?.id,
     });
 
