@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { signIn } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const validationSchema = yup.object({
   email: yup.string().email("Enter valid email").required("Enter your email"),
@@ -43,9 +44,13 @@ const SigninPageView = () => {
           password: values.password,
           redirect: false,
         });
+        //
         if (response?.ok) {
           router.push("/dashboard");
+          return
         }
+        //
+        toast.error("Email or password is incorrect");
         setSubmitting(false);
         resetForm({});
       },

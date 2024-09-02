@@ -3,7 +3,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "../public/assets/css/style.css";
 import "node_modules/react-modal-video/scss/modal-video.scss";
+import "react-toastify/dist/ReactToastify.css";
 
+import { ToastContainer } from "react-toastify";
 import { Metadata } from "next";
 import { SessionProviderWrapper } from "utils/session-provider-wrapper";
 
@@ -29,13 +31,16 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <SessionProviderWrapper>
       <html lang="en">
-        <body className=" font-siliguri">{children}</body>
+        <body className=" font-siliguri">
+          <ToastContainer theme="colored" />
+          {children}
+        </body>
       </html>
     </SessionProviderWrapper>
   );

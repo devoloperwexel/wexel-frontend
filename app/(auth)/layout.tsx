@@ -30,7 +30,9 @@ const barlow = Barlow({ weight: "400", subsets: ["latin"] });
 export default async function Layout({ children }: Readonly<AuthLayoutProps>) {
   return (
     <div className={barlow.className}>
-      <DashboardLayout>{children}</DashboardLayout>
+      <AuthWrapper>
+        <DashboardLayout>{children}</DashboardLayout>
+      </AuthWrapper>
     </div>
   );
 }

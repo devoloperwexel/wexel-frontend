@@ -20,8 +20,9 @@ import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import SignupBanner from "./SignupBanner";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import ENVIRONMENT from "@/config/environment";
+import { toast } from "react-toastify";
 
 const validationSchema = yup.object({
   name: yup.string().required("Enter your name"),
@@ -49,9 +50,10 @@ const SignupPageView = () => {
       initialValues,
       validationSchema,
       onSubmit: async (values, { resetForm, setSubmitting }) => {
-        setSubmitting(true);
         const { isAgree, email, password, name } = values;
         if (isAgree) {
+          setSubmitting(true);
+          //
           try {
             await axios.post(`${ENVIRONMENT.BASE_URL}/auth/signup`, {
               email,
@@ -59,11 +61,26 @@ const SignupPageView = () => {
               name,
             });
             router.push("/signin");
+            toast.success(`Signup successful! A verification email has been sent to '${email}'`);
           } catch (error) {
+            if (error instanceof AxiosError) {
+              const errorMessage =
+                error.response?.data?.error?.message ??
+                "Something went to wrong!";
+
+              toast.error(errorMessage);
+            } else {
+              toast.error("Something went to wrong!");
+            }
             resetForm({});
           }
+          //
+          setSubmitting(false);
+        } else {
+          toast.info(
+            "You did not agree to our terms and conditions. Please agree to continue."
+          );
         }
-        setSubmitting(false);
       },
     });
   return (
@@ -82,7 +99,6 @@ const SignupPageView = () => {
           width="100%"
           justifyContent="end"
           paddingX={16}
-          //paddingY={1.6}
         >
           <Button sx={{ textTransform: "none", color: "#000000" }}>Help</Button>
           <ContainedButton onClick={() => router.push("/signin")}>
