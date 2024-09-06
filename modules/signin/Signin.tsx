@@ -47,10 +47,19 @@ const SigninPageView = () => {
         //
         if (response?.ok) {
           router.push("/dashboard");
-          return
+          return;
+        } else if (response?.status === 401) {
+          let message = "Email or password is incorrect";
+          if (
+            response.error === "User is not confirmed."
+          ) {
+            message = `Email not verified. A verification email has been sent to '${values.email}'. Please verify it before logging in!`;
+          }
+          toast.error(message);
+          return;
         }
         //
-        toast.error("Email or password is incorrect");
+        toast.error("Something went to wrong!");
         setSubmitting(false);
         resetForm({});
       },

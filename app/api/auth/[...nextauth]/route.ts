@@ -1,13 +1,19 @@
 import NextAuth, { AuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import AWS from "aws-sdk";
 import { createHmac } from "crypto";
+import {
+  CognitoIdentityProviderClient,
+  InitiateAuthCommand,
+  InitiateAuthCommandInput,
+} from "@aws-sdk/client-cognito-identity-provider";
 import axios from "axios";
 
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+const client = new CognitoIdentityProviderClient({
   region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
+  },
 });
 
 const getHashSecret = (username: string) => {
@@ -46,11 +52,9 @@ export const authOptions: AuthOptions = {
       },
 
       authorize: async (credentials) => {
-        const cognito = new AWS.CognitoIdentityServiceProvider();
-
         if (!credentials) return null;
 
-        const params = {
+        const params: InitiateAuthCommandInput = {
           AuthFlow: "USER_PASSWORD_AUTH",
           ClientId: process.env.COGNITO_CLIENT_ID as string,
           AuthParameters: {
@@ -60,26 +64,24 @@ export const authOptions: AuthOptions = {
           },
         };
 
-        try {
-          const response = await cognito.initiateAuth(params).promise();
-          //
-          const { AccessToken, RefreshToken, IdToken, ExpiresIn } =
-            response.AuthenticationResult!;
-          const user = await getUserByEmail(credentials.username, AccessToken!);
+        const signinCommand = new InitiateAuthCommand(params);
+        const response = await client.send(signinCommand);
+        //
+        const { AccessToken, RefreshToken, IdToken, ExpiresIn } =
+          response.AuthenticationResult!;
+        // Get user data from backend
+        const user = await getUserByEmail(credentials.username, AccessToken!);
 
-          const token = {
-            id: response.ChallengeParameters?.USER_ID_FOR_SRP as string,
-            accessToken: AccessToken,
-            refreshToken: RefreshToken,
-            idToken: IdToken,
-            expiresAt: ExpiresIn,
-            user,
-          };
-          return token;
-        } catch (error) {
-          console.error(error);
-          return null;
-        }
+        const token = {
+          id: response.ChallengeParameters?.USER_ID_FOR_SRP as string,
+          accessToken: AccessToken,
+          refreshToken: RefreshToken,
+          idToken: IdToken,
+          expiresAt: ExpiresIn,
+          user,
+        };
+
+        return token;
       },
     }),
   ],
