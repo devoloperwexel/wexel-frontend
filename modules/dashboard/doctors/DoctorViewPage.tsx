@@ -22,6 +22,7 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
   const { specialty, description, hourlyRate } = doctorDetail;
 
   const { profilePictureUrl, name } = doctorDetail.user;
+console.log(profilePictureUrl);
 
   const formattedCurrencyAmount =
     new Intl.NumberFormat("en-US", {
@@ -70,7 +71,7 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
               >
                 <Image
                   alt=""
-                  src={profilePictureUrl}
+                  src={profilePictureUrl??"/images/doctor.jpeg"}
                   width={0}
                   height={0}
                   sizes="100vw"
