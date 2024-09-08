@@ -25,6 +25,7 @@ const Payment = ({
   appointmentTime,
   note,
 }: Props) => {
+  const cents = +totalAmount.toFixed(2) * 100;
   return (
     <>
       <Box
@@ -67,11 +68,11 @@ const Payment = ({
         stripe={stripePromise}
         options={{
           mode: "payment",
-          amount: +totalAmount.toFixed(2),
+          amount: cents,
           currency: "usd",
         }}
       >
-        <Checkout amount={+totalAmount.toFixed(2)} />
+        <Checkout amount={cents} />
       </Elements>
     </>
   );
