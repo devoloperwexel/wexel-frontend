@@ -28,17 +28,21 @@ const getUserByEmail = async (email: string, accessToken: string) => {
     Authorization: `Bearer ${accessToken}`,
   };
   const getUserBySubRequest = { params: { email }, headers };
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/users`,
-    getUserBySubRequest
-  );
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/users`,
+      getUserBySubRequest
+    );
+    const user = response.data?.data.results[0];
+    if (!user) {
+      throw Error("User not found!");
+    }
 
-  const user = response.data?.data.results[0];
-  if (!user) {
-    throw Error("User not found!");
+    return user;
+  } catch (e) {
+    console.log(e);
+    throw new Error("Something went to wrong");
   }
-
-  return user;
 };
 
 export const authOptions: AuthOptions = {
