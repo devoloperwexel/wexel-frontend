@@ -21,13 +21,14 @@ const Checkout = ({ amount }: Props) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    //TODO: use axios 
+    const cents = amount * 100;
+    //TODO: use axios
     fetch("/api/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount }),
+      body: JSON.stringify({ amount: cents }),
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
