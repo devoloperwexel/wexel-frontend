@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { Metadata } from "next";
 import { SessionProviderWrapper } from "utils/session-provider-wrapper";
+import { ReduxProvider } from "./redux/provider";
 
 const title = "Next.js Prisma Postgres Auth Starter";
 const description =
@@ -36,12 +37,14 @@ export default async function RootLayout({
 }>) {
   return (
     <SessionProviderWrapper>
-      <html lang="en">
-        <body className=" font-siliguri">
-          <ToastContainer theme="colored" />
-          {children}
-        </body>
-      </html>
+      <ReduxProvider>
+        <html lang="en">
+          <body className=" font-siliguri">
+            <ToastContainer theme="colored" />
+            {children}
+          </body>
+        </html>
+      </ReduxProvider>
     </SessionProviderWrapper>
   );
 }

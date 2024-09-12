@@ -6,7 +6,7 @@ import Image from "next/image";
 import { truncateText } from "utils/strings";
 import { AppointmentSchedule } from "./AppointmentSchedule";
 import { useState } from "react";
-import Payment from "./Payment";
+import Payment from "./payment/Payment";
 import { useRouter } from "next/navigation";
 import BackButton from "@/components/ui/BackButton";
 
@@ -17,12 +17,11 @@ type Props = {
 const DoctorViewPage = ({ doctorDetail }: Props) => {
   const [date, setDate] = useState<string>();
   const [time, setTime] = useState<string>();
-  const [isPayment, setIsPayment] = useState(false);
+  const [appointmentId, setAppointmentId] = useState<string>();
   const router = useRouter();
   const { specialty, description, hourlyRate } = doctorDetail;
 
   const { profilePictureUrl, name } = doctorDetail.user;
-console.log(profilePictureUrl);
 
   const formattedCurrencyAmount =
     new Intl.NumberFormat("en-US", {
@@ -32,16 +31,12 @@ console.log(profilePictureUrl);
     }).format(hourlyRate) + "$";
 
   const handleBackClick = () => {
-    if (isPayment) {
-      setIsPayment(false);
-    } else {
-      router.push("/dashboard");
-    }
+    router.push("/dashboard");
   };
 
   return (
     <Box paddingTop={0.5} paddingBottom={1.8} paddingLeft={2} paddingRight={4}>
-      <BackButton onClick={handleBackClick} />
+      {!appointmentId && <BackButton onClick={handleBackClick} />}
       <Box
         display="flex"
         flexDirection="row"
@@ -53,8 +48,9 @@ console.log(profilePictureUrl);
         padding={3}
       >
         <>
-          {isPayment ? (
+          {appointmentId ? (
             <Payment
+              appointmentId={appointmentId}
               doctorName={name}
               doctorSpecialty={specialty}
               appointmentDate={date!}
@@ -71,7 +67,7 @@ console.log(profilePictureUrl);
               >
                 <Image
                   alt=""
-                  src={profilePictureUrl??"/images/doctor.jpeg"}
+                  src={profilePictureUrl ?? "/images/doctor.jpeg"}
                   width={0}
                   height={0}
                   sizes="100vw"
@@ -100,11 +96,12 @@ console.log(profilePictureUrl);
                 </Box>
               </Box>
               <AppointmentSchedule
+                doctorDetailId={doctorDetail.id}
                 date={date}
                 time={time}
                 setDate={setDate}
                 setTime={setTime}
-                setIsPayment={setIsPayment}
+                setAppointmentId={setAppointmentId}
               />
             </>
           )}

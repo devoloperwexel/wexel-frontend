@@ -9,29 +9,35 @@ import { Box, CircularProgress, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import LoadingButton from "@/components/ui/LoadingButton";
 import ENVIRONMENT from "@/config/environment";
+import { useSession } from "next-auth/react";
 
 type Props = {
+  appointmentId: string;
   amount: number;
 };
-const Checkout = ({ amount }: Props) => {
+const Checkout = ({ amount, appointmentId }: Props) => {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
+    if (!appointmentId || !session || clientSecret) {
+      return;
+    }
     //TODO: use axios
     fetch("/api/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount }),
+      body: JSON.stringify({ amount, appointmentId, userId: session?.user.id }),
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
-  }, [amount]);
+  }, [appointmentId, amount, session, clientSecret]);
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

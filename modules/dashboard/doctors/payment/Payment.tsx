@@ -10,6 +10,7 @@ import ENVIRONMENT from "@/config/environment";
 const stripePromise = loadStripe(ENVIRONMENT.STRIPE_PUBLIC_KEY);
 
 type Props = {
+  appointmentId: string;
   doctorName: string;
   doctorSpecialty: string;
   totalAmount: number;
@@ -18,6 +19,7 @@ type Props = {
   note?: string;
 };
 const Payment = ({
+  appointmentId,
   doctorName,
   doctorSpecialty,
   totalAmount,
@@ -72,7 +74,10 @@ const Payment = ({
           currency: "usd",
         }}
       >
-        <Checkout amount={cents} />
+        <Checkout
+          appointmentId={appointmentId}
+          amount={cents}
+        />
       </Elements>
     </>
   );

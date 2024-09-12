@@ -9,6 +9,9 @@ import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
 import { useRef } from "react";
 import { TimePickerModal, TimePickerModalHandler } from "./TimePickerModal";
+import { useCreateAppointmentMutation } from "services/appointment-api";
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const CustomDateCalendar = styled(DateCalendar)(({ theme }) => ({
   "& .MuiPickersCalendarHeader-switchViewButton": {
@@ -46,29 +49,47 @@ const CustomDateCalendar = styled(DateCalendar)(({ theme }) => ({
 }));
 
 type Prop = {
+  doctorDetailId: string;
   time?: string;
   date?: string;
   setDate: (value: string) => void;
   setTime: (value: string) => void;
-  setIsPayment: (value: boolean) => void;
+  setAppointmentId: (value: string) => void;
 };
 export const AppointmentSchedule = ({
+  doctorDetailId,
   date,
   time,
   setDate,
   setTime,
-  setIsPayment,
+  setAppointmentId,
 }: Prop) => {
   const timePickerRef = useRef<TimePickerModalHandler>(null);
+  const [createAppointment, { isLoading: isCreating }] =
+    useCreateAppointmentMutation();
+  const { data: sessionData } = useSession();
+  const user = sessionData?.user;
 
   const handleDateChange = (dataValue: any) => {
     timePickerRef.current?.show();
     setDate(dataValue.format("YYYY-MM-DD"));
   };
 
-  const handleOnclick = () => {
+  const handleOnclick = async () => {
     if (time && date) {
-      setIsPayment(true);
+      try {
+        const response = await createAppointment({
+          userId: user?.id,
+          body: {
+            doctorDetailId,
+            appointmentTime: new Date(`${date} ${time}`),
+          },
+        });
+
+        setAppointmentId((response as any).data.data.id);
+      } catch (e) {
+        toast.error("Some thing went to wrong! Please try again later");
+      }
     }
   };
 
@@ -103,6 +124,7 @@ export const AppointmentSchedule = ({
         fullWidth
         backgroundColor="#000000"
         onClick={handleOnclick}
+        disabled={isCreating}
       >
         Continue
       </ContainedButton>
