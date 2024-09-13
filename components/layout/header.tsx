@@ -31,7 +31,7 @@ const Header = () => {
   };
 
   const handleCloseServiceMenu = () => {
-    router.push("/signin")
+    router.push("/dashboard")
     setAnchorElService(null);
   };
 
