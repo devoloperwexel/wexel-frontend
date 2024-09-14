@@ -10,6 +10,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import LogoutIcon from "@mui/icons-material/Logout";
 import { ReactNode } from "react";
 import { signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 const drawerWidth = 280;
 const menuItems = [
@@ -40,7 +41,11 @@ type DashboardLayoutProps = {
 };
 
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+  const path = usePathname();
   const handleSignout = () => signOut({ callbackUrl: "/signin" });
+  if (path.includes("/video-call")) {
+    return children;
+  }
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />

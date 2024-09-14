@@ -25,6 +25,10 @@ const AppointmentPageView = ({ appointment }: Props) => {
     router.push("/appointments");
   };
 
+  const handleJoin = () => {
+    router.push(`/appointments/${appointment.id}/video-call`);
+  };
+
   return (
     <Box paddingTop={0.5} paddingBottom={1.8} paddingLeft={2} paddingRight={4}>
       <BackButton onClick={handleBackClick} />
@@ -74,6 +78,7 @@ const AppointmentPageView = ({ appointment }: Props) => {
           <ContainedButton
             startIcon={<VideocamIcon />}
             backgroundColor="#009BFF"
+            onClick={handleJoin}
             sx={{
               borderRadius: 2,
               textTransform: "none",

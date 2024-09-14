@@ -80,6 +80,9 @@ importers:
       '@types/react':
         specifier: ^18.0.25
         version: 18.3.3
+      '@zoom/videosdk-ui-toolkit':
+        specifier: 1.12.1-1
+        version: 1.12.1-1
       axios:
         specifier: ^1.7.4
         version: 1.7.4
@@ -1416,6 +1419,9 @@ packages:
   '@typescript-eslint/visitor-keys@6.21.0':
     resolution: {integrity: sha512-JJtkDduxLi9bivAB+cYOVMtbkqdPOhZ+ZI5LC47MIRrDV4Yn2o+ZnW10Nkmr28xRpSpdJ6Sm42Hjf2+REYXm0A==}
     engines: {node: ^16.0.0 || >=18.0.0}
+
+  '@zoom/videosdk-ui-toolkit@1.12.1-1':
+    resolution: {integrity: sha512-6C5EnC62cn5zSK5QoTr46BilKDaitaOq02vX3M3a5nVaJiMobSGFOUywSA1IDTwtdKMRnx5u6QY+maBgV7pMQw==}
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -4860,6 +4866,8 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 6.21.0
       eslint-visitor-keys: 3.4.3
+
+  '@zoom/videosdk-ui-toolkit@1.12.1-1': {}
 
   abbrev@1.1.1: {}
 
