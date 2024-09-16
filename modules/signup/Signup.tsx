@@ -27,7 +27,17 @@ import { toast } from "react-toastify";
 const validationSchema = yup.object({
   name: yup.string().required("Enter your name"),
   email: yup.string().email("Enter valid email").required("Enter your email"),
-  password: yup.string().required("Enter your password"),
+  password: yup
+    .string()
+    .required("Enter your password")
+    .min(8, "Password must be at least 8 characters")
+    .matches(/[0-9]/, "Password must contain at least 1 number")
+    .matches(
+      /[!@#$%^&*(),.?":{}|<>]/,
+      "Password must contain at least 1 special character"
+    )
+    .matches(/[A-Z]/, "Password must contain at least 1 uppercase letter")
+    .matches(/[a-z]/, "Password must contain at least 1 lowercase letter"),
 
   confirmPassword: yup
     .string()
@@ -61,7 +71,9 @@ const SignupPageView = () => {
               name,
             });
             router.push("/signin");
-            toast.success(`Signup successful! A verification email has been sent to '${email}'`);
+            toast.success(
+              `Signup successful! A verification email has been sent to '${email}'`
+            );
           } catch (error) {
             if (error instanceof AxiosError) {
               const errorMessage =
@@ -94,12 +106,7 @@ const SignupPageView = () => {
           paddingLeft: "140px",
         }}
       >
-        <Box
-          display="flex"
-          width="100%"
-          justifyContent="end"
-          paddingX={16}
-        >
+        <Box display="flex" width="100%" justifyContent="end" paddingX={16}>
           <Button sx={{ textTransform: "none", color: "#000000" }}>Help</Button>
           <ContainedButton onClick={() => router.push("/signin")}>
             Login
