@@ -1,9 +1,18 @@
+import API from "constants/appointment";
 import PaymentSuccessPageView from "modules/dashboard/doctors/payment/PaymentSuccess";
 import { notFound } from "next/navigation";
+import { auth } from "utils/auth";
+import request from "utils/request";
 
 export default async function page({ params }: { params: { id: string } }) {
   try {
-    return <PaymentSuccessPageView appointmentId={params?.id}/>;
+    const authRes = await auth();
+    await request(API.GET_APPOINTMENT, {
+      userId: authRes?.user.id,
+      appointmentId: params?.id,
+    });
+    //
+    return <PaymentSuccessPageView appointmentId={params?.id} />;
   } catch (e) {
     console.log(e);
     notFound();
