@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import LoadingButton from "@/components/ui/LoadingButton";
 import ENVIRONMENT from "@/config/environment";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   appointmentId: string;
@@ -22,6 +23,7 @@ const Checkout = ({ amount, appointmentId }: Props) => {
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (!appointmentId || !session || clientSecret) {
@@ -60,7 +62,7 @@ const Checkout = ({ amount, appointmentId }: Props) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `${ENVIRONMENT.APP_URL}/payment-success`,
+        return_url: `${ENVIRONMENT.APP_URL}/appointments/${appointmentId}/payment-success`,
       },
     });
 
