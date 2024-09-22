@@ -23,6 +23,7 @@ import SignupBanner from "./SignupBanner";
 import axios, { AxiosError } from "axios";
 import ENVIRONMENT from "@/config/environment";
 import { toast } from "react-toastify";
+import { signIn } from "next-auth/react";
 
 const validationSchema = yup.object({
   name: yup.string().required("Enter your name"),
@@ -54,6 +55,8 @@ const SignupPageView = () => {
     confirmPassword: "",
     isAgree: false,
   };
+
+  const handleGoogleSignup = () => signIn("cognito");
 
   const { values, touched, errors, isSubmitting, handleChange, handleSubmit } =
     useFormik({
@@ -126,6 +129,7 @@ const SignupPageView = () => {
           <Box display="flex" gap={1.5} marginTop={3} justifyContent="center">
             <Tooltip title="Login with Google">
               <Button
+                onClick={handleGoogleSignup}
                 variant="outlined"
                 sx={{ width: "40px", height: "50px", borderColor: "grey.500" }}
               >

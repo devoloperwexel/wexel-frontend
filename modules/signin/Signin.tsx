@@ -33,6 +33,8 @@ const SigninPageView = () => {
     password: "",
   };
 
+  const handleGoogleSignin = () => signIn("cognito");
+
   const { values, touched, errors, isSubmitting, handleChange, handleSubmit } =
     useFormik({
       initialValues,
@@ -50,9 +52,7 @@ const SigninPageView = () => {
           return;
         } else if (response?.status === 401) {
           let message = "Email or password is incorrect";
-          if (
-            response.error === "User is not confirmed."
-          ) {
+          if (response.error === "User is not confirmed.") {
             message = `Email not verified. A verification email has been sent to '${values.email}'. Please verify it before logging in!`;
           }
           toast.error(message);
@@ -107,6 +107,7 @@ const SigninPageView = () => {
             <Button
               variant="outlined"
               sx={{ width: "40px", height: "50px", borderColor: "grey.500" }}
+              onClick={handleGoogleSignin}
             >
               <GoogleSvg />
             </Button>

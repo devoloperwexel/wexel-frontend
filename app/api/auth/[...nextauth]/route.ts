@@ -1,5 +1,6 @@
 import NextAuth, { AuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import CognitoProvider from "next-auth/providers/cognito";
 import { createHmac } from "crypto";
 import {
   CognitoIdentityProviderClient,
@@ -88,6 +89,21 @@ export const authOptions: AuthOptions = {
         return token;
       },
     }),
+    CognitoProvider({
+      idToken: true,
+      clientId: process.env.COGNITO_CLIENT_ID!,
+      clientSecret: process.env.COGNITO_CLIENT_SECRET!,
+      checks: ["state", "nonce"],
+      issuer: process.env.COGNITO_ISSUER!,
+      authorization: {
+        params: {
+          grant_type: "authorization_code",
+          client_id: process.env.COGNITO_CLIENT_ID!,
+          identity_provider: "Google",
+          scope: "openid email profile",
+        },
+      },
+    }),
   ],
   callbacks: {
     session({ token }) {
@@ -103,7 +119,20 @@ export const authOptions: AuthOptions = {
         user,
       };
     },
-    async jwt({ token, user, account }) {
+
+    async jwt({ token, user, account, profile }) {
+      if (profile) {
+        token.accessToken = (account as any).access_token;
+        token.refreshToken = (account as any).refresh_token;
+        token.idToken = (account as any).id_token;
+        token.expires = (account as any).expires_at;
+        token.user = await getUserByEmail(
+          (user as any).email,
+          (account as any).access_token
+        );
+        return token;
+      }
+
       if (account) {
         // 'account' is only available the first time this callback is called on a new session
         token.accessToken = (user as any).accessToken;
