@@ -26,3 +26,4 @@ export default async function Layout({ children }: Readonly<AuthLayoutProps>) {
     </div>
   );
 }
+
