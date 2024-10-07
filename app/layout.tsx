@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { SessionProviderWrapper } from "utils/session-provider-wrapper";
 import { ReduxProvider } from "./redux/provider";
+import './globals.css';
 
 export default async function RootLayout({
   children,

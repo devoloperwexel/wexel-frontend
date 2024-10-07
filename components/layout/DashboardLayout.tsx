@@ -39,8 +39,8 @@ import { ReactNode } from "react";
 import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Calender from "./Calender";
 import MedicalScreening from "./MedicalScreening";
+import Calender from "./Calender";
 
 const drawerWidth = 280;
 
@@ -440,7 +440,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         >
           Dashboard
         </Typography>
-        <Calender />
+        <Calender/>
         <MedicalScreening />
       </Box>
       {renderMobileMenu}
