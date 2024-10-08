@@ -62,7 +62,7 @@ export default function Calender() {
   const daysInMonth = generateDaysInMonth();
 
   return (
-    <div className="bg-white rounded-lg p-6 shadow-lg">
+    <div className="bg-white rounded-lg p-6 ">
       <div className="flex items-center justify-between pb-3">
         <h2 className="text-xl font-semibold text-black">Calender</h2>
         <button className="flex justify-center text-[12px] items-center space-x-1 rounded-lg font-semibold">
