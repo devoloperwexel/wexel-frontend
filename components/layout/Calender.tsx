@@ -62,19 +62,19 @@ export default function Calender() {
   const daysInMonth = generateDaysInMonth();
 
   return (
-    <div className="bg-white rounded-lg p-6 ">
-      <div className="flex items-center justify-between pb-3">
-        <h2 className="text-xl font-semibold text-black">Calender</h2>
-        <button className="flex justify-center text-[12px] items-center space-x-1 rounded-lg font-semibold">
+    <div className="bg-white rounded-2xl px-6 pb-3 flex flex-col justify-between shadow-md w-full ">
+      <div className="flex items-center justify-between">
+        <h2 className="text-[18px] font-semibold text-black">Calender</h2>
+        <button className="flex justify-center text-[15px] items-center space-x-1 rounded-lg font-semibold">
           <span className="text-primary-color">View All</span>
           <ChevronRightIcon className="text-black/30 mt-[2px] p-[2px]" style={{ fontSize: 18 }} />
         </button>
       </div>
 
       {/* Calendar */}
-      <div className="bg-gray-100 rounded-md px-3 py-2 flex flex-col justify-start">
-        <div className="flex items-center justify-between gap-x-2 py-2">
-          <h5 className="text-[15px] font-medium text-gray-900">
+      <div className="bg-gray-100 rounded-md px-3 pb-3 flex flex-col justify-start">
+        <div className="flex items-center justify-between py-2">
+          <h5 className="text-[12px] sm:text-[12px] lg:text-[13px] font-medium text-gray-900">
             {currentDate.format("MMMM YYYY")}
           </h5>
           <div className="flex">
@@ -93,34 +93,35 @@ export default function Calender() {
           </div>
         </div>
 
-        <div className="grid grid-cols-7 gap-2 pb-2">
-          {/* Days of the Week Header */}
+        {/* Days of the Week Header */}
+        <div className="grid grid-cols-7 ">
           {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
             <div
               key={day}
-              className="text-center text-[10px] font-medium text-gray-500"
+              className="text-center text-[10px] sm:text-[12px] lg:text-[14px] font-medium text-gray-500"
             >
               {day}
             </div>
           ))}
+        </div>
 
-          {/* Calendar Days */}
+        {/* Calendar Days */}
+        <div className="grid grid-cols-7 space-y-2 space-x-0 ">
           {daysInMonth.map((day, index) => {
             if (!day) {
-              return <div key={index} className="text-center"></div>; // Empty placeholder for days from previous month
+              return <div key={index} className="text-center"></div>; // Placeholder for empty days
             }
 
             const isHighlighted = isDateHighlighted(day);
-            const isSelected =
-              selectedDate && day.isSame(selectedDate, "day");
+            const isSelected = selectedDate && day.isSame(selectedDate, "day");
 
             return (
               <button
                 key={day.toString()}
                 onClick={() => handleDayClick(day)}
-                className={`text-center text-[8px] my-[2px] py-[4px] px-[5px] mx-2  ${
+                className={`text-center text-[6px] sm:text-[8px] lg:text-[10px]   ${
                   isHighlighted
-                    ? "border-[1px] border-black text-black rounded-full font-black"
+                    ? "border-[1px] border-black text-black rounded-full font-black "
                     : isSelected
                     ? "bg-primary-color rounded-full text-white"
                     : "text-gray-800 rounded-full"
@@ -131,20 +132,21 @@ export default function Calender() {
             );
           })}
         </div>
-      </div>
+    </div>
+
 
       {/* No Upcoming Appointments */}
       <div className="flex flex-col items-center justify-center w-full p-3 gap-y-[2px]">
         <CalendarTodayOutlinedIcon
           className="text-primary-color"
-          style={{ fontSize: 30, margin: 5 }}
+          style={{ fontSize: 22, margin: 2 }}
         />
         <p className="text-xs text-gray-600 font-semibold">No upcoming appointments</p>
       </div>
 
       {/* Make Appointment Button */}
       <div className="w-full">
-        <button className="w-full bg-primary-color rounded-md hover:bg-red-700 font-light text-white text-[19px] p-[11px]  ">
+        <button className="w-full bg-primary-color rounded-md hover:bg-red-700 font-light text-white text-[19px] py-[5px]  ">
           Make an appointment
         </button>
       </div>
