@@ -108,7 +108,7 @@ jobs:
             -e NEXT_PUBLIC_STRIPE_PUBLIC_KEY="${NEXT_PUBLIC_STRIPE_PUBLIC_KEY}" \
             -e STRIPE_SECRET_KEY="${STRIPE_SECRET_KEY}" \
             -e PORT=3000 \
-            -p 4000:4000 "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
+            -p 3000:3000 "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
 
 
  # Production Deploy Stage      
