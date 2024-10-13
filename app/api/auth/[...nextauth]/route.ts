@@ -101,6 +101,7 @@ export const authOptions: AuthOptions = {
           client_id: process.env.COGNITO_CLIENT_ID!,
           identity_provider: "Google",
           scope: "openid email profile",
+          redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/cognito`,
         },
       },
     }),
