@@ -79,6 +79,7 @@ jobs:
           echo "Retrieve environment variables from AWS Parameter Store"
 
           NEXT_PUBLIC_BASE_URL=$(aws ssm get-parameter --name "/frontend/dev/next_public_base_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          NEXTAUTH_URL=$(aws ssm get-parameter --name "/frontend/dev/next_auth_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text) 
           AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "/frontend/dev/aws_access_key_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
           AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "/frontend/dev/aws_secret_access_key" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
           COGNITO_CLIENT_ID=$(aws ssm get-parameter --name "/frontend/dev/cognito_client_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
@@ -95,6 +96,7 @@ jobs:
           docker run -d \
             --name "${{ env.DEV_CONTAINER_NAME }}" \
             -e NEXT_PUBLIC_BASE_URL="${NEXT_PUBLIC_BASE_URL}" \
+            -e NEXTAUTH_URL="${NEXTAUTH_URL}" \
             -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" \
             -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
             -e AWS_REGION="${{ vars.AWS_REGION }}" \
@@ -146,6 +148,7 @@ jobs:
           echo "Retrieve environment variables from AWS Parameter Store"
 
           NEXT_PUBLIC_BASE_URL=$(aws ssm get-parameter --name "/frontend/dev/next_public_base_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          NEXTAUTH_URL=$(aws ssm get-parameter --name "/frontend/dev/next_auth_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text) 
           AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "/frontend/dev/aws_access_key_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
           AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "/frontend/dev/aws_secret_access_key" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
           COGNITO_CLIENT_ID=$(aws ssm get-parameter --name "/frontend/dev/cognito_client_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
@@ -162,6 +165,7 @@ jobs:
           docker run -d \
             --name "${{ env.PROD_CONTAINER_NAME }}" \
             -e NEXT_PUBLIC_BASE_URL="${NEXT_PUBLIC_BASE_URL}" \
+            -e NEXTAUTH_URL="${NEXTAUTH_URL}" \
             -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" \
             -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
             -e AWS_REGION="${{ vars.AWS_REGION }}" \
