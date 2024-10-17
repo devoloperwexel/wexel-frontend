@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -19,12 +20,19 @@ import InformationSection from "./InformationSection";
 import TreatmentGoals from "./TreatmentGoals";
 import Achievements from "./Achievements";
 
-const drawerWidth = "w-64 sm:w-72"; // Adjusted width for different screens
+const drawerWidth = "w-64 sm:w-72";
 
-export const DashboardLayout1 = () => {
+type DashboardLayoutProps = {
+    children: ReactNode;
+  };
+
+export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
   const path = usePathname();
+  if (path.includes("/video-call")) {
+    return children;
+  }
+
   const [open, setOpen] = useState(true);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [language, setLanguage] = useState("EN");
 
   // Handle screen resizing to close the drawer on small screens
@@ -44,10 +52,6 @@ export const DashboardLayout1 = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguage(event.target.value);
@@ -77,6 +81,9 @@ export const DashboardLayout1 = () => {
   ];
 
   const handleSignout = () => signOut({ callbackUrl: "/signin" });
+  const handleOnClick = () => {
+    
+  }
 
   const data = {
     labels: ['Min', 'Hr', 'Min', 'Hrs'],
@@ -126,7 +133,7 @@ export const DashboardLayout1 = () => {
             </button>
 
             {/* Profile Avatar */}
-            <button onClick={handleProfileMenuOpen}>
+            <button >
               <Image
                 className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
                 src="https://i.pravatar.cc/300"
@@ -152,11 +159,12 @@ export const DashboardLayout1 = () => {
         {/* Menu items */}
         <ul className="flex flex-col space-y-4 py-4 justify-center">
           {menuItems.map((item) => (
-            <li key={item.label}>
-              <button className="rounded-sm flex items-start justify-center md:justify-start transform hover:rotate-x-[180] hover:border-l-4 hover:border-primary-color transition-transform duration-300 w-full">
+            <li key={item.label} >
+              <button className="rounded-sm font-medium flex items-start justify-center md:justify-start transform hover:rotate-x-[180] hover:border-l-4 hover:border-primary-color transition-transform duration-300 w-full" >
                 <a
                   href={item.href}
-                  className="flex items-center font-bold space-x-3 mx-10 py-[10px] sm:py-[9px] px-3 md:px-10 hover:font-black hover:text-[15px] text-gray-700  sm:hover:bg-primary-color/10 hover:bg-transparent  hover:text-primary-color rounded-md w-full"
+                  onClick={handleOnClick}
+                  className="flex items-center font-medium space-x-3 mx-9 py-[10px] sm:py-[9px] px-3 md:px-10 hover:font-bold hover:text-[15px] text-gray-700  sm:hover:bg-primary-color/10 hover:bg-transparent  hover:text-primary-color rounded-md w-full"
                 >
                   {item.icon}
                   {open && <span>{item.label}</span>}
@@ -171,7 +179,7 @@ export const DashboardLayout1 = () => {
           onClick={handleSignout}
           className="mt-[80%] flex items-start justify-center rounded-sm transform hover:rotate-x-[180] hover:border-l-4 hover:border-gray-400 transition-transform duration-300 w-full"
         >
-          <a className="flex items-center font-extrabold space-x-3 mx-10  py-[10px] sm:py-[9px] px-3 md:px-10 hover:font-black hover:text-[15px] text-gray-700 hover:bg-gray-400/10 hover:text-gray-700 rounded-md w-full">
+          <a className="flex items-center font-medium space-x-3 mx-10  py-[10px] sm:py-[9px] px-3 md:px-10 hover:font-bold hover:text-[15px] text-gray-700 hover:bg-gray-400/10 hover:text-gray-700 rounded-md w-full">
             <LogoutIcon className="w-5 h-5" />
             {open && <span className="ml-2">Logout</span>}
           </a>
