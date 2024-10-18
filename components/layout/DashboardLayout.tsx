@@ -160,11 +160,15 @@ type DashboardLayoutProps = {
 
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const path = usePathname();
+  const theme = useTheme();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
+    React.useState<null | HTMLElement>(null);
+  const [open, setOpen] = React.useState(true);
+  const [language, setLanguage] = React.useState("");
   if (path.includes("/video-call")) {
     return children;
   }
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -191,14 +195,8 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const [language, setLanguage] = React.useState("");
 
   const handleLanguage = (event: SelectChangeEvent) => {
     setLanguage(event.target.value);
