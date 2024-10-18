@@ -39,8 +39,8 @@ import { ReactNode } from "react";
 import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import LogoutIcon from "@mui/icons-material/Logout";
-import MedicalScreening from "./MedicalScreening";
-import Calender from "./Calender";
+import MedicalScreening from "../../ui/MedicalScreeningCard";
+import Calender from "../../ui/Calender";
 import Profile from "modules/profile/Profile";
 
 const drawerWidth = 280;
@@ -79,23 +79,22 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 interface ProfileProps {
-    name: string;
-    age: number;
-    country: string;
-    languages: string;
-    phoneNumber: string;
-    address: string;
-    email: string;
-    dob: string;
-    gender: string;
-    weight: number;
-    height: number;
-    activityLevel: string;
-    creditCard: string;
-    tokens: number;
-    screeningProgress: number;
-  }
-
+  name: string;
+  age: number;
+  country: string;
+  languages: string;
+  phoneNumber: string;
+  address: string;
+  email: string;
+  dob: string;
+  gender: string;
+  weight: number;
+  height: number;
+  activityLevel: string;
+  creditCard: string;
+  tokens: number;
+  screeningProgress: number;
+}
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -447,27 +446,27 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </Box>
       </Drawer>
       {/* Main Content */}
-      <div className="mt-[100px] ml-30"> 
-        <Profile 
-            name= "Stevan Dux"
-            age={27}
-            country= "Sri Lanka"
-            languages= "English | Sinhala"
-            phoneNumber= "061231231"
-            address= "No 35 2 Colombo"
-            email= "tryes@gmail.com"
-            dob= "1997-05-30"
-            gender= "Male"
-            weight= {58}
-            height= {116}
-            activityLevel= "Sedentery"
-            creditCard= "1723817232187321"
-            tokens= {3}
-            screeningProgress= {75}
+      <div className="mt-[100px] ml-30">
+        <Profile
+          name="Stevan Dux"
+          age={27}
+          country="Sri Lanka"
+          languages="English | Sinhala"
+          phoneNumber="061231231"
+          address="No 35 2 Colombo"
+          email="tryes@gmail.com"
+          dob="1997-05-30"
+          gender="Male"
+          weight={58}
+          height={116}
+          activityLevel="Sedentery"
+          creditCard="1723817232187321"
+          tokens={3}
+          screeningProgress={75}
         />
       </div>
-        
-        {/* <DrawerHeader />
+
+      {/* <DrawerHeader />
         <Typography
           sx={{ marginBottom: 2 }}
           fontSize={26}
@@ -479,10 +478,9 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </Typography>
         <Calender/>
         <MedicalScreening /> */}
-      
+
       {renderMobileMenu}
       {renderMenu}
     </Box>
   );
 };
-

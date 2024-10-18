@@ -1,5 +1,5 @@
 import API from "constants/doctor";
-import DoctorViewPage from "modules/dashboard/doctors/DoctorViewPage";
+import DoctorViewPage from "modules/dashboard/deplicated/doctors/DoctorViewPage";
 import { notFound } from "next/navigation";
 import request from "utils/request";
 

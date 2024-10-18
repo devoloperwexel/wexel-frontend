@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
-import MedicalScreening2 from "./MedicalScreening2";
+import MedicalScreening2 from "../ui/MedicalScreeningCard2";
 import {
   NotificationsOutlined as BellIcon,
   LogoutOutlined as LogoutIcon,
@@ -14,14 +14,14 @@ import {
   ListOutlined as ListIcon,
   ChatOutlined as ChatIcon,
 } from "@mui/icons-material";
-import InformationSection from "./InformationSection";
-import TreatmentGoals from "./TreatmentGoals";
-import Achievements from "./Achievements";
-import MyPlan from "./MyPlan";
-import SessionCard from "./SessionCard";
-import ProgressBar from "./ProgressBar";
-import EventCard from "./EventCard";
-import AppointmentsNew from "./AppointmentsNew";
+import InformationSection from "../ui/InformationSection";
+import TreatmentGoals from "../ui/TreatmentGoals";
+import Achievements from "../ui/Achievements";
+import MyPlan from "../ui/MyPlan";
+import SessionCard from "../ui/SessionCard";
+import ProgressBar from "../ui/ProgressBar";
+import EventCard from "../ui/EventCard";
+import AppointmentsNew from "../ui/AppointmentsNew";
 
 const drawerWidth = "w-64 sm:w-72";
 
@@ -95,20 +95,7 @@ export const DashboardLayout2 = () => {
 
   const handleSignout = () => signOut({ callbackUrl: "/signin" });
 
-  const data = {
-    labels: ["Min", "Hr", "Min", "Hrs"],
-    datasets: [
-      {
-        data: [10, 60, 20, 60],
-        backgroundColor: ["#1AB0B0", "#FF844B", "#F85C7F", "#8676FE"],
-      },
-    ],
-  };
 
-  const data2 = {
-    totalSessions: 3,
-    usedSessions: 2,
-  };
 
   return (
     <div className="flex h-screen bg-primary-color/5">
@@ -202,63 +189,7 @@ export const DashboardLayout2 = () => {
           open ? "ml-[300px] pt-10" : "ml-[70px] sm:ml-[90px]"
         } overflow-x-hidden w-full relative flex flex-col justify-start items-start px-4 sm:px-6 md:px-10 mt-[100px]`}
       >
-        <div className="w-full flex justify-between items-center">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-color mb-6">
-            Dashboard
-          </h2>
-        </div>
-
-        <div className="flex flex-wrap w-full gap-x-8">
-          {/* Medical Screening */}
-          <div className="w-full sm:w-[48%] lg:w-[20%] mb-6">
-            <MedicalScreening2 />
-          </div>
-
-          {/* Session Card */}
-          <div className="w-full sm:w-[48%] lg:w-[20%] mb-6">
-            <SessionCard
-              totalSessions={data2.totalSessions}
-              usedSessions={data2.usedSessions}
-            />
-          </div>
-
-          {/* Event Card */}
-          <div className="w-full sm:w-[48%] lg:w-[20%] mb-6">
-            <EventCard
-              physioName={eventData.physioName}
-              eventTitle={eventData.eventTitle}
-              eventDate={eventData.eventDate}
-              eventTime={eventData.eventTime}
-              duration={eventData.duration}
-            />
-          </div>
-
-          {/* AppointmentsNew (wider section) */}
-          <div className="w-full sm:w-[48%] lg:w-[30%] mb-6">
-            <AppointmentsNew />
-          </div>
-        </div>
-
-        <div className="w-full flex flex-col lg:flex-row gap-x-8 lg:mt-0">
-          <div className="w-full lg:w-1/2 ">
-            <TreatmentGoals data={data} totalHours={2.5} timeFrame="1 Week" />
-          </div>
-          <div className="w-full lg:w-1/2 flex flex-col">
-            <Achievements hours={2} reps={8} totalReps={10} />
-            <ProgressBar totalDays={totalDays} completedDays={completedDays} />
-          </div>
-        </div>
-
-        <div className="w-full lg:w-1/4 mt-[40px] ml-auto">
-          
-          <div className="relative w-full mt-[30px]">
-            <InformationSection />
-          </div>
-        </div>
-
-        <div className="w-full mt-6 lg:mt-0 pr-0 lg:pr-[1000px] relative">
-          <MyPlan />
-        </div>
+  
       </main>
     </div>
   );

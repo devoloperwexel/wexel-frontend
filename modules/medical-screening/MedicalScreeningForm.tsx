@@ -29,7 +29,7 @@ const MedicalScreeningForm: React.FC = () => {
             <p className="text-[15px] font-semibold">Commitment to Excellence</p>
             <p className="text-[13px]">We adhere to the highest standards of medical screening to determine the best care plan.</p>
             <p className="text-[13px]">Complete your profile after our thorough screening to ensure our services are suitable for you.</p>
-            <p className="text-[13px]">If not, we'll recommend a specialized doctor.</p>
+            <p className="text-[13px]">If not, we&apos;ll recommend a specialized doctor.</p>
         </div>
         <div className="flex justify-center space-x-7 w-full">
             <button className="text-primary-color">Remind me later</button>

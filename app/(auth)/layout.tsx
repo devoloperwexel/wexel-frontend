@@ -2,11 +2,11 @@ import { Metadata } from "next";
 import AuthWrapper from "utils/auth-warpper";
 import { ReactNode } from "react";
 import { Barlow } from "next/font/google";
-import { DashboardLayout1 } from "@/components/layout/DashobardLayout1";
+import {UserLayout } from "@/components/layout/UserLayout";
 import { DashboardLayout2 } from "@/components/layout/DashboardLayout2";
-import PersonalInformationForm from "@/components/layout/Medical Screening/PersonalInformationForm";
-import MedicalInformationForm from "@/components/layout/Medical Screening/MedicalInformationForm";
-import MedicalScreeningForm from "@/components/layout/Medical Screening/MedicalScreeningForm";
+import PersonalInformationForm from "modules/medical-screening/PersonalInformationForm";
+import MedicalInformationForm from "modules/medical-screening/MedicalInformationForm";
+import MedicalScreeningForm from "modules/medical-screening/MedicalScreeningForm";
 import Profile from "modules/profile/Profile";
 
 
@@ -31,7 +31,7 @@ export default async function Layout({ children }: Readonly<AuthLayoutProps>) {
         <MedicalInformationForm>{children}</MedicalInformationForm>
         <MedicalScreeningForm>{children}</MedicalScreeningForm>
         <Profile>{children}</Profile> */}
-        <DashboardLayout1>{children}</DashboardLayout1>
+        <UserLayout>{children}</UserLayout>
       </AuthWrapper>
     </div>
   );

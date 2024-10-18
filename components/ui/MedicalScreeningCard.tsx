@@ -10,7 +10,7 @@ type ScreeningData = {
   nextStep: string;
 };
 
-export default function MedicalScreening() {
+export default function MedicalScreeningCard() {
   const router = useRouter();
 
   const screeningData: ScreeningData = {

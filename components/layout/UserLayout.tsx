@@ -6,8 +6,6 @@ import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
-import Calender from "./Calender";
-import MedicalScreening from "./MedicalScreening";
 import {
   NotificationsOutlined as BellIcon,
   LogoutOutlined as LogoutIcon,
@@ -16,9 +14,6 @@ import {
   ListOutlined as ListIcon,
   ChatOutlined as ChatIcon,
 } from "@mui/icons-material";
-import InformationSection from "./InformationSection";
-import TreatmentGoals from "./TreatmentGoals";
-import Achievements from "./Achievements";
 
 const drawerWidth = "w-64 sm:w-72";
 
@@ -26,7 +21,7 @@ type DashboardLayoutProps = {
   children: ReactNode;
 };
 
-export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
+export const UserLayout = ({ children }: DashboardLayoutProps) => {
   const [open, setOpen] = useState(true);
   const [language, setLanguage] = useState("EN");
 
@@ -84,21 +79,6 @@ export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
 
   const handleSignout = () => signOut({ callbackUrl: "/signin" });
   const handleOnClick = () => {};
-
-  const data = {
-    labels: ["Min", "Hr", "Min", "Hrs"],
-    datasets: [
-      {
-        data: [10, 60, 20, 60],
-        backgroundColor: ["#1AB0B0", "#FF844B", "#F85C7F", "#8676FE"],
-      },
-    ],
-  };
-
-  const data2 = {
-    totalSessions: 3,
-    usedSessions: 2,
-  };
 
   return (
     <div className="flex h-screen bg-primary-color/5">
@@ -194,35 +174,8 @@ export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
           open ? "ml-[300px] pt-10" : "ml-[70px] sm:ml-[90px]"
         } overflow-x-hidden w-full relative flex flex-col justify-start items-start px-4 sm:px-6 md:px-10 mt-[100px]`}
       >
-        <div className="w-full flex justify-between items-center">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-color mb-6">
-            Dashboard
-          </h2>
-        </div>
-
-        <div className="flex flex-col lg:flex-row w-full gap-4 sm:gap-6">
-          <div className="flex-2 w-full xl:w-1/3 lg:w-1/2">
-            <MedicalScreening />
-          </div>
-          <div className="flex-2 w-full xl:w-1/3 lg:w-1/2">
-            <Calender />
-          </div>
-        </div>
-        <div className="flex flex-col lg:flex-row w-full pt-6">
-          <div className="flex-2 w-full xl:w-2/3 lg:w-3/3">
-            <InformationSection />
-          </div>
-        </div>
-        <div className="flex flex-col lg:flex-row w-full gap-4 sm:gap-6 pt-6">
-          <div className="flex-2 w-full xl:w-[45%] lg:w-1/2">
-            <TreatmentGoals data={data} totalHours={2.5} timeFrame=" 1 Week" />
-          </div>
-          <div className="flex-2 w-full xl:w-1/3 lg:w-1/2">
-            <Achievements hours={2} reps={8} totalReps={10} />
-          </div>
-        </div>
+        {children}
       </main>
     </div>
   );
 };
-
