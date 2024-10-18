@@ -119,9 +119,9 @@ export default function Calender() {
               <button
                 key={day.toString()}
                 onClick={() => handleDayClick(day)}
-                className={`text-center text-[6px] sm:text-[8px] lg:text-[10px]   ${
+                className={`text-center text-[6px] sm:text-[8px] lg:text-[10px] mx-2 p-1   ${
                   isHighlighted
-                    ? "border-[1px] border-black text-black rounded-full font-black "
+                    ? "border-[1px] border-black text-black rounded-full  font-bold "
                     : isSelected
                     ? "bg-primary-color rounded-full text-white"
                     : "text-gray-800 rounded-full"

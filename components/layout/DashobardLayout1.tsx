@@ -23,15 +23,10 @@ import Achievements from "./Achievements";
 const drawerWidth = "w-64 sm:w-72";
 
 type DashboardLayoutProps = {
-    children: ReactNode;
-  };
+  children: ReactNode;
+};
 
 export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
-  const path = usePathname();
-  if (path.includes("/video-call")) {
-    return children;
-  }
-
   const [open, setOpen] = useState(true);
   const [language, setLanguage] = useState("EN");
 
@@ -53,7 +48,14 @@ export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
     };
   }, []);
 
-  const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const path = usePathname();
+  if (path.includes("/video-call")) {
+    return children;
+  }
+
+  const handleLanguageChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setLanguage(event.target.value);
   };
 
@@ -81,16 +83,14 @@ export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
   ];
 
   const handleSignout = () => signOut({ callbackUrl: "/signin" });
-  const handleOnClick = () => {
-    
-  }
+  const handleOnClick = () => {};
 
   const data = {
-    labels: ['Min', 'Hr', 'Min', 'Hrs'],
+    labels: ["Min", "Hr", "Min", "Hrs"],
     datasets: [
       {
         data: [10, 60, 20, 60],
-        backgroundColor: ['#1AB0B0', '#FF844B', '#F85C7F', '#8676FE'],
+        backgroundColor: ["#1AB0B0", "#FF844B", "#F85C7F", "#8676FE"],
       },
     ],
   };
@@ -111,7 +111,9 @@ export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
         <div className="flex items-center justify-between py-4 px-4 sm:px-6 md:px-10">
           {/* Title */}
           <div className="flex items-center space-x-4 md:space-x-6 ml-[70px] md:ml-[300px]">
-            <h1 className="text-lg sm:text-xl md:text-2xl font-bold">Hi, Stevan dux</h1>
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold">
+              Hi, Stevan dux
+            </h1>
           </div>
           <div className="flex items-center space-x-3 md:space-x-6">
             {/* Language Selector */}
@@ -133,7 +135,7 @@ export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
             </button>
 
             {/* Profile Avatar */}
-            <button >
+            <button>
               <Image
                 className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
                 src="https://i.pravatar.cc/300"
@@ -159,8 +161,8 @@ export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
         {/* Menu items */}
         <ul className="flex flex-col space-y-4 py-4 justify-center">
           {menuItems.map((item) => (
-            <li key={item.label} >
-              <button className="rounded-sm font-medium flex items-start justify-center md:justify-start transform hover:rotate-x-[180] hover:border-l-4 hover:border-primary-color transition-transform duration-300 w-full" >
+            <li key={item.label}>
+              <button className="rounded-sm font-medium flex items-start justify-center md:justify-start transform hover:rotate-x-[180] hover:border-l-4 hover:border-primary-color transition-transform duration-300 w-full">
                 <a
                   href={item.href}
                   onClick={handleOnClick}
@@ -188,14 +190,16 @@ export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
 
       {/* Main Content */}
       <main
-        className={`${open ? "ml-[300px] pt-10" : "ml-[70px] sm:ml-[90px]"} overflow-x-hidden w-full relative flex flex-col justify-start items-start px-4 sm:px-6 md:px-10 mt-[100px]`}
+        className={`${
+          open ? "ml-[300px] pt-10" : "ml-[70px] sm:ml-[90px]"
+        } overflow-x-hidden w-full relative flex flex-col justify-start items-start px-4 sm:px-6 md:px-10 mt-[100px]`}
       >
         <div className="w-full flex justify-between items-center">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-color mb-6">
             Dashboard
           </h2>
         </div>
-        
+
         <div className="flex flex-col lg:flex-row w-full gap-4 sm:gap-6">
           <div className="flex-2 w-full xl:w-1/3 lg:w-1/2">
             <MedicalScreening />
@@ -206,18 +210,19 @@ export const DashboardLayout1 = ({ children }: DashboardLayoutProps) => {
         </div>
         <div className="flex flex-col lg:flex-row w-full pt-6">
           <div className="flex-2 w-full xl:w-2/3 lg:w-3/3">
-            <InformationSection/>
+            <InformationSection />
           </div>
         </div>
         <div className="flex flex-col lg:flex-row w-full gap-4 sm:gap-6 pt-6">
           <div className="flex-2 w-full xl:w-[45%] lg:w-1/2">
-             <TreatmentGoals data={data} totalHours={2.5} timeFrame=" 1 Week" />
+            <TreatmentGoals data={data} totalHours={2.5} timeFrame=" 1 Week" />
           </div>
           <div className="flex-2 w-full xl:w-1/3 lg:w-1/2">
-             <Achievements hours={2} reps={8} totalReps={10} />
+            <Achievements hours={2} reps={8} totalReps={10} />
           </div>
         </div>
       </main>
     </div>
   );
 };
+
