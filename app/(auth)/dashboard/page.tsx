@@ -9,9 +9,12 @@ export default async function page() {
   try {
     // const doctorDetails = await request(API.GET_DOCTORS, {}, false, false);
 
-    return <DashboardPage2 />;
+    return <DashboardPage1 />;
   } catch (e) {
     console.log(e);
     notFound();
   }
 }
+
+
+

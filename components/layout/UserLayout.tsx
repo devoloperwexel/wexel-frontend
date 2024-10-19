@@ -14,6 +14,7 @@ import {
   ListOutlined as ListIcon,
   ChatOutlined as ChatIcon,
 } from "@mui/icons-material";
+import { MenuItem } from "@mui/material";
 
 const drawerWidth = "w-64 sm:w-72";
 
@@ -81,7 +82,7 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
   const handleOnClick = () => {};
 
   return (
-    <div className="flex h-screen bg-primary-color/5">
+    <div className="">
       {/* AppBar */}
       <div
         className={`fixed top-0 justify-between w-full ${
@@ -91,7 +92,7 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
         <div className="flex items-center justify-between py-4 px-4 sm:px-6 md:px-10">
           {/* Title */}
           <div className="flex items-center space-x-4 md:space-x-6 ml-[70px] md:ml-[300px]">
-            <h1 className="text-lg sm:text-xl md:text-2xl font-bold">
+            <h1 className="text-[18px] sm:text-xl md:text-2xl font-bold">
               Hi, Stevan dux
             </h1>
           </div>
@@ -100,7 +101,7 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
             <select
               value={language}
               onChange={handleLanguageChange}
-              className="border border-gray-300 rounded p-1 sm:p-2 text-sm"
+              className="hidden md:flex border border-gray-300 rounded p-1 sm:p-2 text-sm"
             >
               <option value="EN">EN</option>
               <option value="FR">FR</option>
@@ -131,7 +132,7 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
       {/* Sidebar */}
       <div
         className={`flex flex-col fixed top-0 left-0 h-full bg-white border-r transition-all duration-300 ${
-          open ? drawerWidth : "w-16 sm:w-20"
+          open ? drawerWidth : "w-[60px] md:w-20"
         }`}
       >
         <div className="flex items-center justify-center px-[10px] pt-8 pb-2 sm:px-[16px]">
@@ -171,11 +172,17 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
       {/* Main Content */}
       <main
         className={`${
-          open ? "ml-[300px] pt-10" : "ml-[70px] sm:ml-[90px]"
-        } overflow-x-hidden w-full relative flex flex-col justify-start items-start px-4 sm:px-6 md:px-10 mt-[100px]`}
+          open ? "ml-[300px]" : "ml-[50px] sm:ml-[70px]"
+        }  overflow-x-hidden mt-[50px] px-8 sm:px-10 py-[35px] sm:py-[50px] min:h-screen bg-primary-color/5`}
       >
+        
+        <div >
+          <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 sm:py-10">Dashboard</h1>
+        </div>     
         {children}
       </main>
     </div>
   );
 };
+
+

@@ -1,5 +1,3 @@
-"use client"
-
 import Achievements from "@/components/ui/Achievements";
 import Calender from "@/components/ui/Calender";
 import InformationSection from "@/components/ui/InformationSection";
@@ -16,41 +14,29 @@ const data = {
   ],
 };
 
-const data2 = {
-  totalSessions: 3,
-  usedSessions: 2,
-};
-
-export default function DashboardPage() {
+export default function DashboardPage1() {
   return (
-    <div>
-      <div className="w-full flex justify-between items-center">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-color mb-6">
-          Dashboard
-        </h2>
-      </div>
-
-      <div className="flex flex-col lg:flex-row w-full gap-4 sm:gap-6">
-        <div className="flex-2 w-full xl:w-1/3 lg:w-1/2">
+    <div className="flex flex-col gap-10 sm:gap-16 ">
+      <div className="flex flex-col md:flex-col lg:flex-row gap-10 md:gap-20 w-full 2xl:w-[70%] xl:w-[80%]">
+        <div className="flex-1">
           <MedicalScreeningCard />
         </div>
-        <div className="flex-2 w-full xl:w-1/3 lg:w-1/2">
+        <div className="flex-1">
           <Calender />
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row w-full pt-6">
-        <div className="flex-2 w-full xl:w-2/3 lg:w-3/3">
-          <InformationSection />
-        </div>
+      <div className="flex-1 w-full md:w-full lg:w-[85%] ">
+        <InformationSection />
       </div>
-      <div className="flex flex-col lg:flex-row w-full gap-4 sm:gap-6 pt-6">
-        <div className="flex-2 w-full xl:w-[45%] lg:w-1/2">
-          <TreatmentGoals data={data} totalHours={2.5} timeFrame=" 1 Week" />
+      <div className="flex flex-col md:flex-col lg:flex-row gap-10 sm:gap-16">
+        <div className="flex-1">
+          <TreatmentGoals data={data} totalHours={2.5} timeFrame="1 Week" />
         </div>
-        <div className="flex-2 w-full xl:w-1/3 lg:w-1/2">
+        <div className="flex-1">
           <Achievements hours={2} reps={8} totalReps={10} />
         </div>
       </div>
     </div>
   );
 }
+

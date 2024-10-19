@@ -10,7 +10,7 @@ import ProgressBar from "@/components/ui/ProgressBar";
 import SessionCard from "@/components/ui/SessionCard";
 import TreatmentGoals from "@/components/ui/TreatmentGoals";
 
-export default function DashboardPage() {
+export default function DashboardPage2() {
   const totalDays = 4;
   const completedDays = 1;
   const eventData = {
@@ -35,59 +35,69 @@ export default function DashboardPage() {
     usedSessions: 2,
   };
   return (
-    <>
-      <div className="w-full flex justify-between items-center">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-color mb-6">
-          Dashboard
-        </h2>
-      </div>
-      <div className="flex flex-wrap w-full gap-x-8">
-        {/* Medical Screening */}
-        <div className="w-full sm:w-[48%] lg:w-[20%] mb-6">
-          <MedicalScreeningCard2 />
-        </div>
+    <div className="py-3">
+      <div className="grid grid-cols-12 gap-6">
+        {/* Top Section */}
+        <div className="col-span-7 grid grid-cols-1 gap-6">
+          {/* Medical Screening */}
+          <div>
+            <MedicalScreeningCard2 />
+          </div>
 
-        {/* Session Card */}
-        <div className="w-full sm:w-[48%] lg:w-[20%] mb-6">
-          <SessionCard
-            totalSessions={data2.totalSessions}
-            usedSessions={data2.usedSessions}
-          />
-        </div>
+          {/* Session Card */}
+          <div>
+            <SessionCard totalSessions={data2.totalSessions} usedSessions={data2.usedSessions} />
+          </div>
 
-        {/* Event Card */}
-        <div className="w-full sm:w-[48%] lg:w-[20%] mb-6">
-          <EventCard
-            physioName={eventData.physioName}
-            eventTitle={eventData.eventTitle}
-            eventDate={eventData.eventDate}
-            eventTime={eventData.eventTime}
-            duration={eventData.duration}
-          />
+          {/* Event Card */}
+          <div>
+            <EventCard
+              physioName={eventData.physioName}
+              eventTitle={eventData.eventTitle}
+              eventDate={eventData.eventDate}
+              eventTime={eventData.eventTime}
+              duration={eventData.duration}
+            />
+          </div>
         </div>
 
         {/* AppointmentsNew (wider section) */}
-        <div className="w-full sm:w-[48%] lg:w-[30%] mb-6">
+        <div className="col-span-5">
           <AppointmentsNew />
         </div>
-      </div>
-      <div className="w-full flex flex-col lg:flex-row gap-x-8 lg:mt-0">
-        <div className="w-full lg:w-1/2 ">
-          <TreatmentGoals data={data} totalHours={2.5} timeFrame="1 Week" />
+
+        {/* Bottom Section */}
+        <div className="col-span-5">
+          <MyPlan />
         </div>
-        <div className="w-full lg:w-1/2 flex flex-col">
-          <Achievements hours={2} reps={8} totalReps={10} />
-          <ProgressBar totalDays={totalDays} completedDays={completedDays} />
+
+        <div className="col-span-7 grid grid-cols-1 gap-6">
+          {/* Treatment Goals Section */}
+          <div>
+            <TreatmentGoals data={data} totalHours={2.5} timeFrame="1 Week" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-6">
+            {/* Achievements section */}
+            <div>
+              <Achievements hours={2} reps={8} totalReps={10} />
+            </div>
+
+            {/* Progress Bar Section */}
+            <div>
+              <ProgressBar totalDays={totalDays} completedDays={completedDays} />
+            </div>
+          </div>
+
+          {/* Information Section */}
+          <div>
+            <InformationSection />
+          </div>
         </div>
       </div>
-      <div className="w-full lg:w-1/4 mt-[40px] ml-auto">
-        <div className="relative w-full mt-[30px]">
-          <InformationSection />
-        </div>
-      </div>
-      <div className="w-full mt-6 lg:mt-0 pr-0 lg:pr-[1000px] relative">
-        <MyPlan />
-      </div>
-    </>
+    </div>
   );
 }
+
+
+
