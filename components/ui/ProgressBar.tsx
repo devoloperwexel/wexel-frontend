@@ -10,7 +10,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ totalDays, completedDays }) =
   const daysArray = Array.from({ length: totalDays }, (_, i) => i + 1);
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
+    <div className="p-3 bg-white shadow-md rounded-lg">
       <div className="flex justify-between items-center mb-2">
         <span className="text-gray-600">Your progress</span>
         <span className="text-gray-500 text-sm">{totalDays} days</span>

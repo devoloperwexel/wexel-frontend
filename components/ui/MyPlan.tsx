@@ -67,10 +67,10 @@ const CircularProgress: React.FC<{ completed: number; total: number }> = ({ comp
 
 const MyPlan: React.FC = () => {
   return (
-    <div className="bg-primary-color/15 rounded-2xl p-3 max-w-sm mx-auto">
+    <div className="bg-primary-color/15 rounded-2xl p-3 ">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-primary-color">My Plan</h2>
-        <a href="#" className="text-primary-color">View All</a>
+        <p className="text-primary-color hover:text-primary-color/70">View All</p>
       </div>
       {planData.map((item, index) => (
         <div key={index} className="bg-white rounded-lg p-3 mb-4 flex justify-between items-center">

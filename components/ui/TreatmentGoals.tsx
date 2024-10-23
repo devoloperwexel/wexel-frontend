@@ -60,15 +60,15 @@ const TreatmentGoals: React.FC<TreatmentGoalsProps> = ({ data, totalHours, timeF
           <p className='text-nowrap'>{timeFrame}</p>
         </div>
       </div>
-      <div className="block md:flex items-center justify-between space-x-0 sm:space-x-6 sm:space-y-0 space-y-3 w-full ">
-        <div className=" w-full sm:w-[45%] p-0 sm:p-2 flex justify-center items-center h-[160px]">
+      <div className="block md:flex items-center justify-between space-x-0 sm:space-x-5 sm:space-y-0 space-y-3 w-full ">
+        <div className=" w-full sm:w-[50%] p-0 sm:p-2 flex justify-center items-center h-[160px]">
           <Doughnut data={data} options={options} />
         </div>
-        <div className="w-full sm:w-[55%] flex justify-center items-center text-[12px] sm:text-[17px] ">
+        <div className="w-full sm:w-[50%] flex justify-center items-center text-[12px] sm:text-[13px] space-x-6  ">
           <div className=" w-full sm:w-1/2 space-y-4">
             <div className="flex items-center mb-2">
               <span className="block w-2 h-2 bg-[#1AB0B0] rounded-full mr-2"></span>
-              <span>Nek</span>
+              <span >Nek</span>
             </div>
             <div className="flex items-center mb-2">
               <span className="block w-2 h-2 bg-[#FF844B] rounded-full mr-2"></span>
@@ -83,17 +83,17 @@ const TreatmentGoals: React.FC<TreatmentGoalsProps> = ({ data, totalHours, timeF
               <span>Strength</span>
             </div>
           </div>
-          <div className="w-1/2 space-y-4 pl-6">
-            <div className="flex items-center mb-2">
-              <span>10 min</span>
+          <div className="w-1/2 space-y-4 ">
+            <div className="flex items-end mb-2">
+              <span className=''>10 min</span>
             </div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-end mb-2">
               <span>1 hr</span>
             </div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-end mb-2">
               <span>20 min</span>
             </div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-end mb-2">
               <span>1 hrs</span>
             </div>
           </div>
