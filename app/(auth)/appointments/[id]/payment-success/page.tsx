@@ -1,5 +1,5 @@
 import API from "constants/appointment";
-import PaymentSuccessPageView from "modules/dashboard/doctors/payment/PaymentSuccess";
+import PaymentSuccessPageView from "modules/dashboard/deplicated/doctors/payment/PaymentSuccess";
 import { notFound } from "next/navigation";
 import { auth } from "utils/auth";
 import request from "utils/request";

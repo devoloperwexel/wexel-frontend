@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -23,7 +25,7 @@ const centerTextPlugin = {
     const text = chart.config.options.plugins.centerText.text;
     ctx.restore();
 
-    const fontSize = 30; 
+    const fontSize = 25; 
     ctx.font = `${fontSize}px inter font-black`; 
     ctx.textBaseline = 'middle';
 
@@ -53,20 +55,20 @@ const TreatmentGoals: React.FC<TreatmentGoalsProps> = ({ data, totalHours, timeF
   return (
     <div className="bg-white rounded-2xl shadow py-3 px-4">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-[22px] font-semibold">Treatment goals</h2>
-        <div className="bg-gray-100 text-gray-600 rounded-full px-3 py-2 text-sm">
-          {timeFrame}
+        <h2 className=" text-[17px] sm:text-[22px] font-semibold leading-tight">Treatment goals</h2>
+        <div className="bg-gray-100 text-gray-600 rounded-full px-3 sm:px-3 py-2 sm:py-2 text-[10px] sm:text-sm ">
+          <p className='text-nowrap'>{timeFrame}</p>
         </div>
       </div>
-      <div className="flex items-center justify-between space-x-6 w-full">
-        <div className="w-[45%] p-2 flex justify-center items-center">
+      <div className="block md:flex items-center justify-between space-x-0 sm:space-x-5 sm:space-y-0 space-y-3 w-full ">
+        <div className=" w-full sm:w-[50%] p-0 sm:p-2 flex justify-center items-center h-[160px]">
           <Doughnut data={data} options={options} />
         </div>
-        <div className="w-[55%] flex justify-center items-center text-[17px]">
-          <div className="w-1/2 space-y-4">
+        <div className="w-full sm:w-[50%] flex justify-center items-center text-[12px] sm:text-[13px] space-x-6  ">
+          <div className=" w-full sm:w-1/2 space-y-4">
             <div className="flex items-center mb-2">
               <span className="block w-2 h-2 bg-[#1AB0B0] rounded-full mr-2"></span>
-              <span>Nek</span>
+              <span >Nek</span>
             </div>
             <div className="flex items-center mb-2">
               <span className="block w-2 h-2 bg-[#FF844B] rounded-full mr-2"></span>
@@ -81,17 +83,17 @@ const TreatmentGoals: React.FC<TreatmentGoalsProps> = ({ data, totalHours, timeF
               <span>Strength</span>
             </div>
           </div>
-          <div className="w-1/2 space-y-4 pl-6">
-            <div className="flex items-center mb-2">
-              <span>10 min</span>
+          <div className="w-1/2 space-y-4 ">
+            <div className="flex items-end mb-2">
+              <span className=''>10 min</span>
             </div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-end mb-2">
               <span>1 hr</span>
             </div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-end mb-2">
               <span>20 min</span>
             </div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-end mb-2">
               <span>1 hrs</span>
             </div>
           </div>

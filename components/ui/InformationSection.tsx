@@ -43,11 +43,11 @@ const InformationSection = () => {
     //     </ul>
     //   )}
     // </div>
-    <div className="bg-white p-6 rounded-2xl shadow-md">
-      <h1 className="text-2xl font-semibold mb-4">Information</h1>
+    <div className="bg-white p-6 rounded-2xl shadow-md ">
+      <h1 className="text-[18px] sm:text-2xl font-semibold mb-2 sm:mb-4">Information</h1>
       <ul className="list-disc list-inside space-y-2">
         {infoList.map((item, index) => (
-          <li key={index} className="text-gray-700 text-2xl">{item}</li>
+          <li key={index} className="text-gray-700 text-[13px] sm:text-2xl">{item}</li>
         ))}
       </ul>
     </div>

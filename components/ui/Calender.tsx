@@ -62,17 +62,17 @@ export default function Calender() {
   const daysInMonth = generateDaysInMonth();
 
   return (
-    <div className="bg-white rounded-2xl px-6 pb-3 flex flex-col justify-between shadow-md w-full ">
-      <div className="flex items-center justify-between">
-        <h2 className="text-[18px] font-semibold text-black">Calender</h2>
-        <button className="flex justify-center text-[15px] items-center space-x-1 rounded-lg font-semibold">
+    <div className="bg-white rounded-2xl px-6 py-3 flex flex-col justify-between shadow-md ">
+      <div className="flex items-center justify-between pb-1 sm:pb-0">
+        <h2 className="text-[17px] sm:text-[18px] font-semibold text-black">Calender</h2>
+        <button className="flex justify-center text-[12px] sm:text-[15px] items-center space-x-0 sm:space-x-1 rounded-lg font-semibold">
           <span className="text-primary-color">View All</span>
           <ChevronRightIcon className="text-black/30 mt-[2px] p-[2px]" style={{ fontSize: 18 }} />
         </button>
       </div>
 
       {/* Calendar */}
-      <div className="bg-gray-100 rounded-md px-3 pb-3 flex flex-col justify-start">
+      <div className="bg-gray-100 rounded-md px-2 sm:px-3 pb-3 flex flex-col justify-start">
         <div className="flex items-center justify-between py-2">
           <h5 className="text-[12px] sm:text-[12px] lg:text-[13px] font-medium text-gray-900">
             {currentDate.format("MMMM YYYY")}
@@ -98,7 +98,7 @@ export default function Calender() {
           {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
             <div
               key={day}
-              className="text-center text-[10px] sm:text-[12px] lg:text-[14px] font-medium text-gray-500"
+              className="text-center text-[8px] sm:text-[12px] lg:text-[14px] font-medium text-gray-500"
             >
               {day}
             </div>
@@ -106,7 +106,7 @@ export default function Calender() {
         </div>
 
         {/* Calendar Days */}
-        <div className="grid grid-cols-7 space-y-2 space-x-0 ">
+        <div className="grid grid-cols-7 space-y-2 sm:space-y-2 space-x-0 ">
           {daysInMonth.map((day, index) => {
             if (!day) {
               return <div key={index} className="text-center"></div>; // Placeholder for empty days
@@ -119,9 +119,9 @@ export default function Calender() {
               <button
                 key={day.toString()}
                 onClick={() => handleDayClick(day)}
-                className={`text-center text-[6px] sm:text-[8px] lg:text-[10px]   ${
+                className={`text-center text-[6px] sm:text-[8px] lg:text-[10px] mx-1 p-[4px] lg:mx-7 md:mx-4 xl:mx-10 sm:p-1   ${
                   isHighlighted
-                    ? "border-[1px] border-black text-black rounded-full font-black "
+                    ? "border-[1px] border-black text-black rounded-full  font-bold "
                     : isSelected
                     ? "bg-primary-color rounded-full text-white"
                     : "text-gray-800 rounded-full"
@@ -141,12 +141,12 @@ export default function Calender() {
           className="text-primary-color"
           style={{ fontSize: 22, margin: 2 }}
         />
-        <p className="text-xs text-gray-600 font-semibold">No upcoming appointments</p>
+        <p className="text-[10px] text-center sm:text-xs text-gray-600 font-semibold">No upcoming appointments</p>
       </div>
 
       {/* Make Appointment Button */}
       <div className="w-full">
-        <button className="w-full bg-primary-color rounded-md hover:bg-red-700 font-light text-white text-[19px] py-[5px]  ">
+        <button className="w-full bg-primary-color rounded-md hover:bg-red-700 font-light text-white text-[15px] sm:text-[19px] py-[5px]  ">
           Make an appointment
         </button>
       </div>

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import AuthWrapper from "utils/auth-warpper";
 import { ReactNode } from "react";
 import { Barlow } from "next/font/google";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import {UserLayout } from "@/components/layout/UserLayout";
 
 const title = "WexelCode";
 const description =
@@ -21,9 +21,10 @@ export default async function Layout({ children }: Readonly<AuthLayoutProps>) {
   return (
     <div className={barlow.className}>
       <AuthWrapper>
-        <DashboardLayout>{children}</DashboardLayout>
+        <UserLayout>{children}</UserLayout>
       </AuthWrapper>
     </div>
   );
 }
+
 
