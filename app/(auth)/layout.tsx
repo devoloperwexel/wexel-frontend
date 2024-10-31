@@ -21,7 +21,7 @@ export default async function Layout({ children }: Readonly<AuthLayoutProps>) {
   return (
     <div className={barlow.className}>
       <AuthWrapper>
-        {children}
+        <UserLayout>{children}</UserLayout>
       </AuthWrapper>
     </div>
   );

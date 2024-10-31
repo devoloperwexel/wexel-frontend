@@ -59,7 +59,6 @@ const MedicalInformationForm: React.FC<MedicalInformationFormProps> = ({
     return requiredFields.every((field) => formData[field] !== "");
   };
 
-  // Call onComplete if form is complete
   useEffect(() => {
     if (isFormComplete()) {
       onComplete();
@@ -69,7 +68,7 @@ const MedicalInformationForm: React.FC<MedicalInformationFormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
-    onComplete(); // Handle data submission
+    onComplete(); 
   };
 
   return (

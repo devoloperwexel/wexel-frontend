@@ -40,7 +40,6 @@ const PersonalInformationForm: React.FC<PersonalInformationFormProps> = ({
     setFormData({ ...formData, [name]: value });
   };
 
-  // Check if all required fields are filled
   const isFormComplete = () => {
     const requiredFields: (keyof PersonalInfo)[] = [
       "firstName",
@@ -54,7 +53,6 @@ const PersonalInformationForm: React.FC<PersonalInformationFormProps> = ({
     return requiredFields.every((field) => formData[field] !== "");
   };
 
-  // Call onComplete if form is complete
   useEffect(() => {
     if (isFormComplete()) {
       onComplete();
