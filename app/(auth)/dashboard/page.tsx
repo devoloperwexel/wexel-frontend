@@ -1,15 +1,23 @@
-import API from "constants/doctor";
+import API from "constants/appointment";
 import DashboardPage1 from "modules/dashboard/DashboardPage1";
 import DashboardPage2 from "modules/dashboard/DashboardPage2";
-import DashboardPage from "modules/Physios/DoctorsPage";
 import { notFound } from "next/navigation";
+import { auth } from "utils/auth";
 import request from "utils/request";
 
 export default async function page() {
   try {
-    // const doctorDetails = await request(API.GET_DOCTORS, {}, false, false);
+    const authRes = await auth();
+    const appointment = await request(API.GET_APPOINTMENTS, {
+      userId: authRes?.user.id,
+      query: "limit=10",
+    });
 
-    return <DashboardPage2 />;
+    return appointment.data.totalResults < 1 ? (
+      <DashboardPage1 />
+    ) : (
+      <DashboardPage2 />
+    );
   } catch (e) {
     console.log(e);
     notFound();
