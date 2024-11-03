@@ -76,6 +76,7 @@ const AppointmentPageView = ({ appointment }: Props) => {
             {formattedDate}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formattedTime}
           </Typography>
           <ContainedButton
+            disabled={appointment.sessionTime > 1800}
             startIcon={<VideocamIcon />}
             backgroundColor="#009BFF"
             onClick={handleJoin}

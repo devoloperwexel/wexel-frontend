@@ -6,6 +6,7 @@ export default interface Appointment {
   appointmentTime: string;
   doctorDetail: DoctorDetail;
   note?: string;
+  sessionTime:number;
   createdAt: string;
   updatedAt: string;
 }
