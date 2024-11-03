@@ -22,12 +22,37 @@ type DashboardLayoutProps = {
   children: ReactNode;
 };
 
+const menuItems = [
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: <HomeIcon className="w-4 h-4" />,
+  },
+  {
+    label: "Physios Profile",
+    href: "/physios",
+    icon: <ChatIcon className="w-4 h-4" />,
+  },
+  {
+    label: "My Appointments",
+    href: "/appointments",
+    icon: <ListIcon className="w-4 h-4" />,
+  },
+  {
+    label: "Profile",
+    href: "/profile",
+    icon: <UserIcon className="w-4 h-4" />,
+  },
+];
+
 export const UserLayout = ({ children }: DashboardLayoutProps) => {
   const [open, setOpen] = useState(true);
+  const [label, setLabel] = useState(menuItems[0].label);
   const [language, setLanguage] = useState("EN");
 
   // Handle screen resizing to close the drawer on small screens
   useEffect(() => {
+    
     const handleResize = () => {
       if (window.innerWidth < 768) {
         setOpen(false);
@@ -55,39 +80,16 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
     setLanguage(event.target.value);
   };
 
-  const menuItems = [
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-      icon: <HomeIcon className="w-4 h-4" />,
-    },
-    {
-      label: "Physios Profile",
-      href: "/physios-profile",
-      icon: <ChatIcon className="w-4 h-4" />,
-    },
-    {
-      label: "My Appointments",
-      href: "/appointments",
-      icon: <ListIcon className="w-4 h-4" />,
-    },
-    {
-      label: "Profile",
-      href: "/profile",
-      icon: <UserIcon className="w-4 h-4" />,
-    },
-  ];
-
   const handleSignout = () => signOut({ callbackUrl: "/signin" });
   const handleOnClick = () => {};
 
   return (
-    <div className="">
+    <div className=" z-50">
       {/* AppBar */}
       <div
         className={`fixed top-0 justify-between w-full ${
           open ? "w-full lg:w-[calc(100%)] md:w-[calc(100%)]" : "w-full z-1"
-        } transition-all duration-300 bg-white`}
+        } transition-all duration-300 bg-white z-30`}
       >
         <div className="flex items-center justify-between py-4 px-4 sm:px-6 md:px-10">
           {/* Title */}
@@ -131,7 +133,7 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
 
       {/* Sidebar */}
       <div
-        className={`flex flex-col fixed top-0 left-0 h-full bg-white border-r transition-all duration-300 ${
+        className={`flex flex-col fixed top-0 left-0 h-full z-30 bg-white border-r transition-all duration-300 ${
           open ? drawerWidth : "w-[60px] md:w-20"
         }`}
       >
@@ -175,14 +177,18 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
           open ? "ml-[300px]" : "ml-[50px] sm:ml-[70px]"
         }  overflow-x-hidden mt-[50px] px-8 sm:px-10 py-[35px] sm:py-[50px] min:h-screen bg-primary-color/5`}
       >
-        
-        <div >
-          <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 sm:py-10">Dashboard</h1>
-        </div>     
+        <div>
+          {(path.match(/\//g) || []).length < 2 && (
+            <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 sm:py-10">
+              {
+                menuItems.find((menuItem) => path.includes(menuItem.href))
+                  ?.label
+              }
+            </h1>
+          )}
+        </div>
         {children}
       </main>
     </div>
   );
 };
-
-
