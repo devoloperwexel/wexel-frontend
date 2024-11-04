@@ -12,172 +12,150 @@ env:
   PROD_CONTAINER_NAME: wexel_frontend_prod
 
 jobs:
-  # Build Stage
+  # Build Stage  
 
   Build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Get Environment Variables
-        uses: appleboy/ssh-action@v1.1.0
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          script: |
-            echo "Retrieve environment variables from AWS Parameter Store"
+    - name: Build Docker image and set Docker tag with TAG
+      run: |
+        echo "Generated Docker tag: ${{ env.TAG }}"
+        docker build -t "${{ vars.REPOSITORY_NAME }}" .
+        docker tag "${{ vars.REPOSITORY_NAME }}" "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
 
-            NEXT_PUBLIC_BASE_URL=$(aws ssm get-parameter --name "/frontend/dev/next_public_base_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            NEXTAUTH_URL=$(aws ssm get-parameter --name "/frontend/dev/next_auth_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text) 
-            AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "/frontend/dev/aws_access_key_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "/frontend/dev/aws_secret_access_key" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            COGNITO_CLIENT_ID=$(aws ssm get-parameter --name "/frontend/dev/cognito_client_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            COGNITO_USER_POOL_ID=$(aws ssm get-parameter --name "/frontend/dev/cognito_user_pool_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            COGNITO_ISSUER=$(aws ssm get-parameter --name "/frontend/dev/cognito_issuer" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            COGNITO_CLIENT_SECRET=$(aws ssm get-parameter --name "/frontend/dev/cognito_client_secret" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            NEXTAUTH_SECRET=$(aws ssm get-parameter --name "/frontend/dev/nextauth_secret" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            NEXT_PUBLIC_DOMAIN=$(aws ssm get-parameter --name "/frontend/dev/next_public_domain" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            NEXT_PUBLIC_APP_URL=$(aws ssm get-parameter --name "/frontend/dev/next_public_app_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            NEXT_PUBLIC_STRIPE_PUBLIC_KEY=$(aws ssm get-parameter --name "/frontend/dev/next_public_stripe_public_key" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            STRIPE_SECRET_KEY=$(aws ssm get-parameter --name "/frontend/dev/stripe_secret_key" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Build Docker image and set Docker tag with TAG
-        run: |
-          echo "Generated Docker tag: ${{ env.TAG }}"
-            docker build \
-            --build-arg NEXT_PUBLIC_BASE_URL="${{ env.NEXT_PUBLIC_BASE_URL }}" \
-            --build-arg NEXTAUTH_URL="${{ env.NEXTAUTH_URL }}" \
-            --build-arg AWS_ACCESS_KEY_ID="${{ env.AWS_ACCESS_KEY_ID }}" \
-            --build-arg AWS_SECRET_ACCESS_KEY="${{ env.AWS_SECRET_ACCESS_KEY }}" \
-            --build-arg COGNITO_CLIENT_ID="${{ env.COGNITO_CLIENT_ID }}" \
-            --build-arg COGNITO_USER_POOL_ID="${{ env.COGNITO_USER_POOL_ID }}" \
-            --build-arg COGNITO_ISSUER="${{ env.COGNITO_ISSUER }}" \
-            --build-arg COGNITO_CLIENT_SECRET="${{ env.COGNITO_CLIENT_SECRET }}" \
-            --build-arg NEXTAUTH_SECRET="${{ env.NEXTAUTH_SECRET }}" \
-            --build-arg NEXT_PUBLIC_DOMAIN="${{ env.NEXT_PUBLIC_DOMAIN }}" \
-            --build-arg NEXT_PUBLIC_APP_URL="${{ env.NEXT_PUBLIC_APP_URL }}" \
-            --build-arg NEXT_PUBLIC_STRIPE_PUBLIC_KEY="${{ env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY }}" \
-            --build-arg STRIPE_SECRET_KEY="${{ env.STRIPE_SECRET_KEY }}" \
-              -t "${{ vars.REPOSITORY_NAME }}" .
-            docker tag "${{ vars.REPOSITORY_NAME }}" "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
+    - name: Push Docker image to Amazon ECR
+      run: |
+        aws ecr get-login-password --region ${{ vars.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_REGISTRY_URL }}
+        docker push "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION }}
-
-      - name: Push Docker image to Amazon ECR
-        run: |
-          aws ecr get-login-password --region ${{ vars.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_REGISTRY_URL }}
-          docker push "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
-
-  # Dev Deploy Stage
+  # Dev Deploy Stage      
   DevDeploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
-    needs: Build
+    needs: Build  
     steps:
-      - name: SSH into EC2 instance and deploy
-        uses: appleboy/ssh-action@v1.1.0
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          script: |
-            echo "AWS CLI version: $(aws --version)"
-            echo "Docker version: $(docker --version)"
+    - name: SSH into EC2 instance and deploy
+      uses: appleboy/ssh-action@v1.1.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        script: |
+          echo "AWS CLI version: $(aws --version)"
+          echo "Docker version: $(docker --version)"
+    
+          echo "Stop the current running container if it exists..."
+          docker stop "${{ env.DEV_CONTAINER_NAME }}" || true
+    
+          echo "Remove the previous container..."
+          docker rm "${{ env.DEV_CONTAINER_NAME }}" || true
 
-            echo "Stop the current running container if it exists..."
-            docker stop "${{ env.DEV_CONTAINER_NAME }}" || true
+          echo "Remove the unnecessary images..."
+          docker image prune -a -f || true
+    
+          echo "Logging in to ECR..."
+          aws ecr get-login-password --region ${{ vars.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_REGISTRY_URL }}
+          echo "Login successful..."
+    
+          echo "Pulling image from ECR..."
+          docker pull "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
 
-            echo "Remove the previous container..."
-            docker rm "${{ env.DEV_CONTAINER_NAME }}" || true
+          echo "Retrieve environment variables from AWS Parameter Store"
 
-            echo "Remove the unnecessary images..."
-            docker image prune -a -f || true
+          echo "NEXT_PUBLIC_BASE_URL=$(aws ssm get-parameter --name '/frontend/dev/next_public_base_url' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "NEXTAUTH_URL=$(aws ssm get-parameter --name '/frontend/dev/next_auth_url' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name '/frontend/dev/aws_access_key_id' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name '/frontend/dev/aws_secret_access_key' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "COGNITO_CLIENT_ID=$(aws ssm get-parameter --name '/frontend/dev/cognito_client_id' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "COGNITO_USER_POOL_ID=$(aws ssm get-parameter --name '/frontend/dev/cognito_user_pool_id' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "COGNITO_ISSUER=$(aws ssm get-parameter --name '/frontend/dev/cognito_issuer' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "COGNITO_CLIENT_SECRET=$(aws ssm get-parameter --name '/frontend/dev/cognito_client_secret' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "NEXTAUTH_SECRET=$(aws ssm get-parameter --name '/frontend/dev/nextauth_secret' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "NEXT_PUBLIC_DOMAIN=$(aws ssm get-parameter --name '/frontend/dev/next_public_domain' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "NEXT_PUBLIC_APP_URL=$(aws ssm get-parameter --name '/frontend/dev/next_public_app_url' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=$(aws ssm get-parameter --name '/frontend/dev/next_public_stripe_public_key' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+          echo "STRIPE_SECRET_KEY=$(aws ssm get-parameter --name '/frontend/dev/stripe_secret_key' --with-decryption --query 'Parameter.Value' --output text)" >> env.dev
+    
+          echo "Running the new container..."
+          docker run -d --name "${{ env.DEV_CONTAINER_NAME }}" --env-file env.dev -e PORT=3000 -p 3000:3000 "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
 
-            echo "Logging in to ECR..."
-            aws ecr get-login-password --region ${{ vars.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_REGISTRY_URL }}
-            echo "Login successful..."
 
-            echo "Pulling image from ECR..."
-            docker pull "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
-
-            echo "Running the new container..."
-            docker run -d \
-              --name "${{ env.DEV_CONTAINER_NAME }}" \
-              -e PORT=3000 \
-              -p 3000:3000 "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
-
-  # Production Deploy Stage
+ # Production Deploy Stage      
   ProductionDeploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: Build
+    needs: Build  
     steps:
-      - name: SSH into EC2 instance and deploy
-        uses: appleboy/ssh-action@v1.1.0
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          script: |
-            echo "AWS CLI version: $(aws --version)"
-            echo "Docker version: $(docker --version)"
+    - name: SSH into EC2 instance and deploy
+      uses: appleboy/ssh-action@v1.1.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        script: |
+          echo "AWS CLI version: $(aws --version)"
+          echo "Docker version: $(docker --version)"
+    
+          echo "Stop the current running container if it exists..."
+          docker stop "${{ env.PROD_CONTAINER_NAME }}" || true
+    
+          echo "Remove the previous container..."
+          docker rm "${{ env.PROD_CONTAINER_NAME }}" || true
 
-            echo "Stop the current running container if it exists..."
-            docker stop "${{ env.PROD_CONTAINER_NAME }}" || true
+          echo "Remove the unnecessary images..."
+          docker image prune -a -f || true
+    
+          echo "Logging in to ECR..."
+          aws ecr get-login-password --region ${{ vars.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_REGISTRY_URL }}
+          echo "Login successful..."
+    
+          echo "Pulling image from ECR..."
+          docker pull "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
 
-            echo "Remove the previous container..."
-            docker rm "${{ env.PROD_CONTAINER_NAME }}" || true
+          echo "Retrieve environment variables from AWS Parameter Store"
 
-            echo "Remove the unnecessary images..."
-            docker image prune -a -f || true
+          NEXT_PUBLIC_BASE_URL=$(aws ssm get-parameter --name "/frontend/dev/next_public_base_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          NEXTAUTH_URL=$(aws ssm get-parameter --name "/frontend/dev/next_auth_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text) 
+          AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "/frontend/dev/aws_access_key_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "/frontend/dev/aws_secret_access_key" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          COGNITO_CLIENT_ID=$(aws ssm get-parameter --name "/frontend/dev/cognito_client_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          COGNITO_USER_POOL_ID=$(aws ssm get-parameter --name "/frontend/dev/cognito_user_pool_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          COGNITO_ISSUER=$(aws ssm get-parameter --name "/frontend/dev/cognito_issuer" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          COGNITO_CLIENT_SECRET=$(aws ssm get-parameter --name "/frontend/dev/cognito_client_secret" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          NEXTAUTH_SECRET=$(aws ssm get-parameter --name "/frontend/dev/nextauth_secret" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          NEXT_PUBLIC_DOMAIN=$(aws ssm get-parameter --name "/frontend/dev/next_public_domain" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          NEXT_PUBLIC_APP_URL=$(aws ssm get-parameter --name "/frontend/dev/next_public_app_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          NEXT_PUBLIC_STRIPE_PUBLIC_KEY=$(aws ssm get-parameter --name "/frontend/dev/next_public_stripe_public_key" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+          STRIPE_SECRET_KEY=$(aws ssm get-parameter --name "/frontend/dev/stripe_secret_key" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
+    
+          echo "Running the new container..."
+          docker run -d \
+            --name "${{ env.PROD_CONTAINER_NAME }}" \
+            -e NEXT_PUBLIC_BASE_URL="${NEXT_PUBLIC_BASE_URL}" \
+            -e NEXTAUTH_URL="${NEXTAUTH_URL}" \
+            -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" \
+            -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
+            -e AWS_REGION="${{ vars.AWS_REGION }}" \
+            -e COGNITO_CLIENT_ID="${COGNITO_CLIENT_ID}" \
+            -e COGNITO_USER_POOL_ID="${COGNITO_USER_POOL_ID}" \
+            -e COGNITO_ISSUER="${COGNITO_ISSUER}" \
+            -e COGNITO_CLIENT_SECRET="${COGNITO_CLIENT_SECRET}" \
+            -e NEXTAUTH_SECRET="${NEXTAUTH_SECRET}" \
+            -e NEXT_PUBLIC_DOMAIN="${NEXT_PUBLIC_DOMAIN}" \
+            -e NEXT_PUBLIC_APP_URL="${NEXT_PUBLIC_APP_URL}" \
+            -e NEXT_PUBLIC_STRIPE_PUBLIC_KEY="${NEXT_PUBLIC_STRIPE_PUBLIC_KEY}" \
+            -e STRIPE_SECRET_KEY="${STRIPE_SECRET_KEY}" \
+            -e PORT=3001 \
+            -p 3001:3001 "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
 
-            echo "Logging in to ECR..."
-            aws ecr get-login-password --region ${{ vars.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_REGISTRY_URL }}
-            echo "Login successful..."
-
-            echo "Pulling image from ECR..."
-            docker pull "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
-
-            echo "Retrieve environment variables from AWS Parameter Store"
-
-            NEXT_PUBLIC_BASE_URL=$(aws ssm get-parameter --name "/frontend/dev/next_public_base_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            NEXTAUTH_URL=$(aws ssm get-parameter --name "/frontend/dev/next_auth_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text) 
-            AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "/frontend/dev/aws_access_key_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "/frontend/dev/aws_secret_access_key" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            COGNITO_CLIENT_ID=$(aws ssm get-parameter --name "/frontend/dev/cognito_client_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            COGNITO_USER_POOL_ID=$(aws ssm get-parameter --name "/frontend/dev/cognito_user_pool_id" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            COGNITO_ISSUER=$(aws ssm get-parameter --name "/frontend/dev/cognito_issuer" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            COGNITO_CLIENT_SECRET=$(aws ssm get-parameter --name "/frontend/dev/cognito_client_secret" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            NEXTAUTH_SECRET=$(aws ssm get-parameter --name "/frontend/dev/nextauth_secret" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            NEXT_PUBLIC_DOMAIN=$(aws ssm get-parameter --name "/frontend/dev/next_public_domain" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            NEXT_PUBLIC_APP_URL=$(aws ssm get-parameter --name "/frontend/dev/next_public_app_url" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            NEXT_PUBLIC_STRIPE_PUBLIC_KEY=$(aws ssm get-parameter --name "/frontend/dev/next_public_stripe_public_key" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-            STRIPE_SECRET_KEY=$(aws ssm get-parameter --name "/frontend/dev/stripe_secret_key" --with-decryption --region ${{ vars.AWS_REGION }} --query "Parameter.Value" --output text)
-
-            echo "Running the new container..."
-            docker run -d \
-              --name "${{ env.PROD_CONTAINER_NAME }}" \
-              -e NEXT_PUBLIC_BASE_URL="${NEXT_PUBLIC_BASE_URL}" \
-              -e NEXTAUTH_URL="${NEXTAUTH_URL}" \
-              -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" \
-              -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
-              -e AWS_REGION="${{ vars.AWS_REGION }}" \
-              -e COGNITO_CLIENT_ID="${COGNITO_CLIENT_ID}" \
-              -e COGNITO_USER_POOL_ID="${COGNITO_USER_POOL_ID}" \
-              -e COGNITO_ISSUER="${COGNITO_ISSUER}" \
-              -e COGNITO_CLIENT_SECRET="${COGNITO_CLIENT_SECRET}" \
-              -e NEXTAUTH_SECRET="${NEXTAUTH_SECRET}" \
-              -e NEXT_PUBLIC_DOMAIN="${NEXT_PUBLIC_DOMAIN}" \
-              -e NEXT_PUBLIC_APP_URL="${NEXT_PUBLIC_APP_URL}" \
-              -e NEXT_PUBLIC_STRIPE_PUBLIC_KEY="${NEXT_PUBLIC_STRIPE_PUBLIC_KEY}" \
-              -e STRIPE_SECRET_KEY="${STRIPE_SECRET_KEY}" \
-              -e PORT=3001 \
-              -p 3001:3001 "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"

@@ -1,97 +1,62 @@
-FROM node:20.18-alpine AS base
+FROM node:20-alpine AS base
 
-# Install dependencies only when needed
+# --- Dependencies ---
+### Rebuild deps only when needed ###
 FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat git
+
+RUN echo Building nextjs image with corepack
+
+# Setup pnpm environment
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
+
 WORKDIR /app
 
-# Set build arguments
-ARG NEXT_PUBLIC_BASE_URL
-ARG NEXTAUTH_URL
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ARG COGNITO_CLIENT_ID
-ARG COGNITO_USER_POOL_ID
-ARG COGNITO_ISSUER
-ARG COGNITO_CLIENT_SECRET
-ARG NEXTAUTH_SECRET
-ARG NEXT_PUBLIC_DOMAIN
-ARG NEXT_PUBLIC_APP_URL
-ARG NEXT_PUBLIC_STRIPE_PUBLIC_KEY
-ARG STRIPE_SECRET_KEY
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --prefer-frozen-lockfile
 
-# Set environment variables for the application
-ENV NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
-ENV NEXTAUTH_URL=${NEXTAUTH_URL}
-ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-ENV COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
-ENV COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
-ENV COGNITO_ISSUER=${COGNITO_ISSUER}
-ENV COGNITO_CLIENT_SECRET=${COGNITO_CLIENT_SECRET}
-ENV NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-ENV NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN}
-ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
-ENV NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${NEXT_PUBLIC_STRIPE_PUBLIC_KEY}
-ENV STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
-
-
-# Rebuild the source code only when needed
+# --- Builder ---
 FROM base AS builder
+RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
+
 WORKDIR /app
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+RUN pnpm build
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
-# ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN yarn global add pnpm && pnpm run build
-
-# If using npm comment out above and use below instead
-# RUN npm run build
-
-# Production image, copy all the files and run next
+# --- Production runner ---
 FROM base AS runner
-WORKDIR /app
-
+# Set NODE_ENV to production
 ENV NODE_ENV production
-# Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Disable Next.js telemetry
+# Learn more here: https://nextjs.org/telemetry
+ENV NEXT_TELEMETRY_DISABLED 1
 
-COPY --from=builder /app/public ./public
-
-# Set the correct permission for prerender cache
+# Set correct permissions for nextjs user
+# Don't run as root
+RUN addgroup nodejs
+RUN adduser -SDH nextjs
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
- COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
- COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 USER nextjs
 
-# For development
+# Expose ports (for orchestrators and dynamic reverse proxies)
 EXPOSE 3000
-# For Production
-EXPOSE 3001
-
-# set hostname to localhost
+ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-# server.js is created by next build from the standalone output
-# https://nextjs.org/docs/pages/api-reference/next-config-js/output
+# Run the nextjs app
 CMD ["node", "server.js"]
