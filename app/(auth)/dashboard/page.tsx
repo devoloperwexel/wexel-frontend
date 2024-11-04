@@ -12,6 +12,7 @@ export default async function page() {
       userId: authRes?.user.id,
       query: "limit=10",
     });
+    console.log(process.env.NEXT_PUBLIC_BASE_URL);
 
     return appointment.data.totalResults < 1 ? (
       <DashboardPage1 />
