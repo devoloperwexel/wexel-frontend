@@ -4,6 +4,7 @@ import DashboardPage2 from "modules/dashboard/DashboardPage2";
 import DashboardPage from "modules/dashboard/deplicated/DashboardPage";
 import MedicalInformationForm from "modules/medical-screening/MedicalInformationForm";
 import ProfileForm from "modules/medical-screening/ProfileForm";
+import QuestionMainSection from "modules/medical-screening/QuestionMainSection";
 import { notFound } from "next/navigation";
 import request from "utils/request";
 
@@ -11,7 +12,7 @@ export default async function page() {
   try {
     // const doctorDetails = await request(API.GET_DOCTORS, {}, false, false);
 
-    return <DashboardPage2 />;
+    return <QuestionMainSection />;
   } catch (e) {
     console.log(e);
     notFound();
