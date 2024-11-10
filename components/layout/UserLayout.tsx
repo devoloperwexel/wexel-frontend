@@ -14,7 +14,6 @@ import {
   ListOutlined as ListIcon,
   ChatOutlined as ChatIcon,
 } from "@mui/icons-material";
-import { MenuItem } from "@mui/material";
 
 const drawerWidth = "w-64 sm:w-72";
 
@@ -26,7 +25,6 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
   const [open, setOpen] = useState(true);
   const [language, setLanguage] = useState("EN");
 
-  // Handle screen resizing to close the drawer on small screens
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -85,11 +83,11 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
     <div className="">
       {/* AppBar */}
       <div
-        className={`fixed top-0 justify-between w-full ${
-          open ? "w-full lg:w-[calc(100%)] md:w-[calc(100%)]" : "w-full z-1"
+        className={`fixed top-0 justify-between w-full  ${
+          open ? "w-full lg:w-[calc(100%)] md:w-[calc(100%)]" : "w-full"
         } transition-all duration-300 bg-white`}
       >
-        <div className="flex items-center justify-between py-4 px-4 sm:px-6 md:px-10">
+        <div className="flex items-center justify-between py-4 px-4 sm:px-6 md:px-10 ">
           {/* Title */}
           <div className="flex items-center space-x-4 md:space-x-6 ml-[70px] md:ml-[300px]">
             <h1 className="text-[18px] sm:text-xl md:text-2xl font-bold">
@@ -175,7 +173,6 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
           open ? "ml-[300px]" : "ml-[50px] sm:ml-[70px]"
         }  overflow-x-hidden mt-[50px] px-8 sm:px-10 py-[35px] sm:py-[50px] min:h-screen bg-primary-color/5`}
       >
-        
         <div >
           <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 sm:py-10">Dashboard</h1>
         </div>     

@@ -12,7 +12,7 @@ export default async function page() {
   try {
     // const doctorDetails = await request(API.GET_DOCTORS, {}, false, false);
 
-    return <QuestionMainSection />;
+    return <QuestionMainSection/>;
   } catch (e) {
     console.log(e);
     notFound();

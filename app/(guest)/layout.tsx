@@ -18,3 +18,5 @@ export default function Layout({ children }: Readonly<Props>) {
     return <div className={barlow.className}>{children}</div>;
   }
 }
+
+

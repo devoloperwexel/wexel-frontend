@@ -34,7 +34,6 @@ const SectionsList: React.FC<SectionsListProps> = ({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onToggleCompletion(index);
               }}
               className={`text-xl ${completedSections[index] ? "text-green-500" : "text-primary-color"}`}
             >

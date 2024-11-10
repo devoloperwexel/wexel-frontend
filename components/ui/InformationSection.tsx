@@ -27,23 +27,7 @@ const InformationSection = () => {
     ];
 
   return (
-    // <div className="bg-white p-6 rounded-lg shadow-md w-full">
-    //   <h1 className="text-2xl font-semibold mb-4">Information:</h1>
-    //   {error ? (
-    //     <p className="text-red-500">Error: {error}</p>
-    //   ) : (
-    //     <ul className="list-disc list-inside space-y-2">
-    //       {infoList.length > 0 ? (
-    //         infoList.map((item, index) => (
-    //           <li key={index} className="text-gray-700">{item}</li>
-    //         ))
-    //       ) : (
-    //         <p>Loading...</p>
-    //       )}
-    //     </ul>
-    //   )}
-    // </div>
-    <div className="bg-white p-6 rounded-2xl shadow-md ">
+    <div className="bg-white p-6 rounded-2xl shadow-md h-full ">
       <h1 className="text-[18px] sm:text-2xl font-semibold mb-2 sm:mb-4">Information</h1>
       <ul className="list-disc list-inside space-y-2">
         {infoList.map((item, index) => (

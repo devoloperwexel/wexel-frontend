@@ -9,10 +9,6 @@ import MedicalForm from "./MedicalInformationForm";
 import ImageUploadForm from "./ImageUploadForm";
 import PaymentInformationForm from "./PaymentInformationForm";
 import { CircularProgressProps, ProfileProps } from './types';
-import { RiBillFill } from "react-icons/ri";
-import { IoIosArrowForward } from "react-icons/io";
-import { LuFiles } from "react-icons/lu";
-
 
 const CircularProgress: React.FC<CircularProgressProps> = ({ screeningProgress, size = 100, strokeWidth = 8 }) => {
   const radius = (size - strokeWidth) / 2;
@@ -60,7 +56,6 @@ const Profile: React.FC<ProfileProps> = ({
   age,
   country,
   languages,
-  pronouns,
   phoneNumber,
   address,
   email,
@@ -81,8 +76,9 @@ const Profile: React.FC<ProfileProps> = ({
     personal: {
       name,
       email,
-      pronouns,
+      country,
       age,
+      languages,
       phoneNumber,
       address,
     },
@@ -95,7 +91,7 @@ const Profile: React.FC<ProfileProps> = ({
       activityLevel,
     },
     payment: {
-      creditCardNumber: creditCard,
+      creditCard,
       tokens,
     },
   });
@@ -142,8 +138,8 @@ const Profile: React.FC<ProfileProps> = ({
           <div className="flex-1 w-1/2 space-y-3">
             <h2 className="text-xl font-semibold">{profileData.personal.name}</h2>
             <p>Age: {profileData.personal.age}</p>
-            <p>Country: {country}</p>
-            <p>Language/s: {languages}</p>
+            <p>Country: {profileData.personal.country}</p>
+            <p>Language/s: {profileData.personal.languages}</p>
           </div>
         </div>
         
@@ -177,7 +173,7 @@ const Profile: React.FC<ProfileProps> = ({
             <FiEdit3 />
           </button>
         </div>
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid gap-4 mb-6">
           {Object.entries(profileData.personal).map(([key, value]) => (
             <div key={key} className="flex flex-col">
               <p className="font-semibold text-gray-600">{key}</p>
@@ -199,7 +195,7 @@ const Profile: React.FC<ProfileProps> = ({
             <FiEdit3 />
           </button>
         </div>
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid gap-4 mb-6">
           {Object.entries(profileData.medical).map(([key, value]) => (
             <div key={key} className="flex flex-col">
               <p className="font-semibold text-gray-600">{key}</p>
@@ -221,60 +217,23 @@ const Profile: React.FC<ProfileProps> = ({
             <FiEdit3 />
           </button>
         </div>
-        <div className="grid gap-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-              <div className="flex flex-col">
-                {creditCard ? (
-                  <p>Credit card: {creditCard}</p>
-                ) : (
-                  <p>No credit card information available</p>
-                )}
-              </div>
-              <div className="flex flex-col">
-                <p>n° Tokens: {tokens}</p>
-              </div>
-            </div>
-          </div>
+        {/* Additional Payment Info Display */}
       </div>
 
       {/* Upload Image Section */}
-      <div className="flex w-full space-x-6">
-          <div className="flex w-1/2 flex-col space-y-6">
-            <button className="bg-white text-black py-3 px-4 rounded-lg border border-black flex-1 flex items-center justify-between">
-              <div className="bg-[#ECD0CF] rounded-full w-16 h-16 flex justify-center items-center">
-                <RiBillFill className="w-full h-[60%]" />
-              </div>
-              <p className="text-xl "> Billing</p>
-              <div className="h-10 flex items-center justify-center">
-                <IoIosArrowForward className="w-full h-[70%]" />
-              </div>
-            </button>
-            <button className="bg-white text-black py-3 px-4 rounded-lg border border-black flex-1 flex items-center justify-between">
-              <div className="bg-[#ECD0CF] rounded-full w-16 h-16 flex justify-center items-center">
-                <RiBillFill className="w-full h-[60%]" />
-              </div>
-              <p className="text-xl "> Start a new Session</p>
-              <div className="h-10 flex items-center justify-center">
-                <IoIosArrowForward className="w-full h-[70%]" />
-              </div>
-            </button>
-          </div>
-          <div className="flex w-1/2 ">
-            <button className="bg-white text-black py-2 px-4 rounded flex-2 border border-black flex flex-col space-y-1 items-center justify-center"
-              onClick={() => openModal(<ImageUploadForm onSave={handleSaveImage} initialData={{
-                image: null
-              }} />)}
-            >
-              <div className="w-12 h-12">
-                <LuFiles className="w-full h-full text-green-500" />
-              </div>
-              <p className="text-[18px] w-[70%] font-semibold">
-                Upload medical files
-              </p>
-              <p className="text-sm ">Left 348.45mb</p>
-            </button>
-          </div>
+      <div className="bg-white p-4 rounded-lg mb-6 border border-black">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">Upload Profile Image</h2>
+          <button
+            className="flex justify-center items-center text-primary-color border-2 border-primary-color rounded-md px-3 py-2 gap-3"
+            onClick={() => openModal(<ImageUploadForm onSave={handleSaveImage} />)}
+          >
+            Upload
+            <FiEdit3 />
+          </button>
         </div>
+        {/* Image Upload Preview (If any) */}
+      </div>
     </div>
   );
 };

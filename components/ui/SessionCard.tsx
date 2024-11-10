@@ -19,7 +19,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ totalSessions, usedSessions }
     const offset = circumference - (percentage / 100) * circumference;
 
     return (
-      <svg width={size} height={size} className="relative">
+      <svg width={size} height={size} >
         <circle
           className="text-gray-200"
           strokeWidth={strokeWidth}
@@ -60,7 +60,6 @@ const SessionCard: React.FC<SessionCardProps> = ({ totalSessions, usedSessions }
       <div className="flex items-center justify-center">
         <CircularProgress percentage={percentageUsed} size={100} strokeWidth={10} />
       </div>
-      
       <div className='flex flex-col items-start space-y-2'>
         <p className='text-[16px] font-semibold text-black'>Total sessions: {totalSessions}</p>
         <p className='text-[16px] font-semibold text-black'>Used sessions: {usedSessions}</p>
