@@ -2,6 +2,7 @@ import axios from "axios";
 //
 import ENVIRONMENT from "@/config/environment";
 import { auth } from "./auth";
+import { getAccessTokenByRefreshToken } from "@/app/api/auth/[...nextauth]/route";
 //
 let newAccessToken: any = null;
 let refreshPromise: any = null;
@@ -16,6 +17,7 @@ const getTokens = async () => {
   return {
     refreshToken: session?.refreshToken,
     accessToken: session?.accessToken,
+    idToken: session?.idToken,
   };
 };
 // Create an axios config instance
@@ -27,11 +29,10 @@ const axiosConfig = axios.create({
  * @returns {refreshToken}
  */
 const getNewTokens = async () => {
-  const { refreshToken } = await getTokens();
-  const tokenData = await axiosConfig.post("", {
-    refreshToken,
-  });
-  return tokenData.data;
+  const { refreshToken, idToken } = await getTokens();
+  const tokenData = await getAccessTokenByRefreshToken(refreshToken, idToken);
+
+  return tokenData;
 };
 /**
  * Function to add axios interceptors to check the axios request
@@ -68,7 +69,7 @@ axiosConfig.interceptors.response.use(
         if (!refreshPromise) {
           refreshPromise = getNewTokens()
             .then((tokenData) => {
-              newAccessToken = tokenData.tokens.accessToken;
+              newAccessToken = tokenData?.AccessToken;
             })
             .catch((e) => {
               throw e;

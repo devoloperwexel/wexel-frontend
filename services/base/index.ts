@@ -5,7 +5,6 @@ import { getSession } from "next-auth/react";
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   prepareHeaders: async (headers, { getState }) => {
-    console.log(process.env.NEXT_PUBLIC_BASE_URL);
     
     const session: any = await getSession(); // Replace with your actual access token retrieval logic
 
