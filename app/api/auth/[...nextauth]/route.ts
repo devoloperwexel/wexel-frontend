@@ -3,7 +3,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import CognitoProvider from "next-auth/providers/cognito";
 import { createHmac } from "crypto";
 import {
+  AuthFlowType,
   CognitoIdentityProviderClient,
+  GlobalSignOutCommand,
   InitiateAuthCommand,
   InitiateAuthCommandInput,
 } from "@aws-sdk/client-cognito-identity-provider";
@@ -22,6 +24,30 @@ const getHashSecret = (username: string) => {
   hasher.update(`${username}${process.env.COGNITO_CLIENT_ID!}`);
   return hasher.digest("base64");
 };
+
+export async function getAccessTokenByRefreshToken(
+  refreshToken: string,
+  idToken: string
+) {
+  const params: InitiateAuthCommandInput = {
+    AuthFlow: AuthFlowType.REFRESH_TOKEN,
+    ClientId: process.env.COGNITO_CLIENT_ID as string,
+    AuthParameters: {
+      REFRESH_TOKEN: refreshToken,
+      SECRET_HASH: getHashSecret(getSubByIdToken(idToken)),
+    },
+  };
+
+  try {
+    const command = new InitiateAuthCommand(params);
+    const response = await client.send(command);
+    const newAccessToken = response.AuthenticationResult;
+    return newAccessToken;
+  } catch (error) {
+    console.error("Error getting new access token:", error);
+    throw error;
+  }
+}
 
 const getUserByEmail = async (email: string, accessToken: string) => {
   const headers = {
@@ -44,6 +70,22 @@ const getUserByEmail = async (email: string, accessToken: string) => {
     console.log(e);
     throw new Error("Something went to wrong");
   }
+};
+
+const getSubByIdToken = (idToken: string): string => {
+  const decodedToken = JSON.parse(atob(idToken.split(".")[1]));
+
+  const identityProviderUserName: string = decodedToken["cognito:username"];
+  const provider = identityProviderUserName.split("_")[0];
+  if (
+    provider === "google" ||
+    provider === "facebook" ||
+    provider === "apple"
+  ) {
+    return identityProviderUserName;
+  }
+
+  return decodedToken.sub;
 };
 
 export const authOptions: AuthOptions = {
@@ -71,9 +113,11 @@ export const authOptions: AuthOptions = {
 
         const signinCommand = new InitiateAuthCommand(params);
         const response = await client.send(signinCommand);
+
         //
         const { AccessToken, RefreshToken, IdToken, ExpiresIn } =
           response.AuthenticationResult!;
+
         // Get user data from backend
         const user = await getUserByEmail(credentials.username, AccessToken!);
 
@@ -100,7 +144,8 @@ export const authOptions: AuthOptions = {
           grant_type: "authorization_code",
           client_id: process.env.COGNITO_CLIENT_ID!,
           identity_provider: "Google",
-          scope: "openid email profile",
+          access_type: "offline",
+          scope: "openid email profile aws.cognito.signin.user.admin",
         },
       },
     }),
@@ -125,11 +170,13 @@ export const authOptions: AuthOptions = {
         token.accessToken = (account as any).access_token;
         token.refreshToken = (account as any).refresh_token;
         token.idToken = (account as any).id_token;
-        token.expires = (account as any).expires_at;
+        token.expires = (account as any).expires_at ;
+
         token.user = await getUserByEmail(
           (user as any).email,
           (account as any).access_token
         );
+
         return token;
       }
 
@@ -138,9 +185,26 @@ export const authOptions: AuthOptions = {
         token.accessToken = (user as any).accessToken;
         token.refreshToken = (user as any).refreshToken;
         token.idToken = (user as any).idToken;
-        token.expires = (user as any).expiresAt;
-        //token.refreshTokenExpires = account.refresh_expires_in;
+        token.expires = Math.floor(Date.now() / 1000 + (user as any).expiresAt);
+
         token.user = (user as any).user;
+      }
+      //
+      const timeDifferenceInSeconds =
+        ((token.expires as number) * 1000 - Date.now()) / 1000;
+
+      if (timeDifferenceInSeconds < 60) {
+        const newTokenRes = await getAccessTokenByRefreshToken(
+          (token as any)?.refreshToken,
+          (token as any)?.idToken
+        );
+
+        return {
+          ...token,
+          accessToken: newTokenRes?.AccessToken,
+          idToken: newTokenRes?.IdToken,
+          expires: Math.floor(Date.now() / 1000 + newTokenRes?.ExpiresIn!),
+        };
       }
       return token;
     },
@@ -151,6 +215,14 @@ export const authOptions: AuthOptions = {
   },
   pages: {
     signIn: "/signin",
+  },
+  events: {
+    signOut: async ({ token }) => {
+      const command = new GlobalSignOutCommand({
+        AccessToken: token?.accessToken as string,
+      });
+      await client.send(command).catch((e) => console.log(e));
+    },
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

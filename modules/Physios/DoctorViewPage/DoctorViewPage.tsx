@@ -31,20 +31,20 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
     }).format(hourlyRate) + "$";
 
   const handleBackClick = () => {
-    router.push("/dashboard");
+    router.back();
   };
 
   return (
-    <Box paddingTop={0.5} paddingBottom={1.8} paddingLeft={2} paddingRight={4}>
+    <Box  paddingTop={1.8}>
       {!appointmentId && <BackButton onClick={handleBackClick} />}
       <Box
         display="flex"
         flexDirection="row"
         width="100%"
-        height="85vh"
+        height="75vh"
         bgcolor="#ffffff"
         borderRadius={2}
-        marginTop={2.5}
+        marginTop={4}
         padding={3}
       >
         <>

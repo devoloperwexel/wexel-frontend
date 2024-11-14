@@ -27,11 +27,6 @@ jobs:
         docker build -t "${{ vars.REPOSITORY_NAME }}" .
         docker tag "${{ vars.REPOSITORY_NAME }}" "${{ secrets.AWS_REGISTRY_URL }}/${{ vars.REPOSITORY_NAME }}:${{ env.TAG }}"
 
-    - name: Debug Environment Variables
-      run: |
-        echo "AWS_REGISTRY_URL: ${{ secrets.AWS_REGISTRY_URL }}"
-        echo "Generated Docker tag: ${{ env.TAG }}"
-
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:

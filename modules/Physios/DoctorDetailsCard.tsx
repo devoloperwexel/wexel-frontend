@@ -35,7 +35,7 @@ export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
   const router = useRouter();
   const { id, specialty, user } = doctorDetail;
 
-  const handleOnclick = () => router.push(`/dashboard/doctor/${id}`);
+  const handleOnclick = () => router.push(`/physios/doctor/${id}`);
 
   return (
     <StyledBox>
