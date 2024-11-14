@@ -1,4 +1,4 @@
-import SearchBox from "@/components/ui/SearchBox";
+//import SearchBox from "@/components/ui/SearchBox";
 import { DoctorDetailCard } from "./DoctorDetailsCard";
 import { Box, Grid } from "@mui/material";
 import DoctorDetail from "models/doctor-detail.model";
@@ -6,12 +6,12 @@ import DoctorDetail from "models/doctor-detail.model";
 type Props = {
   doctorDetails: DoctorDetail[];
 };
-export default function DashboardPage({ doctorDetails }: Readonly<Props>) {
+export default function DoctorsPage({ doctorDetails }: Readonly<Props>) {
   return (
     <>
-      <Box marginBottom={5}>
+      {/* <Box marginBottom={5}>
         <SearchBox />
-      </Box>
+      </Box> */}
       <Grid
         container
         spacing={{ xs: 3, md: 4 }}

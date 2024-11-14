@@ -22,12 +22,37 @@ type DashboardLayoutProps = {
   children: ReactNode;
 };
 
+const menuItems = [
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: <HomeIcon className="w-4 h-4" />,
+  },
+  {
+    label: "Physios Profile",
+    href: "/physios",
+    icon: <ChatIcon className="w-4 h-4" />,
+  },
+  {
+    label: "My Appointments",
+    href: "/appointments",
+    icon: <ListIcon className="w-4 h-4" />,
+  },
+  {
+    label: "Profile",
+    href: "/profile",
+    icon: <UserIcon className="w-4 h-4" />,
+  },
+];
+
 export const UserLayout = ({ children }: DashboardLayoutProps) => {
   const [open, setOpen] = useState(true);
+  const [label, setLabel] = useState(menuItems[0].label);
   const [language, setLanguage] = useState("EN");
   const pathname = usePathname();
 
   useEffect(() => {
+    
     const handleResize = () => {
       if (window.innerWidth < 768) {
         setOpen(false);
@@ -55,34 +80,11 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
     setLanguage(event.target.value);
   };
 
-  const menuItems = [
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-      icon: <HomeIcon className="w-4 h-4" />,
-    },
-    {
-      label: "Physios Profile",
-      href: "/physios-profile",
-      icon: <ChatIcon className="w-4 h-4" />,
-    },
-    {
-      label: "My Appointments",
-      href: "/appointments",
-      icon: <ListIcon className="w-4 h-4" />,
-    },
-    {
-      label: "Profile",
-      href: "/profile",
-      icon: <UserIcon className="w-4 h-4" />,
-    },
-  ];
-
   const handleSignout = () => signOut({ callbackUrl: "/signin" });
   const handleOnClick = () => {};
 
   return (
-    <div className="">
+    <div className=" z-50">
       {/* AppBar */}
       <div
         className={`fixed top-0 justify-between w-full  ${
@@ -131,7 +133,7 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
 
       {/* Sidebar */}
       <div
-        className={`flex flex-col fixed top-0 left-0 h-full bg-white border-r transition-all duration-300 ${
+        className={`flex flex-col fixed top-0 left-0 h-full z-30 bg-white border-r transition-all duration-300 ${
           open ? drawerWidth : "w-[60px] md:w-20"
         }`}
       >
@@ -197,5 +199,3 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
     </div>
   );
 };
-
-

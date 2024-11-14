@@ -90,8 +90,6 @@ const request = async (_metadata: any, data: any, multipart = false, isSecure = 
   };
   //
   try {
-    console.log(options);
-    
     const response = await axios(options);
     return parseJSON(response);
   } catch (error) {
