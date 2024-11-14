@@ -12,7 +12,6 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import MicrosoftSvg from "@/components/icons/MicrosoftSvg";
 import Link from "next/link";
 import PasswordFelid from "@/components/ui/PasswordField";
 import ContainedButton from "@/components/ui/ContainedButton";
@@ -24,6 +23,7 @@ import axios, { AxiosError } from "axios";
 import ENVIRONMENT from "@/config/environment";
 import { toast } from "react-toastify";
 import { signIn } from "next-auth/react";
+import FacebookSvg from "@/components/icons/FacebookSvg";
 
 const validationSchema = yup.object({
   name: yup.string().required("Enter your name"),
@@ -39,7 +39,6 @@ const validationSchema = yup.object({
     )
     .matches(/[A-Z]/, "Password must contain at least 1 uppercase letter")
     .matches(/[a-z]/, "Password must contain at least 1 lowercase letter"),
-
   confirmPassword: yup
     .string()
     .required("Re-type your password")
@@ -66,7 +65,6 @@ const SignupPageView = () => {
         const { isAgree, email, password, name } = values;
         if (isAgree) {
           setSubmitting(true);
-          //
           try {
             await axios.post(`${ENVIRONMENT.BASE_URL}/auth/signup`, {
               email,
@@ -80,16 +78,13 @@ const SignupPageView = () => {
           } catch (error) {
             if (error instanceof AxiosError) {
               const errorMessage =
-                error.response?.data?.error?.message ??
-                "Something went to wrong!";
-
+                error.response?.data?.error?.message ?? "Something went wrong!";
               toast.error(errorMessage);
             } else {
-              toast.error("Something went to wrong!");
+              toast.error("Something went wrong!");
             }
             resetForm({});
           }
-          //
           setSubmitting(false);
         } else {
           toast.info(
@@ -98,156 +93,165 @@ const SignupPageView = () => {
         }
       },
     });
+
   return (
-    <Box height="100vh" display="flex" alignItems="center">
-      <SignupBanner />
-      <div
-        style={{
-          height: "100%",
-          width: "60%",
-          paddingTop: "16px",
-          paddingLeft: "140px",
-        }}
+    <div style={{ width: "100%" }}>
+      <Box
+        height="100vh"
+        display="flex"
+        flexDirection={{ xs: "column", md: "row" }}
+        alignItems="center"
       >
-        <Box display="flex" width="100%" justifyContent="end" paddingX={16}>
-          <Button sx={{ textTransform: "none", color: "#000000" }}>Help</Button>
-          <ContainedButton onClick={() => router.push("/signin")}>
-            Login
-          </ContainedButton>
-        </Box>
+        {/* Hide SignupBanner on small screens */}
         <Box
-          width="60%"
+          width={{ xs: "100%", md: "50%" }}
+          display={{ xs: "none", md: "flex" }}
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+        >
+          <SignupBanner />
+        </Box>
+
+        <Box
+          height="100%"
+          width={{ xs: "100%", md: "50%" }}
           display="flex"
           flexDirection="column"
-          alignItems="center"
           justifyContent="center"
-          paddingTop={12}
+          alignItems="center"
+          padding={{ xs: "40px", md: "80px" }}
         >
-          <Typography component="h5" fontSize="30px" fontWeight="700">
-            Sign Up on WexelCode
-          </Typography>
-          <Box display="flex" gap={1.5} marginTop={3} justifyContent="center">
-            <Tooltip title="Login with Google">
-              <Button
-                onClick={handleGoogleSignup}
-                variant="outlined"
-                sx={{ width: "40px", height: "50px", borderColor: "grey.500" }}
-              >
-                <GoogleSvg />
-              </Button>
-            </Tooltip>
-            <Tooltip title="Login with Apple">
-              <Button
-                variant="outlined"
-                sx={{ width: "40px", height: "50px", borderColor: "grey.500" }}
-              >
-                <AppleIcon sx={{ color: "#555555", fontSize: "32px" }} />
-              </Button>
-            </Tooltip>
-            <Tooltip title="Login with Microsoft">
-              <Button
-                variant="outlined"
-                sx={{ width: "40px", height: "50px", borderColor: "grey.500" }}
-              >
-                <MicrosoftSvg />
-              </Button>
-            </Tooltip>
+          <Box display="flex" width="100%" justifyContent="end" mb={2}>
+            <Button sx={{ textTransform: "none", color: "#000000" }}>Help</Button>
+            <ContainedButton onClick={() => router.push("/signin")}>
+              Login
+            </ContainedButton>
           </Box>
-          <Divider textAlign="center" flexItem sx={{ marginY: 2.5 }}>
-            OR
-          </Divider>
-          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-            <TextField
-              fullWidth
-              onChange={handleChange}
-              name="name"
-              label="Name"
-              variant="outlined"
-              type="text"
-              value={values.name}
-              helperText={touched.name && errors.name}
-              error={touched.name && Boolean(errors.name)}
-              sx={{ marginBottom: 3 }}
-            />
-            <TextField
-              fullWidth
-              onChange={handleChange}
-              name="email"
-              label="Email"
-              variant="outlined"
-              type="text"
-              value={values.email}
-              helperText={touched.email && errors.email}
-              error={touched.email && Boolean(errors.email)}
-              sx={{ marginBottom: 3 }}
-            />
-            <PasswordFelid
-              onChange={handleChange}
-              name="password"
-              value={values.password}
-              helperText={touched.password && errors.password}
-              error={touched.password && Boolean(errors.password)}
-              sx={{ marginBottom: 3 }}
-            />
-            <PasswordFelid
-              onChange={handleChange}
-              name="confirmPassword"
-              value={values.confirmPassword}
-              helperText={touched.confirmPassword && errors.confirmPassword}
-              error={touched.confirmPassword && Boolean(errors.confirmPassword)}
-            />
+
+          <Box width="100%">
+            <Typography component="h5" fontSize="25px" fontWeight="700" textAlign="center">
+              Sign Up on WexelCode
+            </Typography>
+            <Box mt={3}>
+              <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+                <TextField
+                  fullWidth
+                  onChange={handleChange}
+                  name="name"
+                  label="Name"
+                  variant="outlined"
+                  value={values.name}
+                  helperText={touched.name && errors.name}
+                  error={touched.name && Boolean(errors.name)}
+                  sx={{ marginBottom: 3 }}
+                />
+                <TextField
+                  fullWidth
+                  onChange={handleChange}
+                  name="email"
+                  label="Email"
+                  variant="outlined"
+                  value={values.email}
+                  helperText={touched.email && errors.email}
+                  error={touched.email && Boolean(errors.email)}
+                  sx={{ marginBottom: 3 }}
+                />
+                <PasswordFelid
+                  onChange={handleChange}
+                  name="password"
+                  value={values.password}
+                  helperText={touched.password && errors.password}
+                  error={touched.password && Boolean(errors.password)}
+                  sx={{ marginBottom: 3 }}
+                  label="Password"
+                />
+                <PasswordFelid
+                  onChange={handleChange}
+                  name="confirmPassword"
+                  value={values.confirmPassword}
+                  helperText={touched.confirmPassword && errors.confirmPassword}
+                  error={touched.confirmPassword && Boolean(errors.confirmPassword)}
+                  label="Confirm Password"
+                />
+              </form>
+            </Box>
+
+            <Divider textAlign="center" flexItem sx={{ marginY: 2.5 }}>
+              OR
+            </Divider>
+            <Box display="flex" gap={1.5} justifyContent="space-between" mt={2} width="100%">
+              <Tooltip title="Login with Google">
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  sx={{ height: "50px", borderColor: "grey.500", justifyContent:"center",alignItems:"center" }}
+                  onClick={handleGoogleSignup}
+                >
+                  <GoogleSvg />
+                </Button>
+              </Tooltip>
+              <Tooltip title="Login with Apple">
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  sx={{ height: "50px", borderColor: "grey.500" }}
+                >
+                  <AppleIcon sx={{ color: "#555555", fontSize: "33px" }} />
+                </Button>
+              </Tooltip>
+              <Tooltip title="Login with Facebook">
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  sx={{ height: "50px", borderColor: "grey.500", justifyContent:"center",alignItems:"center" }}
+                >
+                  <FacebookSvg />
+                </Button>
+              </Tooltip>
+            </Box>
             <FormControlLabel
               label={
                 <Box display="flex" fontSize={14}>
-                  <div>I agree to the Wexelcode</div>
-                  <Link href={"#"} style={{ textDecoration: "underline" }}>
-                     Terms of Service 
+                  <div>I agree to the WexelCode</div>
+                  <Link href="#" style={{ textDecoration: "underline", paddingLeft:"10px" }}>
+                    Terms of Service
                   </Link>
-                  and 
-                  <Link href={"#"} style={{ textDecoration: "underline" }}>
+                  <div style={{ paddingLeft:"10px" }}>and</div>
+                  <Link href="#" style={{ textDecoration: "underline",paddingLeft:"10px" }}>
                     Privacy Policy
                   </Link>
                 </Box>
               }
-              control={
-                <Checkbox
-                  name="isAgree"
-                  checked={values.isAgree}
-                  size="small"
-                />
-              }
+              control={<Checkbox name="isAgree" checked={values.isAgree} size="small" />}
               onChange={handleChange}
-              sx={{ marginY: 1.8 }}
+              sx={{ marginY: 2.5 }}
             />
-
             <ContainedButton
               fullWidth
               type="submit"
               disabled={isSubmitting}
-              sx={{ height: "42px", fontWeight: 600 }}
+              sx={{ height: "42px", fontWeight: 600, mt: 2 }}
             >
               Sign Up
             </ContainedButton>
-          </form>
-
-          <Box
-            width="100%"
-            display="flex"
-            justifyContent="center"
-            paddingRight={0.2}
-            marginTop={1.8}
-          >
-            <div style={{ color: "#6C6C6C" }}>Already have an account? </div>
-            <Link
-              href="/signin"
-              style={{ color: "#A51008", textDecoration: "underline" }}
+            <Box
+              width="100%"
+              display="flex"
+              justifyContent="center"
+              mt={2}
+              color="#6C6C6C"
             >
-              Login here
-            </Link>
+              <div>Already have an account?&nbsp;</div>
+              <Link href="/signin" style={{ color: "#A51008", textDecoration: "underline" }}>
+                Login here
+              </Link>
+            </Box>
           </Box>
         </Box>
-      </div>
-    </Box>
+      </Box>
+    </div>
   );
 };
+
 export default SignupPageView;

@@ -14,6 +14,7 @@ import {
   ListOutlined as ListIcon,
   ChatOutlined as ChatIcon,
 } from "@mui/icons-material";
+import Link from "next/link";
 
 const drawerWidth = "w-64 sm:w-72";
 
@@ -24,6 +25,7 @@ type DashboardLayoutProps = {
 export const UserLayout = ({ children }: DashboardLayoutProps) => {
   const [open, setOpen] = useState(true);
   const [language, setLanguage] = useState("EN");
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleResize = () => {
@@ -139,20 +141,37 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
 
         {/* Menu items */}
         <ul className="flex flex-col space-y-4 py-4 justify-center">
-          {menuItems.map((item) => (
-            <li key={item.label}>
-              <button className="rounded-sm font-medium flex items-start justify-center md:justify-start transform hover:rotate-x-[180] hover:border-l-4 hover:border-primary-color transition-transform duration-300 w-full">
-                <a
-                  href={item.href}
-                  onClick={handleOnClick}
-                  className="flex items-center font-medium space-x-3 mx-9 py-[10px] sm:py-[9px] px-3 md:px-10 hover:font-bold hover:text-[15px] text-gray-700  sm:hover:bg-primary-color/10 hover:bg-transparent  hover:text-primary-color rounded-md w-full"
-                >
-                  {item.icon}
-                  {open && <span>{item.label}</span>}
-                </a>
-              </button>
-            </li>
-          ))}
+            {menuItems.map((item) => {
+            // Check if the current path matches the item's href
+            const isActive = pathname === item.href;
+
+            return (
+              <li key={item.label}>
+                <Link href={item.href}>
+                  <button
+                    className={`rounded-sm font-medium flex items-start justify-center md:justify-start transform ${
+                      isActive
+                        ? 'rotate-x-[180] border-l-4 border-primary-color '
+                        : 'hover:rotate-x-[180] hover:border-l-4 hover:border-primary-color '
+                    } transition-transform duration-300 w-full `}
+                  >
+                    <p
+                      
+                      onClick={handleOnClick}
+                      className={`flex items-center space-x-3 mx-9 py-[10px] sm:py-[9px] px-3 md:px-10 ${
+                        isActive
+                          ? 'font-bold text-[15px] text-primary-color bg-primary-color/10'
+                          : 'hover:font-bold hover:text-[15px] text-gray-700 hover:text-primary-color'
+                      } sm:hover:bg-primary-color/10 hover:bg-transparent rounded-md w-full `}
+                    >
+                      {item.icon}
+                      {open && <span>{item.label}</span>}
+                    </p>
+                  </button>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Logout */}
@@ -171,11 +190,8 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
       <main
         className={`${
           open ? "ml-[300px]" : "ml-[50px] sm:ml-[70px]"
-        }  overflow-x-hidden mt-[50px] px-8 sm:px-10 py-[35px] sm:py-[50px] min:h-screen bg-primary-color/5`}
+        }  overflow-x-hidden mt-[50px]  py-[35px] sm:py-[50px] min:h-screen bg-primary-color/5`}
       >
-        <div >
-          <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 sm:py-10">Dashboard</h1>
-        </div>     
         {children}
       </main>
     </div>

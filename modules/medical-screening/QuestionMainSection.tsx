@@ -5,6 +5,7 @@ import SectionsList from "./SectionsList";
 import ProgressBar from "./ProgressBar";
 import QuestionsSection from "./QuestionsSection";
 import { useRouter } from "next/navigation";
+import { FaFlag } from "react-icons/fa6";
 
 type QuestionType = "RADIO" | "TEXTAREA" | "CHECKBOX" | "TOPIC_QUESTION";
 
@@ -452,12 +453,18 @@ const QuestionMainSection: React.FC = () => {
         totalSections={sections.length}
       />
             <div className=" flex flex-col justify-center items-center h-[500px] space-y-10 ">
-              <div className="flex flex-col items-center justify-center space-y-10">
+              <div className="flex flex-col items-center justify-center space-y-10 ">
                 <p className="text-[32px] font-black text-primary-color">Medical screening completed</p>
                 <div className=" space-y-5">
                   <p className="text-[20px] font-semibold text-black">Date: {completionDate ? completionDate.toString() : 'No date available'}</p>
                   <p className="text-[20px] font-semibold text-black">Status: {status}</p>
-                  <p className={`text-[20px] font-semibold text-[#D81FDB] ${ resultFlag === "Green" ? "text-green-600"  : resultFlag === "Red" ? "text-red-600" : "text-yellow-600"}`} >Result: {resultFlag}</p>
+                  <p className={`text-[20px] font-semibold text-[#D81FDB] flex items-center ${ resultFlag === "Green" ? "text-green-600"  : resultFlag === "Red" ? "text-red-600" : "text-yellow-600"}`} >Result: {resultFlag} <FaFlag className={`${
+            resultFlag === "Green"
+              ? "text-green-600"
+              : resultFlag === "Yellow"
+              ? "text-yellow-600"
+              : "text-red-600"
+          } flex items-center ml-2`} /></p>
                   <p className="text-[20px] font-semibold text-black">Next step: {}</p>
                 </div>
               </div>

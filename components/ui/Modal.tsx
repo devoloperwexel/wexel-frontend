@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { IoCloseOutline } from 'react-icons/io5';
 
 interface ModalProps {
   isOpen: boolean;
@@ -14,7 +15,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, content }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
       <div className="bg-white p-6 rounded shadow-lg w-11/12 md:w-1/2">
         <button className="float-right text-red-500" onClick={onClose}>
-          Close
+         <IoCloseOutline className='w-8 h-8' />
         </button>
         <div>{content}</div>
       </div>

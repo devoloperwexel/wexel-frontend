@@ -7,12 +7,13 @@ interface EventCardProps {
   eventDate: string;
   eventTime: string;
   duration: string;
+  title: string;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ physioName, eventTitle, eventDate, eventTime, duration }) => {
+const EventCard: React.FC<EventCardProps> = ({ title,physioName, eventTitle, eventDate, eventTime, duration }) => {
   return (
     <div className="bg-white rounded-2xl px-6 py-4 flex flex-col justify-center items-center space-y-3 shadow-md h-[300px]">
-      <p className="text-[18px] font-semibold text-primary-color">Today&apos;s Events</p>
+      <p className="text-[18px] font-semibold text-primary-color">{title}</p>
       <div className="text-center my-4">
         <div className="text-md font-semibold">{physioName}</div>
         <div className="text-gray-500">{eventTitle}</div>

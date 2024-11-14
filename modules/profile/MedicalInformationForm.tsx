@@ -13,14 +13,14 @@ const validationSchema = Yup.object({
 
 interface MedicalInformationFormProps {
   initialData: {
-    dateOfBirth: string;
+    dateOfBirth: Date;
     age: number;
     gender: string;
     weight: number;
     height: number;
     activityLevel: string;
   };
-  onSave: (data: { dateOfBirth: string; age: number; gender: string; weight: number; height: number; activityLevel: string }) => void;
+  onSave: (data: { dateOfBirth: Date; age: number; gender: string; weight: number; height: number; activityLevel: string }) => void;
 }
 
 const MedicalInformationForm: React.FC<MedicalInformationFormProps> = ({ initialData, onSave }) => {

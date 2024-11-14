@@ -6,13 +6,22 @@ import { FaStethoscope } from "react-icons/fa";
 import Modal from "../../components/ui/Modal";
 import PersonalInformationForm from "./PersonalInformationForm";
 import MedicalForm from "./MedicalInformationForm";
-import ImageUploadForm from "./ImageUploadForm";
 import PaymentInformationForm from "./PaymentInformationForm";
-import { CircularProgressProps, ProfileProps } from './types';
 import { RiBillFill } from "react-icons/ri";
 import { IoIosArrowForward } from "react-icons/io";
 import { LuFiles } from "react-icons/lu";
+import FileUploadPopup from "./FileUploadPopup";
 
+interface CircularProgressProps {
+    screeningProgress: number;
+    size: number;
+    strokeWidth: number;
+}
+
+interface ProfileProps {
+  name:string,
+  
+}
 
 const CircularProgress: React.FC<CircularProgressProps> = ({ screeningProgress, size = 100, strokeWidth = 8 }) => {
   const radius = (size - strokeWidth) / 2;
@@ -124,18 +133,19 @@ const Profile: React.FC<ProfileProps> = ({
     closeModal();
   };
 
-  const handleSaveImage = (data: { image: File | null }) => {
-    alert('Image uploaded successfully');
-  };
 
   return (
     <div className="w-full">
+      <div >
+          <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 px-8 sm:px-10 sm:py-10">Profile</h1>
+        </div> 
       <Modal isOpen={isModalOpen} onClose={closeModal} content={modalContent} />
       
-      <div className="flex space-x-6 mb-6 w-[70%]">
-        <div className="w-3/5 bg-white rounded-lg flex items-center space-x-2 p-3 border border-black">
-          <div className="flex-1 w-1/2">
-            <div className="w-[200px] h-[200px] rounded-full overflow-hidden">
+      <div className="px-8 sm:px-10 space-y-6">
+      <div className="flex space-x-6 mb-6 w-full sm:w-[70%]">
+        <div className="w-3/5 bg-white rounded-lg block md:flex items-center space-x-2 p-3 border border-black">
+          <div className="flex-1 sm:w-1/2 w-full ">
+            <div className="w-[100px] h-[100px] sm:h-[200px] sm:w-[200px] rounded-full overflow-hidden ">
               <img src="https://i.pravatar.cc/300" alt="Profile" className="object-cover w-full h-full" />
             </div>
           </div>
@@ -164,8 +174,9 @@ const Profile: React.FC<ProfileProps> = ({
           </button>
         </div>
       </div>
-
-      {/* Personal Information Section */}
+      
+      <div className=" space-y-6">
+          {/* Personal Information Section */}
       <div className="p-4 bg-white rounded-lg border border-black">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Personal Information</h2>
@@ -237,6 +248,8 @@ const Profile: React.FC<ProfileProps> = ({
           </div>
       </div>
 
+      </div>
+      
       {/* Upload Image Section */}
       <div className="flex w-full space-x-6">
           <div className="flex w-1/2 flex-col space-y-6">
@@ -261,9 +274,7 @@ const Profile: React.FC<ProfileProps> = ({
           </div>
           <div className="flex w-1/2 ">
             <button className="bg-white text-black py-2 px-4 rounded flex-2 border border-black flex flex-col space-y-1 items-center justify-center"
-              onClick={() => openModal(<ImageUploadForm onSave={handleSaveImage} initialData={{
-                image: null
-              }} />)}
+              onClick={() => openModal( <FileUploadPopup/>)}
             >
               <div className="w-12 h-12">
                 <LuFiles className="w-full h-full text-green-500" />
@@ -275,6 +286,8 @@ const Profile: React.FC<ProfileProps> = ({
             </button>
           </div>
         </div>
+      </div>
+      
     </div>
   );
 };

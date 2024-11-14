@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
+import { BoltRounded } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 
 const StyledDiv = styled("div")({
-  width: "40%",
+  width: "100%",
   height: "100%",
   background: `url(/images/signup.png)`,
   backgroundRepeat: "no-repeat",
@@ -12,10 +13,10 @@ const StyledDiv = styled("div")({
 const SignupBanner = () => {
   return (
     <StyledDiv>
-      <div style={{ position: "absolute", bottom:100, left:80 }}>
+      <div style={{ position: "absolute", bottom:100, left:100 }}>
         <Typography
-          fontWeight={700}
-          fontSize={40}
+          fontWeight={900}
+          fontSize={50}
           color="#ffffff"
           letterSpacing={2}
           marginBottom={2}

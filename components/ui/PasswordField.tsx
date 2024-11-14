@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-const PasswordFelid: React.FC<TextFieldProps> = ({ ...props }) => {
+const PasswordFelid: React.FC<TextFieldProps> = ({ ...props },{label}) => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -18,7 +18,7 @@ const PasswordFelid: React.FC<TextFieldProps> = ({ ...props }) => {
     <TextField
       fullWidth
       type={showPassword ? "text" : "password"}
-      label="Password"
+      label={label}
       variant="outlined"
       maxRows={1}
       inputProps={{ maxLength: 12 }}

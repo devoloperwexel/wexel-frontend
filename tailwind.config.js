@@ -13,6 +13,9 @@ module.exports = {
       colors: {
         'primary-color': '#A51008',
       },
+      backgroundImage: {
+        'custom-image': "url('/images/signup.png')", 
+      },
     },
   },
   plugins: [],

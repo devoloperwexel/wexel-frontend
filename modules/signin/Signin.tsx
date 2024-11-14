@@ -2,6 +2,7 @@
 
 import GoogleSvg from "@/components/icons/GoogleSvg";
 import AppleIcon from "@mui/icons-material/Apple";
+
 import {
   Box,
   Button,
@@ -10,7 +11,6 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import MicrosoftSvg from "@/components/icons/MicrosoftSvg";
 import Link from "next/link";
 import PasswordFelid from "@/components/ui/PasswordField";
 import ContainedButton from "@/components/ui/ContainedButton";
@@ -20,6 +20,8 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { signIn } from "next-auth/react";
 import { toast } from "react-toastify";
+import FacebookSvg from "@/components/icons/FacebookSvg";
+import SignupBanner from "modules/signup/SignupBanner";
 
 const validationSchema = yup.object({
   email: yup.string().email("Enter valid email").required("Enter your email"),
@@ -46,7 +48,7 @@ const SigninPageView = () => {
           password: values.password,
           redirect: false,
         });
-        //
+
         if (response?.ok) {
           router.push("/dashboard");
           return;
@@ -58,125 +60,143 @@ const SigninPageView = () => {
           toast.error(message);
           return;
         }
-        //
-        toast.error("Something went to wrong!");
+
+        toast.error("Something went wrong!");
         setSubmitting(false);
         resetForm({});
       },
     });
+
   return (
+    <div style={{ width: "100%" }}>
     <Box
       height="100vh"
       display="flex"
-      flexDirection="column"
+      flexDirection={{ xs: "column", md: "row" }}
       alignItems="center"
     >
+      {/* Hide SignupBanner on small screens */}
       <Box
-        display="flex"
-        width="100%"
-        justifyContent="space-between"
-        paddingX={16}
+        width={{ xs: "100%", md: "50%" }}
+        display={{ xs: "none", md: "flex" }}
+        justifyContent="center"
         alignItems="center"
-        borderBottom="solid 1.5px #B9CAD0"
-        paddingY={1.6}
+        height="100%"
       >
-        <Link href="/">
-          <Image src={`/images/logo.png`} alt="logo" width={90} height={56} />
-        </Link>
+        <SignupBanner />
+      </Box>
 
-        <div>
+      <Box
+        height="100%"
+        width={{ xs: "100%", md: "50%" }}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        padding={{ xs: "40px", md: "80px" }}
+      >
+        <Box display="flex" width="100%" justifyContent="end" mb={2}>
           <Button sx={{ textTransform: "none", color: "#000000" }}>Help</Button>
           <ContainedButton onClick={() => router.push("/signup")}>
             Register
           </ContainedButton>
-        </div>
-      </Box>
-      <Box
-        width="36%"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        paddingTop={12}
-      >
-        <Typography component="h5" fontSize="30px" fontWeight="700">
-          Login to your account
-        </Typography>
-        <Box display="flex" gap={1.5} marginTop={3} justifyContent="center">
-          <Tooltip title="Login with Google">
-            <Button
-              variant="outlined"
-              sx={{ width: "40px", height: "50px", borderColor: "grey.500" }}
-              onClick={handleGoogleSignin}
-            >
-              <GoogleSvg />
-            </Button>
-          </Tooltip>
-          <Tooltip title="Login with Apple">
-            <Button
-              variant="outlined"
-              sx={{ width: "40px", height: "50px", borderColor: "grey.500" }}
-            >
-              <AppleIcon sx={{ color: "#555555", fontSize: "32px" }} />
-            </Button>
-          </Tooltip>
-          <Tooltip title="Login with Microsoft">
-            <Button
-              variant="outlined"
-              sx={{ width: "40px", height: "50px", borderColor: "grey.500" }}
-            >
-              <MicrosoftSvg />
-            </Button>
-          </Tooltip>
         </Box>
-        <Divider textAlign="center" flexItem sx={{ marginY: 2.5 }}>
-          OR
-        </Divider>
-        <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-          <TextField
-            fullWidth
-            onChange={handleChange}
-            name="email"
-            label="Email"
-            variant="outlined"
-            type="text"
-            value={values.email}
-            helperText={touched.email && errors.email}
-            error={touched.email && Boolean(errors.email)}
-            sx={{ marginBottom: 3 }}
-          />
-          <PasswordFelid
-            onChange={handleChange}
-            name="password"
-            value={values.password}
-            helperText={touched.password && errors.password}
-            error={touched.password && Boolean(errors.password)}
-          />
+
+        <Box width="100%">
+          <Typography component="h5" fontSize="25px" fontWeight="700" textAlign="center">
+            Login to your account
+          </Typography>
+          <Box mt={3}>
+          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+            <TextField
+              fullWidth
+              onChange={handleChange}
+              name="email"
+              label="Email"
+              variant="outlined"
+              type="text"
+              value={values.email}
+              helperText={touched.email && errors.email}
+              error={touched.email && Boolean(errors.email)}
+              sx={{ marginBottom: 3 }}
+            />
+            <PasswordFelid
+              fullWidth
+              onChange={handleChange}
+              name="password"
+              value={values.password}
+              helperText={touched.password && errors.password}
+              error={touched.password && Boolean(errors.password)}
+              label="Password"
+            />
+            <Box
+              display="flex"
+              justifyContent="end"
+              marginY={3}
+            >
+              <Link
+                href="/"
+              >
+                Forgot Password?
+              </Link>
+            </Box>
+            
+          </form>
+          </Box>
+
+          <Divider textAlign="center" flexItem sx={{ marginY: 2.5 }}>
+            OR
+          </Divider>
+          <Box display="flex" gap={1.5} justifyContent="space-between" mt={2} width="100%">
+            <Tooltip title="Login with Google">
+              <Button
+                variant="outlined"
+                fullWidth
+                sx={{ height: "50px", borderColor: "grey.500" }}
+                onClick={handleGoogleSignin}
+              >
+                <GoogleSvg />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Login with Apple">
+              <Button
+                variant="outlined"
+                fullWidth
+                sx={{ height: "50px", borderColor: "grey.500" }}
+              >
+                <AppleIcon sx={{ color: "#555555", fontSize: "32px" }} />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Login with Facebook">
+              <Button
+                variant="outlined"
+                fullWidth
+                sx={{ height: "50px", borderColor: "grey.500" }}
+              >
+                <FacebookSvg />
+              </Button>
+            </Tooltip>
+          </Box>
+          <ContainedButton
+              fullWidth
+              type="submit"
+              disabled={isSubmitting}
+              sx={{ height: "42px", fontWeight: 600, marginTop: "30px" }}
+            >
+              Login and Continue
+            </ContainedButton>
           <Box
             width="100%"
             display="flex"
-            justifyContent="end"
-            paddingRight={0.2}
-            marginY={1.8}
+            justifyContent="center"
+            mt={2}
+            color="#6C6C6C"
           >
-            <Link href="#">Forgot Password?</Link>
-          </Box>
-          <ContainedButton
-            fullWidth
-            type="submit"
-            disabled={isSubmitting}
-            sx={{ height: "42px", fontWeight: 600 }}
-          >
-            Login and Continue
-          </ContainedButton>
-        </form>
-
-        <Box
-          width="100%"
+            <Box
           display="flex"
           justifyContent="center"
-          paddingRight={0.2}
           marginTop={1.8}
+          width="100%"
         >
           <div style={{ color: "#6C6C6C" }}>Don&apos;t have an account? </div>
           <Link
@@ -186,8 +206,12 @@ const SigninPageView = () => {
             Sign Up Now
           </Link>
         </Box>
+          </Box>
+        </Box>
       </Box>
     </Box>
+  </div>
   );
 };
+
 export default SigninPageView;
