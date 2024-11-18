@@ -6,6 +6,7 @@ import InformationSection from "@/components/ui/InformationSection";
 import MedicalScreeningCard from "@/components/ui/MedicalScreeningCard";
 import TreatmentGoals from "@/components/ui/TreatmentGoals";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const data = {
   labels: ["Min", "Hr", "Min", "Hrs"],
@@ -18,6 +19,13 @@ const data = {
 };
 
 export default function DashboardPage1() {
+
+  const router = useRouter();
+
+  const goToScreening = () => {
+    router.push("/medical-screening"); 
+  };
+
   // Placeholder for medical screening completion status
   const [isMedicalScreeningComplete, setMedicalScreeningComplete] = useState(
     false // Assume false means incomplete
@@ -35,7 +43,7 @@ export default function DashboardPage1() {
               <div className="flex justify-center items-center">
               <button 
               className="w-full bg-primary-color rounded-md hover:bg-red-700 font-light text-white text-[15px] sm:text-[19px] py-[5px] px-16"
-              
+              onClick={goToScreening}
             >
               Go to screening
             </button>

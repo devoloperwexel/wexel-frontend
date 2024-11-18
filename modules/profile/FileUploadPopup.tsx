@@ -49,7 +49,7 @@ const FileUpload: React.FC = () => {
         </div>
       </div>
       <div className="flex-1 w-3/5">
-        <ul className="divide-y divide-gray-200 px-6 flex flex-col">
+        <ul className="divide-y divide-gray-200 px-6 flex flex-col justify-center">
           {files.map((file) => (
             <li key={file.name} className="py-3 flex items-center justify-between">
               <div className="flex items-center">
@@ -67,6 +67,11 @@ const FileUpload: React.FC = () => {
             </li>
           ))}
         </ul>
+        <div className='flex justify-center items-center w-full p-6'>
+            <button className="bg-primary-color px-10 py-2 rounded-md text-white w-full bottom-0">
+              Upload
+            </button>
+        </div>
         
       </div>
     </div>

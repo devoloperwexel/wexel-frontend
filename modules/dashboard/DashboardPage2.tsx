@@ -19,6 +19,7 @@ export default function DashboardPage2() {
     eventDate: "12.08.2024",
     eventTime: "09:00 AM",
     duration: "30 Min",
+    title: `Today's Events`
   };
   const data = {
     labels: ["Min", "Hr", "Min", "Hrs"],
@@ -36,52 +37,65 @@ export default function DashboardPage2() {
   };
 
   return (
-    <div className="py-1 space-y-6">
-      {/* Top Section */}
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Left Column */}
-        <div className="flex-1 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <MedicalScreeningCard2 />
-            <SessionCard
-              totalSessions={data2.totalSessions}
-              usedSessions={data2.usedSessions}
-            />
-            <EventCard
-              physioName={eventData.physioName}
-              eventTitle={eventData.eventTitle}
-              eventDate={eventData.eventDate}
-              eventTime={eventData.eventTime}
-              duration={eventData.duration}
-            />
+    <>
+      <div>
+        <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 px-8 sm:px-10 sm:py-10">
+          Dashboard
+        </h1>
+      </div>
+      <div className="flex flex-col gap-10 sm:gap-12 px-8 sm:px-10 ">
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Left Column */}
+          <div className="flex-1 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <MedicalScreeningCard2 />
+              <SessionCard
+                totalSessions={data2.totalSessions}
+                usedSessions={data2.usedSessions}
+              />
+              <EventCard
+                physioName={eventData.physioName}
+                eventTitle={eventData.eventTitle}
+                eventDate={eventData.eventDate}
+                eventTime={eventData.eventTime}
+                duration={eventData.duration}
+                title={eventData.title}
+              />
+            </div>
+
+            <div className="flex flex-col lg:flex-row gap-6">
+              <div className="flex-1">
+                <TreatmentGoals
+                  data={data}
+                  totalHours={2.5}
+                  timeFrame="1 Week"
+                />
+              </div>
+              <div className="flex-1 space-y-4">
+                <Achievements hours={2} reps={8} totalReps={10} />
+                <ProgressBar
+                  totalDays={totalDays}
+                  completedDays={completedDays}
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-6">
-            <div className="flex-1">
-              <TreatmentGoals data={data} totalHours={2.5} timeFrame="1 Week" />
-            </div>
-            <div className="flex-1 space-y-4">
-              <Achievements hours={2} reps={8} totalReps={10} />
-              <ProgressBar totalDays={totalDays} completedDays={completedDays} />
-            </div>
+          {/* Right Column */}
+          <div className="w-full lg:w-1/3">
+            <AppointmentsNew />
           </div>
         </div>
 
-        {/* Right Column */}
-        <div className="w-full lg:w-1/3">
-          <AppointmentsNew />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-1">
+            <MyPlan />
+          </div>
+          <div className="lg:col-span-2">
+            <InformationSection />
+          </div>
         </div>
       </div>
-
-      {/* Bottom Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-1">
-          <MyPlan />
-        </div>
-        <div className="lg:col-span-2">
-          <InformationSection />
-        </div>
-      </div>
-    </div>
+    </>
   );
 }

@@ -35,7 +35,8 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
   };
 
   return (
-    <Box  paddingTop={1.8}>
+    <div className="px-8 sm:px-10 my-10">
+           <Box  paddingTop={1.8}>
       {!appointmentId && <BackButton onClick={handleBackClick} />}
       <Box
         display="flex"
@@ -108,6 +109,8 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
         </>
       </Box>
     </Box>
+    </div>
+   
   );
 };
 export default DoctorViewPage;

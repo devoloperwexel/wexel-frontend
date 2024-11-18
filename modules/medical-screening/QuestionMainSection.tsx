@@ -439,8 +439,8 @@ const QuestionMainSection: React.FC = () => {
   const MedicalScreeningCompleted = () => {
     const router = useRouter();
 
-    const goToScreening = () => {
-      router.push("/screening"); 
+    const goToMakeAppointment = () => {
+      router.push("/physios"); 
     };
 
     return (
@@ -472,7 +472,7 @@ const QuestionMainSection: React.FC = () => {
               <div className="bottom-0 flex flex-col justify-center items-end">
                 <button 
                   className="w-full bg-primary-color rounded-sm hover:bg-red-700 font-light text-white text-[20px] py-[10px] px-10 mt-[50px] lg:mt-0"
-                  onClick={goToScreening}
+                  onClick={goToMakeAppointment}
                 >
                   Make an appointment
                 </button>
@@ -487,6 +487,7 @@ const QuestionMainSection: React.FC = () => {
   if (showCompletedView) {
     return <MedicalScreeningCompleted />;
   }
+
 
   return (
     <div className="p-4 bg-white">

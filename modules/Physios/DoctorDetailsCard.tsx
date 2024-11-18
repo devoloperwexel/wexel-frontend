@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 const StyledBox = styled(Box)({
   width: "90%",
   height: 320,
-  padding: 8,
+  padding: 10,
   backgroundColor: "#ffffff",
   borderRadius: 5,
   paddingTop: 32,
@@ -38,38 +38,39 @@ export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
   const handleOnclick = () => router.push(`/physios/doctor/${id}`);
 
   return (
-    <StyledBox>
-      <Avatar
-        src={user.profilePictureUrl}
-        sx={{
-          width: 120,
-          height: 120,
-          fontSize: 48,
-          fontWeight: "600",
-          marginBottom: 1.5,
-        }}
-      >
-        {user.name[0]}
-      </Avatar>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        paddingX={1}
-      >
-        <Typography fontWeight="700">{`Dr. ${truncateText(
-          user.name,
-          30
-        )}`}</Typography>
-        <StyledTypography color="#A51008" fontSize={14}>
-          {truncateText(specialty, 30)}
-        </StyledTypography>
-        <Divider
-          sx={{ color: "#00000033", marginY: 2, borderBottomWidth: "1px" }}
-          flexItem
-        />
-        <ContainedButton onClick={handleOnclick}>Book Now</ContainedButton>
-      </Box>
-    </StyledBox>
+    
+      <StyledBox>
+        <Avatar
+          src={user.profilePictureUrl}
+          sx={{
+            width: 120,
+            height: 120,
+            fontSize: 48,
+            fontWeight: "600",
+            marginBottom: 1.5,
+          }}
+        >
+          {user.name[0]}
+        </Avatar>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          paddingX={1}
+        >
+          <Typography fontWeight="700">{`Dr. ${truncateText(
+            user.name,
+            30
+          )}`}</Typography>
+          <StyledTypography color="#A51008" fontSize={14}>
+            {truncateText(specialty, 30)}
+          </StyledTypography>
+          <Divider
+            sx={{ color: "#00000033", marginY: 2, borderBottomWidth: "1px" }}
+            flexItem
+          />
+          <ContainedButton onClick={handleOnclick}>Book Now</ContainedButton>
+        </Box>
+      </StyledBox>
   );
 };
