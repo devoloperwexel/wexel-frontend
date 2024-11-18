@@ -11,6 +11,7 @@ import { RiBillFill } from "react-icons/ri";
 import { IoIosArrowForward } from "react-icons/io";
 import { LuFiles } from "react-icons/lu";
 import FileUploadPopup from "./FileUploadPopup";
+import { useRouter } from "next/navigation";
 
 interface CircularProgressProps {
     screeningProgress: number;
@@ -85,6 +86,7 @@ const Profile: React.FC<ProfileProps> = ({
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<React.ReactNode | null>(null);
+  const router = useRouter();
 
   const [profileData, setProfileData] = useState({
     personal: {
@@ -134,6 +136,10 @@ const Profile: React.FC<ProfileProps> = ({
   };
 
 
+  const goToScreening = () => {
+    router.push("/medical-screening"); 
+  };
+
   return (
     <div className="w-full">
       <div >
@@ -169,7 +175,7 @@ const Profile: React.FC<ProfileProps> = ({
               <FaStethoscope className="mr-2 w-24 h-12 bg-primary-color/20 p-2 rounded-lg" />
             )}
           </div>
-          <button className="bg-primary-color text-white py-2 px-4 rounded w-full">
+          <button className="bg-primary-color text-white py-2 px-4 rounded w-full" onClick={goToScreening}>
             {screeningProgress ? "Go to screening" : "Start screening now"}
           </button>
         </div>
