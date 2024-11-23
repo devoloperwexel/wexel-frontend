@@ -9,7 +9,7 @@ export const answerApi = createApi({
   tagTypes: ["ANSWER"],
   endpoints: (builder) => ({
 
-    createAnswer: builder.mutation({
+    updateAnswer: builder.mutation({
       query: ({ userId, body }) => ({
         url: `/users/${userId}/answers`,
         method: "PATCH",
@@ -22,5 +22,5 @@ export const answerApi = createApi({
 
 // Export the generated query hooks for the defined endpoints
 export const {
-  useCreateAnswerMutation
+  useUpdateAnswerMutation
 } = answerApi;
