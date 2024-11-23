@@ -4,16 +4,16 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 //import rtkQueryErrorLogger from "./middleware";
 import { appointmentApi } from "services/appointment-api";
 import rtkQueryErrorLogger from "./middleware";
+import { answerApi } from "services/answers-api";
 
 // Combine all the reducers into one root reducer
 const rootReducers = combineReducers({
   [appointmentApi.reducerPath]: appointmentApi.reducer,
+  [answerApi.reducerPath]: answerApi.reducer,
 });
 
 // Define custom middlewares for the store
-const apiMiddlewares = [
-  appointmentApi.middleware,
-]; // Middleware for Redux Toolkit Query
+const apiMiddlewares = [appointmentApi.middleware, answerApi.middleware]; // Middleware for Redux Toolkit Query
 //const customMiddleWares = [rtkQueryErrorLogger]; // Custom middleware for handling errors
 
 // Create the Redux store
