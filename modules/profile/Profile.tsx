@@ -12,6 +12,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { LuFiles } from "react-icons/lu";
 import FileUploadPopup from "./FileUploadPopup";
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
 
 interface CircularProgressProps {
     screeningProgress: number;
@@ -21,7 +22,21 @@ interface CircularProgressProps {
 
 interface ProfileProps {
   name:string,
-  
+  age: number,
+  country: string,
+  languages: string,
+  pronouns: string,
+  phoneNumber: string,
+  address: string,
+  email: string,
+  dob: Date,
+  gender: string,
+  weight: number,
+  height: number,
+  activityLevel: string,
+  creditCard: string,
+  tokens: number,
+  screeningProgress: number,
 }
 
 const CircularProgress: React.FC<CircularProgressProps> = ({ screeningProgress, size = 100, strokeWidth = 8 }) => {
@@ -140,6 +155,7 @@ const Profile: React.FC<ProfileProps> = ({
     router.push("/medical-screening"); 
   };
 
+
   return (
     <div className="w-full">
       <div >
@@ -152,7 +168,13 @@ const Profile: React.FC<ProfileProps> = ({
         <div className="w-3/5 bg-white rounded-lg block md:flex items-center space-x-2 p-3 border border-black">
           <div className="flex-1 sm:w-1/2 w-full ">
             <div className="w-[100px] h-[100px] sm:h-[200px] sm:w-[200px] rounded-full overflow-hidden ">
-              <img src="https://i.pravatar.cc/300" alt="Profile" className="object-cover w-full h-full" />
+            <Image
+                src="https://i.pravatar.cc/300"
+                alt="Profile"
+                className="object-cover w-full h-full"
+                width={200}
+                height={200}
+              />
             </div>
           </div>
           <div className="flex-1 w-1/2 space-y-3">
@@ -220,7 +242,11 @@ const Profile: React.FC<ProfileProps> = ({
           {Object.entries(profileData.medical).map(([key, value]) => (
             <div key={key} className="flex flex-col">
               <p className="font-semibold text-gray-600">{key}</p>
-              <p>{value}</p>
+              <p>
+                {value instanceof Date 
+                  ? value.toLocaleDateString() 
+                  : value}
+              </p>
             </div>
           ))}
         </div>

@@ -19,6 +19,7 @@ interface PersonalInformationInFormProps {
 }
 
 const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ formik }) => {
+  
   return (
     <div className="w-full flex flex-col items-center justify-center">
       <div className="w-full flex justify-center items-center">
@@ -119,6 +120,7 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
               </div>
 
               {/* Other Form Fields */}
+
               <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-10 gap-x-0 gap-y-4">
                 {["mobile","language","address", "zipCode", "city", "country"].map((field) => (
                   <div key={field}>

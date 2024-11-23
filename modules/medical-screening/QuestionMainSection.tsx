@@ -1,18 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SectionsList from "./SectionsList";
 import ProgressBar from "./ProgressBar";
 import QuestionsSection from "./QuestionsSection";
 import { useRouter } from "next/navigation";
 import { FaFlag } from "react-icons/fa6";
+import { useSession } from "next-auth/react";
+import { useUpdateAnswerMutation } from "services/answers-api";
 
 type QuestionType = "RADIO" | "TEXTAREA" | "CHECKBOX" | "TOPIC_QUESTION";
 
-interface Question {
+interface Questions {
   id: string;
   requiredRef?: { id: string; value: string };
-  question: string;
+  questionText: string;
   info?: string;
   values?: string[];
   type: QuestionType;
@@ -20,7 +22,7 @@ interface Question {
 
 interface MedicalScreeningCollection {
   title: string;
-  question: Question[];
+  questions: Questions[];
 }
 
 type Props = {
@@ -28,13 +30,16 @@ type Props = {
 };
 
 const QuestionMainSection = ({ questionnaires }: Props) => {
-  const [sections, setSections] =
-    useState<MedicalScreeningCollection[]>(questionnaires);
+  const [sections] = useState<MedicalScreeningCollection[]>(questionnaires);
+
   const [selectedSection, setSelectedSection] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [completedSections, setCompletedSections] = useState<boolean[]>(
     Array(sections.length).fill(false)
   );
+  const [createAnswer, { isLoading: isUpdating, isSuccess }] =
+    useUpdateAnswerMutation();
+  const { data } = useSession();
 
   const [showCompletedView, setShowCompletedView] = useState(false);
   const [resultFlag, setResultFlag] = useState<"Green" | "Yellow" | "Red">(
@@ -42,6 +47,28 @@ const QuestionMainSection = ({ questionnaires }: Props) => {
   );
   const [status, setStatus] = useState<string>("In Progress");
   const [completionDate, setCompletionDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    if (isSuccess) {
+      handleToggleCompletion(selectedSection);
+
+      if (selectedSection < sections.length - 1) {
+        setSelectedSection(selectedSection + 1);
+      } else {
+        evaluateResultFlag();
+        setShowCompletedView(true);
+      }
+    }
+  }, [isUpdating]);
+
+  const mapAnswerRecordToArray = (
+    record: Record<string, string>
+  ): { questionId: string; value: string }[] => {
+    return Object.entries(record).map(([key, value]) => ({
+      questionId: key,
+      value,
+    }));
+  };
 
   const handleSelectSection = (index: number) => {
     setSelectedSection(index);
@@ -71,7 +98,7 @@ const QuestionMainSection = ({ questionnaires }: Props) => {
   };
 
   const areAllQuestionsAnswered = () => {
-    const currentQuestions = sections[selectedSection].question;
+    const currentQuestions = sections[selectedSection].questions;
 
     return currentQuestions.every((question) => {
       if (question.type === "TOPIC_QUESTION") {
@@ -111,14 +138,19 @@ const QuestionMainSection = ({ questionnaires }: Props) => {
 
   const handleNext = () => {
     if (areAllQuestionsAnswered()) {
-      handleToggleCompletion(selectedSection);
+      const answerList = mapAnswerRecordToArray(answers);
+      console.log(answerList);
 
-      if (selectedSection < sections.length - 1) {
-        setSelectedSection(selectedSection + 1);
-      } else {
-        evaluateResultFlag();
-        setShowCompletedView(true);
-      }
+      createAnswer({ userId: data?.user?.id, body: answerList });
+
+      //handleToggleCompletion(selectedSection);
+
+      // if (selectedSection < sections.length - 1) {
+      //   setSelectedSection(selectedSection + 1);
+      // } else {
+      //   evaluateResultFlag();
+      //   setShowCompletedView(true);
+      // }
     } else {
       alert("Please answer all required questions.");
     }
@@ -235,7 +267,7 @@ const QuestionMainSection = ({ questionnaires }: Props) => {
         <div className="w-full md:w-3/4 px-20 sm:px-3 md:px-16 my-10">
           <QuestionsSection
             sectionTitle={sections[selectedSection].title}
-            questions={sections[selectedSection].question}
+            questions={sections[selectedSection].questions}
             onAnswerChange={handleAnswerChange}
             answers={answers}
           />
@@ -257,7 +289,7 @@ const QuestionMainSection = ({ questionnaires }: Props) => {
                   ? "opacity-50 cursor-not-allowed"
                   : ""
               }`}
-              disabled={!areAllQuestionsAnswered()}
+              disabled={!areAllQuestionsAnswered() || isUpdating}
               onClick={handleNext}
             >
               Next
