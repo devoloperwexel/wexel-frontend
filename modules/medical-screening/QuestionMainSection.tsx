@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import SectionsList from "./SectionsList";
 import ProgressBar from "./ProgressBar";
 import QuestionsSection from "./QuestionsSection";
@@ -23,7 +22,6 @@ interface MedicalScreeningCollection {
   title: string;
   questions: Questions[];
 }
-
 
 const QuestionMainSection: React.FC = () => {
   const [sections] = useState<MedicalScreeningCollection[]>([
@@ -131,7 +129,207 @@ const QuestionMainSection: React.FC = () => {
           values: ["Yes", "No"]
         }
       ]
-    }
+    },
+    {
+      title: "Medications",
+      questions: [
+        {
+          id: "97a5d866-1d8c-4972-9617-b29cbc44ed10",
+          questionText:
+            "Do you regularly take medication (e.g. blood thinning medication, birth control pills, etc.) ?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "f67f9a8c-6057-4130-8f47-8a2325a0d6d6",
+          questionText: "If yes, which ones ?",
+          values: ["Yes", "No"],
+          type: "TEXTAREA",
+          requiredRef: { id: "q15", value: "Yes" },
+        },
+        {
+          id: "3897f7bf-f33c-4003-ba0b-c3be65f78f2b",
+          questionText:
+            "Have you taken cortisone for more than 12 weeks in the last 5 years?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+      ],
+    },
+    {
+      title: "Chronic Conditions",
+      questions: [
+        {
+          id: "506f6b3a-dbf8-4e28-8158-e5d519366fcb",
+          questionText:
+            "Do you regularly take medication (e.g. blood thinning medication, birth control pills, etc.) ?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+          info: `<ul class="list-disc list-inside">
+      <li class="mb-1">First item with custom style</li>
+      <li class="mb-1">Second item styled</li>
+      <li class="mb-1">Third item styled</li>
+    </ul>`,
+        },
+        {
+          id: "90527a3f-0bb5-4250-a1be-35a20d9ed4d7",
+          questionText: "If yes, which ones ?",
+          values: ["Yes", "No"],
+          type: "TEXTAREA",
+          requiredRef: { id: "q18", value: "Yes" },
+        },
+        {
+          id: "c0e46884-1b8f-4dd4-b0e2-3b8a9a6ece74",
+          questionText: "<b>Do you suffer from:</b>",
+          values: [""],
+          type: "TOPIC_QUESTION",
+        },
+        {
+          id: "b78edfe2-37d7-4968-9d7a-bb4c91b77688",
+          questionText: "High blood pressure >140/95 mmHg?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "155538e0-43e1-4e31-8f13-7fe92550c1c7",
+          questionText: "Serious cardiovascular diseases?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "d5245e80-f88f-4525-868c-e0a38f0fe3a6",
+          questionText:
+            "Circulatory problems (e.g. PAVK, varicose veins or similar)?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "e42ba31a-c561-4ed0-81d2-6c4dfab9a0a1",
+          questionText: "Osteoporosis or Osteopenia?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+      ],
+    },
+    {
+      title: "Surgical History",
+      questions: [
+        {
+          id: "324fc790-c0f9-43cb-be9e-a89af535107f",
+          questionText: "Have you had any surgery in the last five years?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "778b616f-d4c5-4723-8426-12bf6b2c71a3",
+          questionText: "If yes, which ones ?",
+          values: ["Yes", "No"],
+          type: "TEXTAREA",
+          requiredRef: { id: "q25", value: "Yes" },
+        },
+        {
+          id: "81121e6b-e5a3-47b6-8f15-3ec70c8c8f73",
+          questionText:
+            "Do you have a pacemaker or other external items in your body?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "4732a8dc-4fb6-4385-8655-dee1145e711c",
+          questionText: "If yes, which ones ?",
+          values: ["Yes", "No"],
+          type: "TEXTAREA",
+          requiredRef: { id: "q27", value: "Yes" },
+        },
+      ],
+    },
+    {
+      title: "Infectious Diseases",
+      questions: [
+        {
+          id: "14b220cd-696c-4984-bcce-14cb8999ed17",
+          questionText:
+            "	Are there any known infectious diseases? (e.g. hepatitis, HIV, AIDS)",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "fb0f7186-b0dc-4023-a7c1-f77b479f0b0d",
+          questionText: "If yes, which ones ?",
+          values: ["Yes", "No"],
+          type: "TEXTAREA",
+          requiredRef: { id: "q29", value: "Yes" },
+        },
+        {
+          id: "a354b810-ab6c-4f3b-ae5c-6a3dc293181a",
+          questionText:
+            "Do you have a pacemaker or other external items in your body?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "ab87bcd6-04cb-4453-aff3-e1d01723c4f3",
+          questionText: "If yes, which ones ?",
+          values: ["Yes", "No"],
+          type: "TEXTAREA",
+          requiredRef: { id: "q31", value: "Yes" },
+        },
+      ],
+    },
+    {
+      title: "Health and Lifestyle Habits",
+      questions: [
+        {
+          id: "65547667-4e28-4952-9398-5eb120af485c",
+          questionText:
+            "Have you lost over 10% of your body weight (severe weight loss) in the last 3 months?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "63bf05c1-3d11-4308-a9dc-7da544a9b75e",
+          questionText: "Have you smoked in the past 7 years?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "aa6a5d99-48de-41d7-8240-293d9de92474",
+          questionText: "If yes,How many cigarettes per day?",
+          values: ["Yes", "No"],
+          type: "TEXTAREA",
+          requiredRef: { id: "q34", value: "Yes" },
+        },
+      ],
+    },
+    {
+      title: "Other Health Concerns",
+      questions: [
+        {
+          id: "771cdf04-db9c-4fd5-a0b1-0d9e50e5c2df",
+          questionText: "Have you had any bone fractures in the last 5 years?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "830dc2c7-bdf7-4c50-97eb-c93f8fb2b0b3",
+          questionText: "Do you have persistent hoarseness or unusual cough?",
+          type: "RADIO",
+          values: ["Yes", "No"],
+        },
+        {
+          id: "08dec267-96e1-4c61-9140-3424b9ab7bce",
+          questionText: "<b>Are there any health concerns like:</b>",
+          type: "TOPIC_QUESTION",
+          values:[""]
+        },
+        {
+          id: "758123d0-e1a3-488c-96b9-f0b4d463305d",
+          questionText: "<b>Do you suffer from:</b>",
+          type: "TOPIC_QUESTION",
+          values:[""]
+        },
+      ],
+    },
   ]
   );
 
