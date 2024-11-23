@@ -43,12 +43,12 @@ interface PersonalInformationFormProps {
   initialData: {
     name: string;
     email: string;
-    age: string;
+    age: number
     phoneNumber: string;
     address: string;
     pronouns: string;
   };
-  onSave: (data: { name: string; email: string, age: string, phoneNumber: string, address: string, pronouns: string }) => void;
+  onSave: (data: { name: string; email: string, age: number, phoneNumber: string, address: string, pronouns: string }) => void;
 }
 
 const PersonalInformationForm: React.FC<PersonalInformationFormProps> = ({ initialData, onSave }) => {
