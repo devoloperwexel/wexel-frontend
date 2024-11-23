@@ -3,7 +3,7 @@ import { FaCircle,FaCheckCircle,FaRegCircle } from "react-icons/fa";
 
 interface Section {
   title: string; 
-  question: any[]; 
+  questions: any[]; 
 }
 
 interface SectionsListProps {
@@ -41,7 +41,9 @@ const SectionsList: React.FC<SectionsListProps> = ({
             </button>
           </div>
         </div>
+        
       ))}
+      
     </div>
   );
 };

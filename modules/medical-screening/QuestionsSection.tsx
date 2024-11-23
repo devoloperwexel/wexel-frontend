@@ -4,7 +4,7 @@ import InfoIcon from "./InfoIcon";
 interface Question {
   id: string;
   requiredRef?: { id: string; value: string };
-  question: string;
+  questionText: string;
   values?: string[];
   type: QuestionType;
   info?: string;
@@ -26,16 +26,16 @@ const QuestionsSection: React.FC<QuestionsSectionProps> = ({
   answers,
 }) => {
 
-  const renderRadio = (question: Question) => (
+  const renderRadio = (questionText: Question) => (
     <div>
-      {question.values?.map((value) => (
+      {questionText.values?.map((value) => (
         <label key={value} className="mr-4 text-xl">
           <input
             type="radio"
-            name={question.id}
+            name={questionText.id}
             value={value}
-            checked={answers[question.id] === value}
-            onChange={() => onAnswerChange(question.id, value)}
+            checked={answers[questionText.id] === value}
+            onChange={() => onAnswerChange(questionText.id, value)}
             className="w-5"
           />
           {value}
@@ -44,39 +44,39 @@ const QuestionsSection: React.FC<QuestionsSectionProps> = ({
     </div>
   );
 
-  const renderTextarea = (question: Question) => (
+  const renderTextarea = (questionText: Question) => (
     <textarea
       className="w-[70%] border rounded p-2 text-2xl"
-      value={answers[question.id] || ""}
-      onChange={(e) => onAnswerChange(question.id, e.target.value)}
+      value={answers[questionText.id] || ""}
+      onChange={(e) => onAnswerChange(questionText.id, e.target.value)}
       rows={3}
     />
   );
 
-  const renderCheckbox = (question: Question) => (
+  const renderCheckbox = (questionText: Question) => (
     <label className="flex items-center text-2xl">
       <input
         type="checkbox"
-        checked={answers[question.id] === "true"}
-        onChange={() => onAnswerChange(question.id, answers[question.id] === "true" ? "false" : "true")}
+        checked={answers[questionText.id] === "true"}
+        onChange={() => onAnswerChange(questionText.id, answers[questionText.id] === "true" ? "false" : "true")}
         className="mr-2"
       />
-      {question.question}
+      {questionText.questionText}
     </label>
   );
 
-  const renderQuestion = (question: Question) => (
-    <div key={question.id} className="mb-4 w-full flex gap-x-4 justify-between">
+  const renderQuestion = (questionText: Question) => (
+    <div key={questionText.id} className="mb-4 w-full flex gap-x-4 justify-between">
       <div className="flex-1 w-[70%]">
         <div className="mb-2 text-2xl flex items-center">
-          <div dangerouslySetInnerHTML={{ __html: question.question }} />
-          {question.info && <InfoIcon info={question.info} />}
+          <div dangerouslySetInnerHTML={{ __html: questionText.questionText }} />
+          {questionText.info && <InfoIcon info={questionText.info} />}
         </div>
       </div>
       <div className="flex-2 w-[30%] text-right">
-        {question.type === "RADIO" && renderRadio(question)}
-        {question.type === "TEXTAREA" && renderTextarea(question)}
-        {question.type === "CHECKBOX" && renderCheckbox(question)}
+        {questionText.type === "RADIO" && renderRadio(questionText)}
+        {questionText.type === "TEXTAREA" && renderTextarea(questionText)}
+        {questionText.type === "CHECKBOX" && renderCheckbox(questionText)}
       </div>
     </div>
   );
@@ -84,11 +84,12 @@ const QuestionsSection: React.FC<QuestionsSectionProps> = ({
   return (
     <div className="mb-6">
       <h2 className="text-2xl font-semibold mb-4 text-center">{sectionTitle}</h2>
-      {questions.map((question) => {
+      {questions.map((questionText) => {
         const shouldRender =
-          !question.requiredRef || answers[question.requiredRef.id] === question.requiredRef.value;
-        return shouldRender ? renderQuestion(question) : null;
+          !questionText.requiredRef || answers[questionText.requiredRef.id] === questionText.requiredRef.value;
+        return shouldRender ? renderQuestion(questionText) : null;
       })}
+      
     </div>
   );
 };

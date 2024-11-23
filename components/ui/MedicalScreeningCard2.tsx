@@ -21,7 +21,7 @@ export default function MedicalScreeningCard2() {
   };
 
   const goToScreening = () => {
-    router.push("/screening"); 
+    router.push("/medical-screening"); 
   };
 
   return (
