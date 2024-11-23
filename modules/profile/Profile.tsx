@@ -171,8 +171,9 @@ const Profile: React.FC<ProfileProps> = ({
             <Image
                 src="https://i.pravatar.cc/300"
                 alt="Profile"
-                className="object-cover"
-                layout="fill" 
+                className="object-cover w-full h-full"
+                width={200}
+                height={200}
               />
             </div>
           </div>

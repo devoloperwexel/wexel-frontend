@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   ],
 };
 const Questionnaire = () => {
-  return <QuestionMainSection />;
+  return <QuestionMainSection />; 
 };
 
 export default Questionnaire;
