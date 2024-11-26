@@ -71,7 +71,7 @@ const Payment = ({
         options={{
           mode: "payment",
           amount: cents,
-          currency: "usd",
+          currency: "eur",
         }}
       >
         <Checkout

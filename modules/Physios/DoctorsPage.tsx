@@ -38,14 +38,14 @@ export default function DoctorsPage({ doctorDetails }: Readonly<Props>) {
             </div>
           )}
       </div>
-      <div className="px-8 sm:px-10 my-10 z-10 ">
+      <div className="px-8 sm:px-10 my-10 z-10">
       <Grid
         container
         spacing={{ xs: 3, md: 4 }}
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
         {doctorDetails.map((doctorDetail) => (
-          <Grid key={doctorDetail.id} item xs={5} sm={43} md={3}>
+          <Grid key={doctorDetail.id} item xs={5} sm={43} md={3} height="57vh">
             <DoctorDetailCard doctorDetail={doctorDetail} />
           </Grid>
         ))}

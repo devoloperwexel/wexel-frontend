@@ -31,74 +31,77 @@ const AppointmentPageView = ({ appointment }: Props) => {
 
   return (
     <div>
-      
-        <Box paddingTop={0.5} paddingBottom={1.8} paddingLeft={2} paddingRight={4}>
-      <BackButton onClick={handleBackClick} />
       <Box
-        display="flex"
-        flexDirection="row"
-        width="100%"
-        height="85vh"
-        bgcolor="#ffffff"
-        borderRadius={2}
-        marginTop={2.5}
-        padding={3}
+        paddingTop={0.5}
+        paddingBottom={1.8}
+        paddingLeft={2}
+        paddingRight={4}
       >
+        <BackButton onClick={handleBackClick} />
         <Box
-          width="50%"
-          borderRight="2px dashed"
-          boxSizing="border-box"
-          paddingRight={20}
+          display="flex"
+          flexDirection="row"
+          width="100%"
+          height="85vh"
+          bgcolor="#ffffff"
+          borderRadius={2}
+          marginTop={2.5}
+          padding={3}
         >
-          <Image
-            alt=""
-            src={doctorDetail.user.profilePictureUrl}
-            width={0}
-            height={0}
-            sizes="100vw"
-            style={{ width: "100%", height: "44%", borderRadius: 6 }}
-          />
-          <Typography
-            fontWeight="700"
-            fontSize="22px"
-            marginTop={2}
-          >{`Dr. ${truncateText(doctorDetail.user.name, 50)}`}</Typography>
-          <Typography color="#A51008" fontWeight="500">
-            {doctorDetail.specialty}
-          </Typography>
-          <Typography
-            color="#1B1999"
-            fontWeight="500"
-            fontSize={18}
-            marginTop={2}
+          <Box
+            width="50%"
+            borderRight="2px dashed"
+            boxSizing="border-box"
+            paddingRight={20}
           >
-            {`Appointment ID: ${id}`}
-          </Typography>
-          <Typography fontWeight="500" fontSize={18}>
-            {formattedDate}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formattedTime}
-          </Typography>
-          <ContainedButton
-            disabled={appointment.sessionTime > 1800}
-            startIcon={<VideocamIcon />}
-            backgroundColor="#009BFF"
-            onClick={handleJoin}
-            sx={{
-              borderRadius: 2,
-              textTransform: "none",
-              marginTop: 2,
-              paddingX: 2,
-              paddingY: 1,
-            }}
-          >
-            Join Now
-          </ContainedButton>
-        </Box>
+            <Image
+              alt=""
+              src={doctorDetail?.user?.profilePictureUrl}
+              width={0}
+              height={0}
+              sizes="100vw"
+              style={{ width: "100%", height: "44%", borderRadius: 6 }}
+            />
+            <Typography
+              fontWeight="700"
+              fontSize="22px"
+              marginTop={2}
+            >{`Dr. ${truncateText(doctorDetail.user.name, 50)}`}</Typography>
+            <Typography color="#A51008" fontWeight="500">
+              {doctorDetail.specialty}
+            </Typography>
+            <Typography
+              color="#1B1999"
+              fontWeight="500"
+              fontSize={18}
+              marginTop={2}
+            >
+              {`Appointment ID: ${id}`}
+            </Typography>
+            <Typography fontWeight="500" fontSize={18}>
+              {formattedDate}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formattedTime}
+            </Typography>
+            <ContainedButton
+              disabled={appointment.sessionTime > 1800}
+              startIcon={<VideocamIcon />}
+              backgroundColor="#009BFF"
+              onClick={handleJoin}
+              sx={{
+                borderRadius: 2,
+                textTransform: "none",
+                marginTop: 2,
+                paddingX: 2,
+                paddingY: 1,
+              }}
+            >
+              Join Now
+            </ContainedButton>
+          </Box>
 
-        <Note note={note} />
+          <Note note={note} />
+        </Box>
       </Box>
-    </Box>
     </div>
-    
   );
 };
 export default AppointmentPageView;

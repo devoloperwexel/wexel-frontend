@@ -28,7 +28,7 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
       style: "decimal",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    }).format(hourlyRate) + "$";
+    }).format(hourlyRate) + "€";
 
   const handleBackClick = () => {
     router.back();
@@ -88,7 +88,7 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
                 <Box display="flex" flexDirection="row" alignItems="end">
                   <Typography fontWeight="700" fontSize="32px" marginTop={1.5}>
                     {Number.isInteger(hourlyRate)
-                      ? `${hourlyRate}$`
+                      ? `${hourlyRate}€`
                       : formattedCurrencyAmount}
                   </Typography>
                   <Typography fontSize="28" marginBottom={0.5} marginLeft={0.4}>

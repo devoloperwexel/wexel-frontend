@@ -15,7 +15,7 @@
  */
 export function numberToCurrency(
   value: number,
-  currency: string = "USD"
+  currency: string = "EUR"
 ): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
