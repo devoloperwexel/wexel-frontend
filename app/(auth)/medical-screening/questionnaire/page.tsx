@@ -1,5 +1,8 @@
+import API from "constants/questionnaires";
 import QuestionMainSection from "modules/medical-screening/QuestionMainSection";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import request from "utils/request";
 
 const title = "WexelCode - Medical Screening";
 const description =
@@ -13,8 +16,21 @@ export const metadata: Metadata = {
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
 };
-const Questionnaire = () => {
-  return <QuestionMainSection />; 
+const Questionnaire = async () => {
+  try {
+    const questionnaireResults = await request(API.GET_QUESTIONNAIRES, {
+      query: "limit=10",
+    });
+
+    return (
+      <QuestionMainSection
+        questionnaires={questionnaireResults?.data?.results}
+      />
+    );
+  } catch (e) {
+    console.log(e);
+    notFound();
+  }
 };
 
 export default Questionnaire;

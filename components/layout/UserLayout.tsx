@@ -52,7 +52,6 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    
     const handleResize = () => {
       if (window.innerWidth < 768) {
         setOpen(false);
@@ -71,6 +70,9 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
 
   const path = usePathname();
   if (path.includes("/video-call")) {
+    return children;
+  }
+  if (path.includes("/medical-screening")) {
     return children;
   }
 
@@ -143,7 +145,7 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
 
         {/* Menu items */}
         <ul className="flex flex-col space-y-4 py-4 justify-center">
-            {menuItems.map((item) => {
+          {menuItems.map((item) => {
             // Check if the current path matches the item's href
             const isActive = pathname === item.href;
 
@@ -153,17 +155,16 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
                   <button
                     className={`rounded-sm font-medium flex items-start justify-center md:justify-start transform ${
                       isActive
-                        ? 'rotate-x-[180] border-l-4 border-primary-color '
-                        : 'hover:rotate-x-[180] hover:border-l-4 hover:border-primary-color '
+                        ? "rotate-x-[180] border-l-4 border-primary-color "
+                        : "hover:rotate-x-[180] hover:border-l-4 hover:border-primary-color "
                     } transition-transform duration-300 w-full `}
                   >
                     <p
-                      
                       onClick={handleOnClick}
                       className={`flex items-center space-x-3 mx-9 py-[10px] sm:py-[9px] px-3 md:px-10 ${
                         isActive
-                          ? 'font-bold text-[15px] text-primary-color bg-primary-color/10'
-                          : 'hover:font-bold hover:text-[15px] text-gray-700 hover:text-primary-color'
+                          ? "font-bold text-[15px] text-primary-color bg-primary-color/10"
+                          : "hover:font-bold hover:text-[15px] text-gray-700 hover:text-primary-color"
                       } sm:hover:bg-primary-color/10 hover:bg-transparent rounded-md w-full `}
                     >
                       {item.icon}
