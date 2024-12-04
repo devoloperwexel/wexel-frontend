@@ -150,7 +150,7 @@ const ProfileForm: React.FC = () => {
               className={`p-[12px] px-4 rounded w-full border-2 ${
                 isCurrentStepCompleted
                   ? "bg-primary-color text-white border-primary-color"
-                  : "bg-gray-400 text-white border-gray-300"
+                  : "bg-primary-color text-white border-primary-color"
               }`}
             >
               {currentStep === 2 ? "Start Screening Now" : "Save"}

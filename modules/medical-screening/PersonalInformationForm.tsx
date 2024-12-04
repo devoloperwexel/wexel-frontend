@@ -124,17 +124,36 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
                   <FlagSelect
                     selected={selectedCountry}
                     onSelect={handleCountryChange}
-                    className="w-full mt-1 rounded-md bg-white text-[#020202]/50 h-[50%]"
+                    className="w-full mt-1 rounded-md bg-white text-[#020202]/50 h-[54%] border-[1px] border-gray-300"
                   />
                   {formik.touched.country && formik.errors.country && (
                     <div className="text-red-500 text-sm">{formik.errors.country}</div>
                   )}
                 </div>
+                {["city"].map((field) => (
+                  <div key={field}>
+                    <label className="block text-[18px] font-medium">
+                      {field.charAt(0).toUpperCase() + field.slice(1)}
+                    </label>
+                    <input
+                      type="text"
+                      name={field}
+                      value={formik.values[field as keyof PersonalInfo]}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="mt-1 block w-full rounded-md p-[12px] text-[#020202]/50 border-[1px] border-gray-300"
+                      required={field !== "phone" && field !== "address"}
+                    />
+                    {formik.touched[field as keyof PersonalInfo] && formik.errors[field as keyof PersonalInfo] && (
+                      <div className="text-red-500 text-sm">{formik.errors[field as keyof PersonalInfo]}</div>
+                    )}
+                  </div>
+                ))}
               </div>
 
               {/* Other Fields (mobile, address, etc.) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-10 gap-x-0 gap-y-4">
-                {["mobile", "language", "address", "zipCode", "city"].map((field) => (
+                {["mobile", "language", "address", "zipCode"].map((field) => (
                   <div key={field}>
                     <label className="block text-[18px] font-medium">
                       {field.charAt(0).toUpperCase() + field.slice(1)}
