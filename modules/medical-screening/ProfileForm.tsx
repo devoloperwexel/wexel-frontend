@@ -75,7 +75,7 @@ const ProfileForm: React.FC = () => {
   const renderStepContent = () => {
     switch (currentStep) {
       case 0:
-        return <PersonalInformationInForm formik={formik} />;
+        return <PersonalInformationInForm formik={formik}  />;
       case 1:
         return <MedicalInformationInForm formik={formik2} />;
       case 2:

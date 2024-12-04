@@ -89,7 +89,6 @@ const QuestionsSection: React.FC<QuestionsSectionProps> = ({
           !questionText.requiredRef || answers[questionText.requiredRef.id] === questionText.requiredRef.value;
         return shouldRender ? renderQuestion(questionText) : null;
       })}
-      
     </div>
   );
 };

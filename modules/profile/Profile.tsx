@@ -39,6 +39,7 @@ interface ProfileProps {
   screeningProgress: number,
 }
 
+
 const CircularProgress: React.FC<CircularProgressProps> = ({ screeningProgress, size = 100, strokeWidth = 8 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -125,6 +126,16 @@ const Profile: React.FC<ProfileProps> = ({
       tokens,
     },
   });
+
+  const keyMapping: { [key: string]: string } = {
+    dob: "Date of Birth",
+    age: "Age",
+    gender: "Gender",
+    weight: "Weight",
+    height: "Height",
+    activityLevel: "Activity Level",
+    phoneNumber: "Phone Number",
+  };
 
   // Open the modal with dynamic content
   const openModal = (content: React.ReactNode) => {
@@ -219,8 +230,8 @@ const Profile: React.FC<ProfileProps> = ({
         <div className="grid grid-cols-3 gap-4 mb-6">
           {Object.entries(profileData.personal).map(([key, value]) => (
             <div key={key} className="flex flex-col">
-              <p className="font-semibold text-gray-600">{key}</p>
-              <p>{value}</p>
+              <p className=" font-normal text-gray-500 capitalize">{keyMapping[key] || key}</p>
+              <p className="font-semibold text-gray-600">{value}</p>
             </div>
           ))}
         </div>
@@ -241,8 +252,8 @@ const Profile: React.FC<ProfileProps> = ({
         <div className="grid grid-cols-3 gap-4 mb-6">
           {Object.entries(profileData.medical).map(([key, value]) => (
             <div key={key} className="flex flex-col">
-              <p className="font-semibold text-gray-600">{key}</p>
-              <p>
+              <p className="font-normal text-gray-500 capitalize">{keyMapping[key] || key}</p>
+              <p className="font-semibold text-gray-600">
                 {value instanceof Date 
                   ? value.toLocaleDateString() 
                   : value}

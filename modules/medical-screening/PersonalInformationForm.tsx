@@ -1,6 +1,7 @@
 "use client";
 
-import React  from "react";
+import React, { useState } from "react";
+import FlagSelect from "react-flags-select";
 
 interface PersonalInfo {
   firstName: string;
@@ -12,6 +13,7 @@ interface PersonalInfo {
   zipCode: string;
   city: string;
   country: string;
+  options: string;
 }
 
 interface PersonalInformationInFormProps {
@@ -19,20 +21,23 @@ interface PersonalInformationInFormProps {
 }
 
 const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ formik }) => {
-  
+  const [selectedCountry, setSelectedCountry] = useState(formik.values.country);
+
+  const handleCountryChange = (countryCode: string) => {
+    setSelectedCountry(countryCode);
+    formik.setFieldValue("country", countryCode);
+  };
+
   return (
     <div className="w-full flex flex-col items-center justify-center">
       <div className="w-full flex justify-center items-center">
         <div className="xl:w-[70%] md:w-full w-full">
           <form onSubmit={formik.handleSubmit}>
-            {/* Form Fields */}
             <div className="sm:space-y-8 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-16 sm:gap-y-8 gap-y-4">
                 {/* First Name */}
                 <div>
-                  <label className="block text-[18px] font-medium">
-                    First name
-                  </label>
+                  <label className="block text-[18px] font-medium">First name</label>
                   <input
                     type="text"
                     name="firstName"
@@ -43,16 +48,13 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
                     required
                   />
                   {formik.touched.firstName && formik.errors.firstName && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.firstName}
-                    </div>
+                    <div className="text-red-500 text-sm">{formik.errors.firstName}</div>
                   )}
                 </div>
+
                 {/* Last Name */}
                 <div>
-                  <label className="block text-[18px] font-medium">
-                    Last name
-                  </label>
+                  <label className="block text-[18px] font-medium">Last name</label>
                   <input
                     type="text"
                     name="lastName"
@@ -63,14 +65,12 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
                     required
                   />
                   {formik.touched.lastName && formik.errors.lastName && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.lastName}
-                    </div>
+                    <div className="text-red-500 text-sm">{formik.errors.lastName}</div>
                   )}
                 </div>
               </div>
 
-              {/* Gender Selection */}
+              {/* Gender */}
               <div className="grid grid-cols-1 w-full">
                 <label className="block text-[18px] font-medium">Gender</label>
                 <div className="mt-1 flex space-x-4 w-full bg-white rounded-md border border-gray-400 p-[12px] justify-between items-center px-4 sm:gap-x-16 gap-x-0">
@@ -113,20 +113,31 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
                   </label>
                 </div>
                 {formik.touched.gender && formik.errors.gender && (
-                  <div className="text-red-500 text-sm">
-                    {formik.errors.gender}
-                  </div>
+                  <div className="text-red-500 text-sm">{formik.errors.gender}</div>
                 )}
               </div>
 
-              {/* Other Form Fields */}
-
+              {/* Country Field with Flag Selector */}
               <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-10 gap-x-0 gap-y-4">
-                {["mobile","language","address", "zipCode", "city", "country"].map((field) => (
+                <div>
+                  <label className="block text-[18px] font-medium">Country</label>
+                  <FlagSelect
+                    selected={selectedCountry}
+                    onSelect={handleCountryChange}
+                    className="w-full mt-1 rounded-md bg-white text-[#020202]/50 h-[50%]"
+                  />
+                  {formik.touched.country && formik.errors.country && (
+                    <div className="text-red-500 text-sm">{formik.errors.country}</div>
+                  )}
+                </div>
+              </div>
+
+              {/* Other Fields (mobile, address, etc.) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-10 gap-x-0 gap-y-4">
+                {["mobile", "language", "address", "zipCode", "city"].map((field) => (
                   <div key={field}>
                     <label className="block text-[18px] font-medium">
                       {field.charAt(0).toUpperCase() + field.slice(1)}
-                      {field !== "phone" && field !== "address" ? "" : ""}
                     </label>
                     <input
                       type="text"
@@ -138,9 +149,7 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
                       required={field !== "phone" && field !== "address"}
                     />
                     {formik.touched[field as keyof PersonalInfo] && formik.errors[field as keyof PersonalInfo] && (
-                      <div className="text-red-500 text-sm">
-                        {formik.errors[field as keyof PersonalInfo]}
-                      </div>
+                      <div className="text-red-500 text-sm">{formik.errors[field as keyof PersonalInfo]}</div>
                     )}
                   </div>
                 ))}
