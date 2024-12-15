@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
 import { FiEdit3 } from "react-icons/fi";
@@ -12,34 +12,30 @@ import { IoIosArrowForward } from "react-icons/io";
 import { LuFiles } from "react-icons/lu";
 import FileUploadPopup from "./FileUploadPopup";
 import { useRouter } from "next/navigation";
-import Image from 'next/image';
+import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 interface CircularProgressProps {
-    screeningProgress: number;
-    size: number;
-    strokeWidth: number;
+  screeningProgress: number;
+  size: number;
+  strokeWidth: number;
 }
 
 interface ProfileProps {
-  name:string,
-  age: number,
-  country: string,
-  languages: string,
-  pronouns: string,
-  phoneNumber: string,
-  address: string,
-  email: string,
-  dob: Date,
-  gender: string,
-  weight: number,
-  height: number,
-  activityLevel: string,
-  creditCard: string,
-  tokens: number,
-  screeningProgress: number,
+  gender: string;
+  weight: number;
+  height: number;
+  activityLevel: string;
+  creditCard: string;
+  tokens: number;
+  screeningProgress: number;
 }
 
-const CircularProgress: React.FC<CircularProgressProps> = ({ screeningProgress, size = 100, strokeWidth = 8 }) => {
+const CircularProgress: React.FC<CircularProgressProps> = ({
+  screeningProgress,
+  size = 100,
+  strokeWidth = 8,
+}) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (screeningProgress / 100) * circumference;
@@ -81,15 +77,6 @@ const CircularProgress: React.FC<CircularProgressProps> = ({ screeningProgress, 
 };
 
 const Profile: React.FC<ProfileProps> = ({
-  name,
-  age,
-  country,
-  languages,
-  pronouns,
-  phoneNumber,
-  address,
-  email,
-  dob,
   gender,
   weight,
   height,
@@ -98,23 +85,38 @@ const Profile: React.FC<ProfileProps> = ({
   tokens,
   screeningProgress,
 }) => {
-
   const [isModalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState<React.ReactNode | null>(null);
+  const [modalContent, setModalContent] = useState<React.ReactNode | null>(
+    null
+  );
   const router = useRouter();
+  const { data: sessionsData } = useSession();
+  const user = sessionsData?.user;
+
+  function toReadableDate(isoDate: string): string {
+    const options: Intl.DateTimeFormatOptions = {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    };
+    console.log(isoDate);
+    
+    return isoDate
+      ? new Intl.DateTimeFormat("en-US", options).format(new Date(isoDate))
+      : "";
+  }
 
   const [profileData, setProfileData] = useState({
     personal: {
-      name,
-      email,
-      pronouns,
-      age,
-      phoneNumber,
-      address,
+      name: user.name,
+      email: user.email,
+      birthDay: user?.birthDay,
+      phoneNumber: user?.mobile || "",
+      address: user?.address || "",
+      country: user?.country || "",
+      languages: user?.languages?.join(", ") || "",
     },
     medical: {
-      age,
-      dob,
       gender,
       weight,
       height,
@@ -125,6 +127,12 @@ const Profile: React.FC<ProfileProps> = ({
       tokens,
     },
   });
+
+  function toReadableLabel(text: string): string {
+    return text
+      .replace(/([a-z])([A-Z])/g, "$1 $2") 
+      .replace(/^./, (char) => char.toUpperCase());
+  }
 
   // Open the modal with dynamic content
   const openModal = (content: React.ReactNode) => {
@@ -139,151 +147,179 @@ const Profile: React.FC<ProfileProps> = ({
   };
 
   // Update personal data and close modal
-  const updatePersonalData = (data: typeof profileData['personal']) => {
-    setProfileData(prevData => ({ ...prevData, personal: data }));
+  const updatePersonalData = (data: (typeof profileData)["personal"]) => {
+    setProfileData((prevData) => ({ ...prevData, personal: data }));
     closeModal();
   };
 
   // Update medical data and close modal
-  const updateMedicalData = (data: typeof profileData['medical']) => {
-    setProfileData(prevData => ({ ...prevData, medical: data }));
+  const updateMedicalData = (data: (typeof profileData)["medical"]) => {
+    setProfileData((prevData) => ({ ...prevData, medical: data }));
     closeModal();
   };
 
-
   const goToScreening = () => {
-    router.push("/medical-screening"); 
+    router.push("/medical-screening");
   };
-
 
   return (
     <div className="w-full">
-      <div >
-          <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 px-8 sm:px-10 sm:py-10">Profile</h1>
-        </div> 
+      <div>
+        <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 px-8 sm:px-10 sm:py-10">
+          Profile
+        </h1>
+      </div>
       <Modal isOpen={isModalOpen} onClose={closeModal} content={modalContent} />
-      
+
       <div className="px-8 sm:px-10 space-y-6">
-      <div className="flex space-x-6 mb-6 w-full sm:w-[70%]">
-        <div className="w-3/5 bg-white rounded-lg block md:flex items-center space-x-2 p-3 border border-black">
-          <div className="flex-1 sm:w-1/2 w-full ">
-            <div className="w-[100px] h-[100px] sm:h-[200px] sm:w-[200px] rounded-full overflow-hidden ">
-            <Image
-                src="https://i.pravatar.cc/300"
-                alt="Profile"
-                className="object-cover w-full h-full"
-                width={200}
-                height={200}
-              />
+        <div className="flex space-x-6 mb-6 w-full sm:w-[70%]">
+          <div className="w-3/5 bg-white rounded-lg block md:flex items-center space-x-2 p-3 border border-black">
+            <div className="flex-1 sm:w-1/2 w-full ">
+              <div className="w-[100px] h-[100px] sm:h-[200px] sm:w-[200px] rounded-full overflow-hidden ">
+                <Image
+                  src="https://i.pravatar.cc/300"
+                  alt="Profile"
+                  className="object-cover w-full h-full"
+                  width={200}
+                  height={200}
+                />
+              </div>
+            </div>
+            <div className="flex-1 w-1/2 space-y-3">
+              <h2 className="text-xl font-semibold">
+                {profileData.personal.name}
+              </h2>
+              <p>Country: {user?.country}</p>
+              <p>Language/s: {user?.languages.join(", ")}</p>
             </div>
           </div>
-          <div className="flex-1 w-1/2 space-y-3">
-            <h2 className="text-xl font-semibold">{profileData.personal.name}</h2>
-            <p>Age: {profileData.personal.age}</p>
-            <p>Country: {country}</p>
-            <p>Language/s: {languages}</p>
+
+          {/* Medical Screening Card */}
+          <div className="w-2/5 bg-white p-4 rounded-lg border border-black">
+            <h2 className="text-xl font-semibold text-primary-color mb-4 text-center">
+              Medical Screening
+            </h2>
+            <div className="flex items-center justify-center mb-4">
+              {screeningProgress ? (
+                <div className="w-24 h-24 rounded-full border-4 border-primary-color flex items-center justify-center">
+                  <CircularProgress
+                    screeningProgress={screeningProgress}
+                    size={90}
+                    strokeWidth={10}
+                  />
+                </div>
+              ) : (
+                <FaStethoscope className="mr-2 w-24 h-12 bg-primary-color/20 p-2 rounded-lg" />
+              )}
+            </div>
+            <button
+              className="bg-primary-color text-white py-2 px-4 rounded w-full"
+              onClick={goToScreening}
+            >
+              {screeningProgress ? "Go to screening" : "Start screening now"}
+            </button>
           </div>
         </div>
-        
-        {/* Medical Screening Card */}
-        <div className="w-2/5 bg-white p-4 rounded-lg border border-black">
-          <h2 className="text-xl font-semibold text-primary-color mb-4 text-center">Medical Screening</h2>
-          <div className="flex items-center justify-center mb-4">
-            {screeningProgress ? (
-              <div className="w-24 h-24 rounded-full border-4 border-primary-color flex items-center justify-center">
-                <CircularProgress screeningProgress={screeningProgress} size={90} strokeWidth={10} />
-              </div>
-            ) : (
-              <FaStethoscope className="mr-2 w-24 h-12 bg-primary-color/20 p-2 rounded-lg" />
-            )}
-          </div>
-          <button className="bg-primary-color text-white py-2 px-4 rounded w-full" onClick={goToScreening}>
-            {screeningProgress ? "Go to screening" : "Start screening now"}
-          </button>
-        </div>
-      </div>
-      
-      <div className=" space-y-6">
+
+        <div className=" space-y-6">
           {/* Personal Information Section */}
-      <div className="p-4 bg-white rounded-lg border border-black">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Personal Information</h2>
-          <button
-            className="flex justify-center items-center text-primary-color border-2 border-primary-color rounded-md px-3 py-2 gap-3"
-            onClick={() => openModal(<PersonalInformationForm initialData={profileData.personal} onSave={updatePersonalData} />)}
-          >
-            Edit
-            <FiEdit3 />
-          </button>
-        </div>
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          {Object.entries(profileData.personal).map(([key, value]) => (
-            <div key={key} className="flex flex-col">
-              <p className="font-semibold text-gray-600">{key}</p>
-              <p>{value}</p>
+          <div className="p-4 bg-white rounded-lg border border-black">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Personal Information</h2>
+              <button
+                className="flex justify-center items-center text-primary-color border-2 border-primary-color rounded-md px-3 py-2 gap-3"
+                onClick={() =>
+                  openModal(
+                    <PersonalInformationForm
+                      initialData={profileData.personal}
+                      onSave={updatePersonalData}
+                    />
+                  )
+                }
+              >
+                Edit
+                <FiEdit3 />
+              </button>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Overview Medical Information Section */}
-      <div className="p-4 bg-white rounded-lg border border-black">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Overview Medical Information</h2>
-          <button
-            className="flex justify-center items-center text-primary-color border-2 border-primary-color rounded-md px-3 py-2 gap-3"
-            onClick={() => openModal(<MedicalForm initialData={profileData.medical} onSave={updateMedicalData} />)}
-          >
-            Edit
-            <FiEdit3 />
-          </button>
-        </div>
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          {Object.entries(profileData.medical).map(([key, value]) => (
-            <div key={key} className="flex flex-col">
-              <p className="font-semibold text-gray-600">{key}</p>
-              <p>
-                {value instanceof Date 
-                  ? value.toLocaleDateString() 
-                  : value}
-              </p>
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              {Object.entries(profileData.personal).map(([key, value]) => (
+                <div key={key} className="flex flex-col">
+                  <p className="font-semibold text-gray-600">{toReadableLabel(key)}</p>
+                  <p>{key === "birthDay" ? toReadableDate(value) : value}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      {/* Payment Section (Optional) */}
-      <div className="bg-white p-4 rounded-lg mb-6 border border-black">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Payment Information</h2>
-          <button
-            className="flex justify-center items-center text-primary-color border-2 border-primary-color rounded-md px-3 py-2 gap-3"
-            onClick={() => openModal(<PaymentInformationForm initialData={profileData.payment} onSave={() => {}} />)}
-          >
-            Edit
-            <FiEdit3 />
-          </button>
-        </div>
-        <div className="grid gap-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-              <div className="flex flex-col">
-                {creditCard ? (
-                  <p>Credit card: {creditCard}</p>
-                ) : (
-                  <p>No credit card information available</p>
-                )}
-              </div>
-              <div className="flex flex-col">
-                <p>n° Tokens: {tokens}</p>
+          {/* Overview Medical Information Section */}
+          <div className="p-4 bg-white rounded-lg border border-black">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">
+                Overview Medical Information
+              </h2>
+              <button
+                className="flex justify-center items-center text-primary-color border-2 border-primary-color rounded-md px-3 py-2 gap-3"
+                onClick={() =>
+                  openModal(
+                    <MedicalForm
+                      initialData={profileData.medical}
+                      onSave={updateMedicalData}
+                    />
+                  )
+                }
+              >
+                Edit
+                <FiEdit3 />
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              {Object.entries(profileData.medical).map(([key, value]) => (
+                <div key={key} className="flex flex-col">
+                  <p className="font-semibold text-gray-600">{toReadableLabel(key)}</p>
+                  <p>{value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Payment Section (Optional) */}
+          <div className="bg-white p-4 rounded-lg mb-6 border border-black">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Payment Information</h2>
+              <button
+                className="flex justify-center items-center text-primary-color border-2 border-primary-color rounded-md px-3 py-2 gap-3"
+                onClick={() =>
+                  openModal(
+                    <PaymentInformationForm
+                      initialData={profileData.payment}
+                      onSave={() => {}}
+                    />
+                  )
+                }
+              >
+                Edit
+                <FiEdit3 />
+              </button>
+            </div>
+            <div className="grid gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+                <div className="flex flex-col">
+                  {creditCard ? (
+                    <p>Credit card: {creditCard}</p>
+                  ) : (
+                    <p>No credit card information available</p>
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <p>n° Tokens: {tokens}</p>
+                </div>
               </div>
             </div>
           </div>
-      </div>
+        </div>
 
-      </div>
-      
-      {/* Upload Image Section */}
-      <div className="flex w-full space-x-6">
+        {/* Upload Image Section */}
+        <div className="flex w-full space-x-6">
           <div className="flex w-1/2 flex-col space-y-6">
             <button className="bg-white text-black py-3 px-4 rounded-lg border border-black flex-1 flex items-center justify-between">
               <div className="bg-[#ECD0CF] rounded-full w-16 h-16 flex justify-center items-center">
@@ -305,8 +341,9 @@ const Profile: React.FC<ProfileProps> = ({
             </button>
           </div>
           <div className="flex w-1/2 ">
-            <button className="bg-white text-black py-2 px-4 rounded flex-2 border border-black flex flex-col space-y-1 items-center justify-center"
-              onClick={() => openModal( <FileUploadPopup/>)}
+            <button
+              className="bg-white text-black py-2 px-4 rounded flex-2 border border-black flex flex-col space-y-1 items-center justify-center"
+              onClick={() => openModal(<FileUploadPopup />)}
             >
               <div className="w-12 h-12">
                 <LuFiles className="w-full h-full text-green-500" />
@@ -319,7 +356,6 @@ const Profile: React.FC<ProfileProps> = ({
           </div>
         </div>
       </div>
-      
     </div>
   );
 };

@@ -52,7 +52,6 @@ export default async function page() {
     );
   } catch (e) {
     console.log(e);
-
     notFound();
   }
 }

@@ -3,14 +3,6 @@ import Profile from "modules/profile/Profile";
 
 export default function page() {
   const profileData = {
-    name: 'Stevan Dux',
-    age: 56,
-    country: 'Germany',
-    languages: 'English, German',
-    phoneNumber: '+49 2387428345',
-    address: 'Straße 00, 80689 Munich',
-    email: 'email@gmail.com',
-    dob: '03/04/1966',
     gender: 'Male',
     weight: 79,
     height: 170,
