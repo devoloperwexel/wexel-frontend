@@ -1,19 +1,6 @@
 "use client";
 
 import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-
-interface MedicalInfo {
-  dateOfBirth: string;
-  gender: string;
-  height: string;
-  heightUnit: string;
-  weight: string;
-  weightUnit: string;
-  occupation: string;
-  sportsActivities: string;
-}
 
 interface MedicalInformationInFormProps {
   formik: any;
@@ -28,24 +15,7 @@ const MedicalInformationInForm: React.FC<MedicalInformationInFormProps> = ({ for
           <form onSubmit={formik.handleSubmit}>
             <div className="sm:space-y-8 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-10 gap-x-0 gap-y-4">
-                <div>
-                  <label className="block text-sm font-medium">
-                    Date of birth *
-                  </label>
-                  <input
-                    type="date"
-                    name="dateOfBirth"
-                    value={formik.values.dateOfBirth}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="mt-1 block w-full border border-gray-300 rounded-md p-[12px] text-[#020202]/50"
-                  />
-                  {formik.touched.dateOfBirth && formik.errors.dateOfBirth && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.dateOfBirth}
-                    </div>
-                  )}
-                </div>
+              
                 <div>
                   <label className="block text-sm font-medium">
                     Biological gender *
@@ -54,9 +24,9 @@ const MedicalInformationInForm: React.FC<MedicalInformationInFormProps> = ({ for
                     <label className="flex items-center">
                       <input
                         type="radio"
-                        name="gender"
-                        value="Male"
-                        checked={formik.values.gender === "Male"}
+                        name="biologicalGender"
+                        value="MALE"
+                        checked={formik.values.biologicalGender === "MALE"}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         className="form-radio"
@@ -66,9 +36,9 @@ const MedicalInformationInForm: React.FC<MedicalInformationInFormProps> = ({ for
                     <label className="flex items-center">
                       <input
                         type="radio"
-                        name="gender"
-                        value="Female"
-                        checked={formik.values.gender === "Female"}
+                        name="biologicalGender"
+                        value="FEMALE"
+                        checked={formik.values.biologicalGender === "FEMALE"}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         className="form-radio"
@@ -85,7 +55,7 @@ const MedicalInformationInForm: React.FC<MedicalInformationInFormProps> = ({ for
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-10 gap-x-0 gap-y-4">
                 <div>
-                  <label className="block text-sm font-medium">Height *</label>
+                  <label className="block text-sm font-medium">Height (cm) *</label>
                   <div className="flex">
                     <input
                       type="text"
@@ -100,32 +70,7 @@ const MedicalInformationInForm: React.FC<MedicalInformationInFormProps> = ({ for
                         {formik.errors.height}
                       </div>
                     )}
-                    <div className="flex items-center ml-2 space-x-2">
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          name="heightUnit"
-                          value="cm"
-                          checked={formik.values.heightUnit === "cm"}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className="form-radio"
-                        />
-                        <span className="ml-1">cm</span>
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          name="heightUnit"
-                          value="in"
-                          checked={formik.values.heightUnit === "in"}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className="form-radio"
-                        />
-                        <span className="ml-1">in</span>
-                      </label>
-                    </div>
+                
                   </div>
                 </div>
                 <div>
@@ -145,7 +90,7 @@ const MedicalInformationInForm: React.FC<MedicalInformationInFormProps> = ({ for
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium">Weight *</label>
+                  <label className="block text-sm font-medium">Weight (kg) *</label>
                   <div className="flex">
                     <input
                       type="text"
@@ -160,32 +105,6 @@ const MedicalInformationInForm: React.FC<MedicalInformationInFormProps> = ({ for
                         {formik.errors.weight}
                       </div>
                     )}
-                    <div className="flex items-center ml-2 space-x-2">
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          name="weightUnit"
-                          value="Kg"
-                          checked={formik.values.weightUnit === "Kg"}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className="form-radio"
-                        />
-                        <span className="ml-1">Kg</span>
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          name="weightUnit"
-                          value="lbs"
-                          checked={formik.values.weightUnit === "lbs"}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          className="form-radio"
-                        />
-                        <span className="ml-1">lbs</span>
-                      </label>
-                    </div>
                   </div>
                 </div>
                 <div>
@@ -193,8 +112,8 @@ const MedicalInformationInForm: React.FC<MedicalInformationInFormProps> = ({ for
                     List of sports and/or activities you participate in:
                   </label>
                   <textarea
-                    name="sportsActivities"
-                    value={formik.values.sportsActivities}
+                    name="activities"
+                    value={formik.values.activities}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     className="mt-1 block w-full border border-gray-300 rounded-md p-[12px] text-[#020202]/50"

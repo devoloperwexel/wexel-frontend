@@ -1,6 +1,6 @@
 "use client";
 
-import React  from "react";
+import React from "react";
 
 interface PersonalInfo {
   firstName: string;
@@ -18,8 +18,9 @@ interface PersonalInformationInFormProps {
   formik: any;
 }
 
-const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ formik }) => {
-  
+const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({
+  formik,
+}) => {
   return (
     <div className="w-full flex flex-col items-center justify-center">
       <div className="w-full flex justify-center items-center">
@@ -27,49 +28,24 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
           <form onSubmit={formik.handleSubmit}>
             {/* Form Fields */}
             <div className="sm:space-y-8 space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-16 sm:gap-y-8 gap-y-4">
-                {/* First Name */}
-                <div>
-                  <label className="block text-[18px] font-medium">
-                    First name
-                  </label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={formik.values.firstName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="mt-1 block w-full border-[1px] border-gray-300 rounded-md p-[12px] text-[#020202]/50"
-                    required
-                  />
-                  {formik.touched.firstName && formik.errors.firstName && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.firstName}
-                    </div>
-                  )}
-                </div>
-                {/* Last Name */}
-                <div>
-                  <label className="block text-[18px] font-medium">
-                    Last name
-                  </label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formik.values.lastName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="mt-1 block w-full border-[1px] border-gray-300 rounded-md p-[12px] text-[#020202]/50"
-                    required
-                  />
-                  {formik.touched.lastName && formik.errors.lastName && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.lastName}
-                    </div>
-                  )}
-                </div>
+              <div>
+                <label className="block text-sm font-medium">
+                  Date of birth *
+                </label>
+                <input
+                  type="date"
+                  name="birthDay"
+                  value={formik.values.dateOfBirth}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-[12px] text-[#020202]/50"
+                />
+                {formik.touched.dateOfBirth && formik.errors.dateOfBirth && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.dateOfBirth}
+                  </div>
+                )}
               </div>
-
               {/* Gender Selection */}
               <div className="grid grid-cols-1 w-full">
                 <label className="block text-[18px] font-medium">Gender</label>
@@ -79,8 +55,8 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
                     <input
                       type="radio"
                       name="gender"
-                      value="Male"
-                      checked={formik.values.gender === "Male"}
+                      value="MALE"
+                      checked={formik.values.gender === "MALE"}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       className="form-radio"
@@ -91,8 +67,8 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
                     <input
                       type="radio"
                       name="gender"
-                      value="Female"
-                      checked={formik.values.gender === "Female"}
+                      value="FEMALE"
+                      checked={formik.values.gender === "FEMALE"}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       className="form-radio"
@@ -103,8 +79,8 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
                     <input
                       type="radio"
                       name="gender"
-                      value="Other"
-                      checked={formik.values.gender === "Other"}
+                      value="OTHER"
+                      checked={formik.values.gender === "OTHER"}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       className="form-radio"
@@ -122,7 +98,14 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
               {/* Other Form Fields */}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-10 gap-x-0 gap-y-4">
-                {["mobile","language","address", "zipCode", "city", "country"].map((field) => (
+                {[
+                  "mobile",
+                  "languages",
+                  "address",
+                  "zipCode",
+                  "city",
+                  "country",
+                ].map((field) => (
                   <div key={field}>
                     <label className="block text-[18px] font-medium">
                       {field.charAt(0).toUpperCase() + field.slice(1)}
@@ -137,11 +120,12 @@ const PersonalInformationInForm: React.FC<PersonalInformationInFormProps> = ({ f
                       className="mt-1 block w-full rounded-md p-[12px] text-[#020202]/50 border-[1px] border-gray-300"
                       required={field !== "phone" && field !== "address"}
                     />
-                    {formik.touched[field as keyof PersonalInfo] && formik.errors[field as keyof PersonalInfo] && (
-                      <div className="text-red-500 text-sm">
-                        {formik.errors[field as keyof PersonalInfo]}
-                      </div>
-                    )}
+                    {formik.touched[field as keyof PersonalInfo] &&
+                      formik.errors[field as keyof PersonalInfo] && (
+                        <div className="text-red-500 text-sm">
+                          {formik.errors[field as keyof PersonalInfo]}
+                        </div>
+                      )}
                   </div>
                 ))}
               </div>

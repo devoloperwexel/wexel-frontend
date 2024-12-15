@@ -8,6 +8,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import { useRouter } from "next/navigation";
+import { useAppointmentDate } from "hooks/useAppointmentDate";
 
 dayjs.extend(advancedFormat);
 dayjs.extend(localizedFormat);
@@ -17,6 +19,9 @@ const highlightedDates = ["2024-10-10", "2024-10-15", "2024-10-20"];
 export default function Calender() {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs());
+
+  const router = useRouter();
+  const { setAppointmentDate } = useAppointmentDate();
 
   // Check if a date is highlighted
   const isDateHighlighted = (date: Dayjs): boolean => {
@@ -61,14 +66,23 @@ export default function Calender() {
 
   const daysInMonth = generateDaysInMonth();
 
+  const handleMakeAppointment = () => {
+    if (selectedDate) {
+      setAppointmentDate(new Date(selectedDate.toISOString()));
+      router.push("/physios");
+    }
+  };
+
   return (
     <div className="bg-white rounded-2xl px-6 py-3 flex flex-col justify-between shadow-md ">
       <div className="flex items-center justify-between pb-1 sm:pb-0">
-        <h2 className="text-[17px] sm:text-[18px] font-semibold text-black">Calender</h2>
-        <button className="flex justify-center text-[12px] sm:text-[15px] items-center space-x-0 sm:space-x-1 rounded-lg font-semibold">
+        <h2 className="text-[17px] sm:text-[18px] font-semibold text-black">
+          Calender
+        </h2>
+        {/* <button className="flex justify-center text-[12px] sm:text-[15px] items-center space-x-0 sm:space-x-1 rounded-lg font-semibold">
           <span className="text-primary-color">View All</span>
           <ChevronRightIcon className="text-black/30 mt-[2px] p-[2px]" style={{ fontSize: 18 }} />
-        </button>
+        </button> */}
       </div>
 
       {/* Calendar */}
@@ -114,7 +128,6 @@ export default function Calender() {
 
             const isHighlighted = isDateHighlighted(day);
             const isSelected = selectedDate && day.isSame(selectedDate, "day");
-
             return (
               <button
                 key={day.toString()}
@@ -132,8 +145,7 @@ export default function Calender() {
             );
           })}
         </div>
-    </div>
-
+      </div>
 
       {/* No Upcoming Appointments */}
       <div className="flex flex-col items-center justify-center w-full p-3 gap-y-[2px]">
@@ -141,16 +153,20 @@ export default function Calender() {
           className="text-primary-color"
           style={{ fontSize: 22, margin: 2 }}
         />
-        <p className="text-[10px] text-center sm:text-xs text-gray-600 font-semibold">No upcoming appointments</p>
+        <p className="text-[10px] text-center sm:text-xs text-gray-600 font-semibold">
+          No upcoming appointments
+        </p>
       </div>
 
       {/* Make Appointment Button */}
       <div className="w-full">
-        <button className="w-full bg-primary-color rounded-md hover:bg-red-700 font-light text-white text-[15px] sm:text-[19px] py-[5px]  ">
+        <button
+          onClick={handleMakeAppointment}
+          className="w-full bg-primary-color rounded-md hover:bg-red-700 font-light text-white text-[15px] sm:text-[19px] py-[5px]  "
+        >
           Make an appointment
         </button>
       </div>
     </div>
   );
 }
-

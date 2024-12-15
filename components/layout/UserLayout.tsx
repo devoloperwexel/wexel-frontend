@@ -4,7 +4,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import {
   NotificationsOutlined as BellIcon,
@@ -47,9 +47,11 @@ const menuItems = [
 
 export const UserLayout = ({ children }: DashboardLayoutProps) => {
   const [open, setOpen] = useState(true);
-  const [label, setLabel] = useState(menuItems[0].label);
   const [language, setLanguage] = useState("EN");
   const pathname = usePathname();
+  const {data: sessionsData} = useSession();
+  const user= sessionsData?.user;
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -97,7 +99,7 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
           {/* Title */}
           <div className="flex items-center space-x-4 md:space-x-6 ml-[70px] md:ml-[300px]">
             <h1 className="text-[18px] sm:text-xl md:text-2xl font-bold">
-              Hi, Stevan dux
+            {`Hi, ${user?.name}`}
             </h1>
           </div>
           <div className="flex items-center space-x-3 md:space-x-6">

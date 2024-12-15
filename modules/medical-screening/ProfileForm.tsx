@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StepNavigator from "./StepNavigator";
 import PersonalInformationInForm from "./PersonalInformationForm";
 import MedicalInformationInForm from "./MedicalInformationInForm";
@@ -8,12 +8,17 @@ import MedicalScreeningForm from "./MedicalScreeningForm";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
+import { useUpdateUserMutation } from "services/users-api";
+import { useSession } from "next-auth/react";
+import { useCreatePatientMutation } from "services/patient-api";
 
 const ProfileForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const router = useRouter();
-
+  const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
+  const [createPatient, { isLoading: isCreating }] = useCreatePatientMutation();
+  const { data } = useSession();
   const steps = [
     { id: 1, name: "Personal Information" },
     { id: 2, name: "Medical Information" },
@@ -22,44 +27,43 @@ const ProfileForm: React.FC = () => {
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
       gender: "",
-      phone: "",
       mobile: "",
       address: "",
       zipCode: "",
       city: "",
       country: "",
+      birthDay: "",
+      languages: "",
     },
     validationSchema: Yup.object({
-      firstName: Yup.string().required("First name is required"),
-      lastName: Yup.string().required("Last name is required"),
+      birthDay: Yup.date().required("Date of birth is required"),
       gender: Yup.string().required("Gender is required"),
       mobile: Yup.string().required("Mobile number is required"),
       zipCode: Yup.string().required("Zip Code is required"),
       city: Yup.string().required("City is required"),
       country: Yup.string().required("Country is required"),
+      languages: Yup.string().required("Language is required"),
     }),
-    onSubmit: (values) => {
-      console.log("Personal Information data submitted:", values);
+    onSubmit: async (values) => {
+      await updateUser({
+        userId: data?.user?.id,
+        body: { ...values, languages: [values.languages] },
+      });
+      setCurrentStep(currentStep + 1);
     },
   });
 
   const formik2 = useFormik({
     initialValues: {
-      dateOfBirth: "",
-      gender: "",
+      biologicalGender: "",
       height: "",
-      heightUnit: "",
       weight: "",
-      weightUnit: "",
       occupation: "",
-      sportsActivities: "",
+      activities: "",
     },
     validationSchema: Yup.object({
-      dateOfBirth: Yup.date().required("Date of birth is required"),
-      gender: Yup.string().required("Please select a gender"),
+      biologicalGender: Yup.string().required("Please select a gender"),
       height: Yup.number()
         .required("Height is required")
         .min(0, "Height must be positive"),
@@ -67,8 +71,12 @@ const ProfileForm: React.FC = () => {
         .required("Weight is required")
         .min(0, "Weight must be positive"),
     }),
-    onSubmit: (values) => {
-      console.log("Medical Information data submitted:", values);
+    onSubmit: async (values) => {
+      await createPatient({
+        userId: data?.user?.id,
+        body: { ...values },
+      });
+      setCurrentStep(currentStep + 1);
     },
   });
 
@@ -91,14 +99,14 @@ const ProfileForm: React.FC = () => {
       await formik.validateForm();
       if (formik.isValid && !formik.isSubmitting) {
         await formik.submitForm();
-        setCurrentStep(step);
+        //setCurrentStep(step);
       }
     } else if (step === 2) {
       // Validate the second form
       await formik2.validateForm();
       if (formik2.isValid && !formik2.isSubmitting) {
         await formik2.submitForm();
-        setCurrentStep(step);
+        // setCurrentStep(step);
       }
     } else {
       goQuestionarie();
@@ -116,7 +124,7 @@ const ProfileForm: React.FC = () => {
   };
 
   const goQuestionarie = () => {
-    router.push("/medical-screening/questionnaire");
+    router.replace("/medical-screening/questionnaire");
   };
 
   return (
@@ -147,12 +155,19 @@ const ProfileForm: React.FC = () => {
             </button>
             <button
               onClick={() => goToStep(currentStep + 1)}
+              disabled={isUpdating || isCreating}
               className={`p-[12px] px-4 rounded w-full border-2 ${
                 isCurrentStepCompleted
                   ? "bg-primary-color text-white border-primary-color"
                   : "bg-gray-400 text-white border-gray-300"
               }`}
             >
+              {(isUpdating || isCreating) && (
+                <div
+                  className=" mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                  role="status"
+                />
+              )}
               {currentStep === 2 ? "Start Screening Now" : "Save"}
             </button>
           </div>

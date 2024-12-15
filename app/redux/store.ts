@@ -5,15 +5,24 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { appointmentApi } from "services/appointment-api";
 import rtkQueryErrorLogger from "./middleware";
 import { answerApi } from "services/answers-api";
+import { userApi } from "services/users-api";
+import { patientApiApi } from "services/patient-api";
 
 // Combine all the reducers into one root reducer
 const rootReducers = combineReducers({
   [appointmentApi.reducerPath]: appointmentApi.reducer,
   [answerApi.reducerPath]: answerApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
+  [patientApiApi.reducerPath]:patientApiApi.reducer
 });
 
 // Define custom middlewares for the store
-const apiMiddlewares = [appointmentApi.middleware, answerApi.middleware]; // Middleware for Redux Toolkit Query
+const apiMiddlewares = [
+  appointmentApi.middleware,
+  answerApi.middleware,
+  userApi.middleware,
+  patientApiApi.middleware
+]; // Middleware for Redux Toolkit Query
 //const customMiddleWares = [rtkQueryErrorLogger]; // Custom middleware for handling errors
 
 // Create the Redux store
