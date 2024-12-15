@@ -6,7 +6,7 @@ export default function page() {
     gender: 'Male',
     weight: 79,
     height: 170,
-    activityLevel: 'Sedentary',
+    activityLevel: 'Sedenta',
     creditCard: 'XXXX-XXXX-XXXX-XXXX',
     tokens: 3,
     screeningProgress: 75
