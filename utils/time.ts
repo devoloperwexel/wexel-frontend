@@ -21,11 +21,14 @@ export function formatISODateTime(isoString: string) {
   const day = String(date.getDate()).padStart(2, "0");
 
   // Get the time parts
-  const hours = String(date.getHours()).padStart(2, "0");
+  const hours = date.getHours();
   const minutes = String(date.getMinutes()).padStart(2, "0");
 
   const formattedDate = `${year}-${month}-${day}`;
-  const formattedTime = `${hours}:${minutes}`;
+  const formattedTime = `${String(hours % 12 || 12).padStart(
+    2,
+    "0"
+  )}:${minutes} ${hours >= 12 ? "PM" : "AM"}`;
 
   return { formattedDate, formattedTime };
 }

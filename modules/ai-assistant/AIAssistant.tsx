@@ -1,5 +1,7 @@
 
 
 export default function AIAssistant() {
-  return <div>AI Assistant</div>;
+  return <div>
+              <h1 className="text-3xl text-black">AI Assistant</h1>
+    </div>;
 }

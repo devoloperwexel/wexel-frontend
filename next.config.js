@@ -1,14 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   typescript: {
     ignoreBuildErrors: true,
   },
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: process.env.NEXT_PUBLIC_DOMAIN,
-        port: "3000",
+        protocol: "https",
+        hostname: "*",
       },
     ],
   },
@@ -16,3 +16,4 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+

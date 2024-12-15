@@ -1,15 +1,15 @@
 "use client";
 
-import { signIn, useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function AuthWrapper({ children }: any) {
   const { status } = useSession();
-  const path = usePathname();
+  const router = useRouter();
 
   if (status === "authenticated") {
     return children;
   } else if (status === "unauthenticated") {
-    signIn("cognito", { callbackUrl: path });
+    router.push("/signin");
   }
 }

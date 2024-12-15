@@ -6,8 +6,8 @@ import { styled } from "@mui/material/styles";
 import { truncateText } from "utils/strings";
 import Appointment from "models/appointment.model";
 import { formatISODateTime } from "utils/time";
-import Row from "./Row";
 import { useRouter } from "next/navigation";
+import Row from "@/components/ui/Row";
 
 const StyledBox = styled(Box)({
   width: "90%",
@@ -36,6 +36,8 @@ type AppointmentCardProp = {
 
 export const AppointmentCard = ({ appointment }: AppointmentCardProp) => {
   const { id, appointmentTime, doctorDetail } = appointment;
+  const { profilePictureUrl, name } = doctorDetail.user;
+  //
   const router = useRouter();
   const { formattedDate, formattedTime } = formatISODateTime(appointmentTime);
 
@@ -43,7 +45,7 @@ export const AppointmentCard = ({ appointment }: AppointmentCardProp) => {
   return (
     <StyledBox onClick={handleOnclick}>
       <Avatar
-        src={doctorDetail.profileImageUrl}
+        src={profilePictureUrl}
         sx={{
           width: 120,
           height: 120,
@@ -52,7 +54,7 @@ export const AppointmentCard = ({ appointment }: AppointmentCardProp) => {
           marginBottom: 1.5,
         }}
       >
-        {doctorDetail.name[0]}
+        {name[0]}
       </Avatar>
       <Box
         display="flex"
@@ -61,7 +63,7 @@ export const AppointmentCard = ({ appointment }: AppointmentCardProp) => {
         paddingX={1}
       >
         <Typography fontWeight="700">{`Dr. ${truncateText(
-          doctorDetail.name,
+          name,
           30
         )}`}</Typography>
         <StyledTypography color="#A51008" fontSize={14}>
@@ -71,12 +73,22 @@ export const AppointmentCard = ({ appointment }: AppointmentCardProp) => {
           sx={{ color: "#00000033", marginY: 2, borderBottomWidth: "1px" }}
           flexItem
         />
-        <Row column1="ID" column2={id} color="#1B1999" />
-        <Row
-          column1={formattedDate}
-          column2={formattedTime}
-          color="#00000099"
-        />
+        <Row width="200px">
+          <Typography color="#1B1999" fontSize={13}>
+            ID{" "}
+          </Typography>
+          <Typography color="#1B1999" fontSize={13}>
+            {id}
+          </Typography>
+        </Row>
+        <Row width="200px">
+          <Typography color="#00000099" fontSize={13}>
+            {formattedDate}
+          </Typography>
+          <Typography color="#00000099" fontSize={13}>
+            {formattedTime}
+          </Typography>
+        </Row>
       </Box>
     </StyledBox>
   );

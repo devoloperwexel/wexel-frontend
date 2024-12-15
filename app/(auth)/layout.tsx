@@ -1,26 +1,19 @@
+
+
 import { Metadata } from "next";
 import AuthWrapper from "utils/auth-warpper";
 import { ReactNode } from "react";
 import { Barlow } from "next/font/google";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { UserLayout } from "@/components/layout/UserLayout";
+import { AppointmentDateProvider } from "context/AppointmentDateContext";
 
-const title = "Next.js Prisma Postgres Auth Starter";
+const title = "WexelCode";
 const description =
   "This is a Next.js starter kit that uses Next-Auth for simple email + password login and a Postgres database to persist the data.";
 
 export const metadata: Metadata = {
   title,
   description,
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-  },
-  metadataBase: new URL("https://nextjs-postgres-auth.vercel.app"),
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
 };
 
 type AuthLayoutProps = {
@@ -30,7 +23,11 @@ const barlow = Barlow({ weight: "400", subsets: ["latin"] });
 export default async function Layout({ children }: Readonly<AuthLayoutProps>) {
   return (
     <div className={barlow.className}>
-      <DashboardLayout>{children}</DashboardLayout>
+      <AuthWrapper>
+        <UserLayout>
+          <AppointmentDateProvider>{children} </AppointmentDateProvider>
+        </UserLayout>
+      </AuthWrapper>
     </div>
   );
 }

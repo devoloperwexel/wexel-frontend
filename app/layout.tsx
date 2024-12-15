@@ -3,40 +3,28 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "../public/assets/css/style.css";
 import "node_modules/react-modal-video/scss/modal-video.scss";
+import "react-toastify/dist/ReactToastify.css";
 
-import { Metadata } from "next";
+import { ToastContainer } from "react-toastify";
 import { SessionProviderWrapper } from "utils/session-provider-wrapper";
-
-const title = "Next.js Prisma Postgres Auth Starter";
-const description =
-  "This is a Next.js starter kit that uses Next-Auth for simple email + password login and a Postgres database to persist the data.";
-
-export const metadata: Metadata = {
-  title,
-  description,
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-  },
-  metadataBase: new URL("https://nextjs-postgres-auth.vercel.app"),
-  creator: "shadcn",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
-};
+import { ReduxProvider } from "./redux/provider";
+import './globals.css';
 
 export default async function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <SessionProviderWrapper>
-      <html lang="en">
-        <body className=" font-siliguri">{children}</body>
-      </html>
+      <ReduxProvider>
+        <html lang="en">
+          <body className=" font-siliguri">
+            <ToastContainer theme="colored" />
+            {children}
+          </body>
+        </html>
+      </ReduxProvider>
     </SessionProviderWrapper>
   );
 }
