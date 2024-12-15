@@ -1,8 +1,11 @@
+
+
 import { Metadata } from "next";
 import AuthWrapper from "utils/auth-warpper";
 import { ReactNode } from "react";
 import { Barlow } from "next/font/google";
-import {UserLayout } from "@/components/layout/UserLayout";
+import { UserLayout } from "@/components/layout/UserLayout";
+import { AppointmentDateProvider } from "context/AppointmentDateContext";
 
 const title = "WexelCode";
 const description =
@@ -21,12 +24,10 @@ export default async function Layout({ children }: Readonly<AuthLayoutProps>) {
   return (
     <div className={barlow.className}>
       <AuthWrapper>
-        <UserLayout>{children}</UserLayout>
+        <UserLayout>
+          <AppointmentDateProvider>{children} </AppointmentDateProvider>
+        </UserLayout>
       </AuthWrapper>
     </div>
   );
 }
-
-
-
-

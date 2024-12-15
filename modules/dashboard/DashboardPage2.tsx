@@ -4,13 +4,23 @@ import Achievements from "@/components/ui/Achievements";
 import AppointmentsNew from "@/components/ui/AppointmentsNew";
 import EventCard from "@/components/ui/EventCard";
 import InformationSection from "@/components/ui/InformationSection";
-import MedicalScreeningCard2 from "@/components/ui/MedicalScreeningCard2";
+import MedicalScreeningCard from "@/components/ui/MedicalScreeningCard";
+
 import MyPlan from "@/components/ui/MyPlan";
 import ProgressBar from "@/components/ui/ProgressBar";
+import Reminder from "@/components/ui/Reminder";
 import SessionCard from "@/components/ui/SessionCard";
 import TreatmentGoals from "@/components/ui/TreatmentGoals";
 
-export default function DashboardPage2() {
+type Props = {
+  answerCount: number;
+  screeningCreatedAt?: string;
+};
+
+export default function DashboardPage2({
+  answerCount,
+  screeningCreatedAt,
+}: Props) {
   const totalDays = 4;
   const completedDays = 1;
   const eventData = {
@@ -19,7 +29,7 @@ export default function DashboardPage2() {
     eventDate: "12.08.2024",
     eventTime: "09:00 AM",
     duration: "30 Min",
-    title: `Today's Events`
+    title: `Today's Events`,
   };
   const data = {
     labels: ["Min", "Hr", "Min", "Hrs"],
@@ -35,6 +45,7 @@ export default function DashboardPage2() {
     totalSessions: 3,
     usedSessions: 2,
   };
+  console.log(answerCount);
 
   return (
     <>
@@ -43,12 +54,27 @@ export default function DashboardPage2() {
           Dashboard
         </h1>
       </div>
+      <Reminder isMedicalScreeningComplete={answerCount > 25} />
       <div className="flex flex-col gap-10 sm:gap-12 px-8 sm:px-10 ">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Column */}
           <div className="flex-1 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <MedicalScreeningCard2 />
+              <div className="flex-1">
+                {answerCount > 25 ? (
+                  <MedicalScreeningCard
+                    status="Completed"
+                    date={screeningCreatedAt!}
+                    result="N/A"
+                  />
+                ) : (
+                  <MedicalScreeningCard
+                    status="In Complete"
+                    date="N/A"
+                    result="N/A"
+                  />
+                )}
+              </div>
               <SessionCard
                 totalSessions={data2.totalSessions}
                 usedSessions={data2.usedSessions}

@@ -93,6 +93,7 @@ const request = async (_metadata: any, data: any, multipart = false, isSecure = 
     const response = await axios(options);
     return parseJSON(response);
   } catch (error) {
+    console.log(error);
     return errorHandling(error);
   }
 };

@@ -190,7 +190,7 @@ const QuestionMainSection = ({ questionnaires }: Props) => {
               <p className="text-[20px] font-semibold text-black">
                 Date:{" "}
                 {completionDate
-                  ? completionDate.toString()
+                  ? `${completionDate.getFullYear()} - ${completionDate.getMonth()} - ${completionDate.getDate()}`
                   : "No date available"}
               </p>
               <p className="text-[20px] font-semibold text-black">
@@ -229,7 +229,6 @@ const QuestionMainSection = ({ questionnaires }: Props) => {
             >
               Make an appointment
             </button>
-            <span className="py-2 underline cursor-pointer">More</span>
           </div>
         </div>
       </div>
@@ -284,7 +283,7 @@ const QuestionMainSection = ({ questionnaires }: Props) => {
               Back
             </button>
             <button
-              className={`bg-primary-color text-white py-2 px-4 rounded ${
+              className={`bg-primary-color text-white py-2 px-4 rounded w-36 ${
                 !areAllQuestionsAnswered()
                   ? "opacity-50 cursor-not-allowed"
                   : ""
@@ -292,7 +291,13 @@ const QuestionMainSection = ({ questionnaires }: Props) => {
               disabled={!areAllQuestionsAnswered() || isUpdating}
               onClick={handleNext}
             >
-              Next
+              {isUpdating && (
+                <div
+                  className=" mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                  role="status"
+                />
+              )}
+              {isUpdating ? "Saving..." : "Next"}
             </button>
           </div>
         </div>

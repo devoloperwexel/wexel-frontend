@@ -41,7 +41,6 @@ export default function MedicalScreeningCard2() {
         >
           Go to screening
         </button>
-        <p className="text-right py-2 underline text-primary-color">More</p>
       </div>
     </div>
   );

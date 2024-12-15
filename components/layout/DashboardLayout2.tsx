@@ -2,10 +2,8 @@
 
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import MedicalScreening2 from "../ui/MedicalScreeningCard2";
 import {
   NotificationsOutlined as BellIcon,
   LogoutOutlined as LogoutIcon,
@@ -14,33 +12,15 @@ import {
   ListOutlined as ListIcon,
   ChatOutlined as ChatIcon,
 } from "@mui/icons-material";
-import InformationSection from "../ui/InformationSection";
-import TreatmentGoals from "../ui/TreatmentGoals";
-import Achievements from "../ui/Achievements";
-import MyPlan from "../ui/MyPlan";
-import SessionCard from "../ui/SessionCard";
-import ProgressBar from "../ui/ProgressBar";
-import EventCard from "../ui/EventCard";
-import AppointmentsNew from "../ui/AppointmentsNew";
 
 const drawerWidth = "w-64 sm:w-72";
 
 export const DashboardLayout2 = () => {
-  const path = usePathname();
+  const session = useSession();
+  const user = session.data?.user;
   const [open, setOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [language, setLanguage] = useState("EN");
-
-  const totalDays = 4;
-  const completedDays = 1;
-
-  const eventData = {
-    physioName: "Physio's name",
-    eventTitle: "Initial talk",
-    eventDate: "12.08.2024",
-    eventTime: "09:00 AM",
-    duration: "30 Min",
-  };
 
   // Handle screen resizing to close the drawer on small screens
   useEffect(() => {
@@ -95,8 +75,6 @@ export const DashboardLayout2 = () => {
 
   const handleSignout = () => signOut({ callbackUrl: "/signin" });
 
-
-
   return (
     <div className="flex h-screen bg-primary-color/5">
       {/* AppBar */}
@@ -109,7 +87,7 @@ export const DashboardLayout2 = () => {
           {/* Title */}
           <div className="flex items-center space-x-4 md:space-x-6 ml-[70px] md:ml-[300px]">
             <h1 className="text-lg sm:text-xl md:text-2xl font-bold">
-              Hi, Stevan dux
+             {` Hi, ${user?.name}`}
             </h1>
           </div>
           <div className="flex items-center space-x-3 md:space-x-6">
@@ -188,9 +166,7 @@ export const DashboardLayout2 = () => {
         className={`${
           open ? "ml-[300px] pt-10" : "ml-[70px] sm:ml-[90px]"
         } overflow-x-hidden w-full relative flex flex-col justify-start items-start px-4 sm:px-6 md:px-10 mt-[100px]`}
-      >
-  
-      </main>
+      ></main>
     </div>
   );
 };
