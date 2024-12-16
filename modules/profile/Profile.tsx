@@ -160,7 +160,7 @@ const Profile: React.FC<ProfileProps> = ({
   };
 
   const goToScreening = () => {
-    router.push("/medical-screening");
+    router.replace("/medical-screening/questionnaire");
   };
 
   return (
