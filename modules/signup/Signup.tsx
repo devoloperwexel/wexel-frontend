@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import PasswordFelid from "@/components/ui/PasswordField";
-import ContainedButton from "@/components/ui/ContainedButton";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -24,6 +23,7 @@ import ENVIRONMENT from "@/config/environment";
 import { toast } from "react-toastify";
 import { signIn } from "next-auth/react";
 import FacebookSvg from "@/components/icons/FacebookSvg";
+import LoadingButton from "@/components/ui/LoadingButton";
 
 const validationSchema = yup.object({
   name: yup.string().required("Enter your name"),
@@ -265,14 +265,30 @@ const SignupPageView = () => {
                   onChange={handleChange}
                   sx={{ marginY: 2.5 }}
                 />
-                <ContainedButton
+                <LoadingButton
                   fullWidth
                   type="submit"
                   disabled={isSubmitting}
-                  sx={{ height: "42px", fontWeight: 600, mt: 2 }}
+                  loading={isSubmitting}
+                  sx={{
+                    height: "42px",
+                    fontWeight: 600,
+                    marginTop: "30px",
+                    textTransform: "none",
+                    backgroundColor: "#A51008",
+                    "&:hover": {
+                      backgroundColor: "#A51008",
+                      opacity: 0.7,
+                    },
+                    "&.Mui-disabled": {
+                      backgroundColor: "#A51008",
+                      color: "#fff",
+                      opacity: 0.7,
+                    },
+                  }}
                 >
                   Sign Up
-                </ContainedButton>
+                </LoadingButton>
                 <Box
                   width="100%"
                   display="flex"

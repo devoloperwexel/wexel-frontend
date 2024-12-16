@@ -22,6 +22,7 @@ import { signIn } from "next-auth/react";
 import { toast } from "react-toastify";
 import FacebookSvg from "@/components/icons/FacebookSvg";
 import SignupBanner from "modules/signup/SignupBanner";
+import LoadingButton from "@/components/ui/LoadingButton";
 
 const validationSchema = yup.object({
   email: yup.string().email("Enter valid email").required("Enter your email"),
@@ -176,14 +177,30 @@ const SigninPageView = () => {
                     </Button>
                   </Tooltip>
                 </Box>
-                <ContainedButton
+                <LoadingButton
                   fullWidth
                   type="submit"
                   disabled={isSubmitting}
-                  sx={{ height: "42px", fontWeight: 600, marginTop: "30px" }}
+                  loading={isSubmitting}
+                  sx={{
+                    height: "42px",
+                    fontWeight: 600,
+                    marginTop: "30px",
+                    textTransform: "none",
+                    backgroundColor: "#A51008",
+                    "&:hover": {
+                      backgroundColor: "#A51008",
+                      opacity: 0.7,
+                    },
+                    "&.Mui-disabled": {
+                      backgroundColor: "#A51008",
+                      color: "#fff", 
+                      opacity: 0.7,  
+                    },
+                  }}
                 >
                   Login and Continue
-                </ContainedButton>
+                </LoadingButton>
                 <Box
                   width="100%"
                   display="flex"
