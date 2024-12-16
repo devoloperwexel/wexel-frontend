@@ -40,7 +40,7 @@ const Payment = ({
           fontWeight="700"
           fontSize="22px"
           marginTop={2}
-        >${truncateText(doctorName, 50)}</Typography>
+        >{truncateText(doctorName, 50)}</Typography>
         <Typography
           color="#A51008"
           fontWeight="500"

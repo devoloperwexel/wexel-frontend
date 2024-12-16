@@ -105,7 +105,7 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
                     fontWeight="700"
                     fontSize="22px"
                     marginTop={2}
-                  >${truncateText(name, 50)}</Typography>
+                  >{truncateText(name, 50)}</Typography>
                   <Typography color="#A51008" fontWeight="500" fontSize="17">
                     {specialty}
                   </Typography>
