@@ -66,7 +66,7 @@ const AppointmentPageView = ({ appointment }: Props) => {
               fontWeight="700"
               fontSize="22px"
               marginTop={2}
-            >{`Dr. ${truncateText(doctorDetail.user.name, 50)}`}</Typography>
+            >${truncateText(doctorDetail.user.name, 50)}</Typography>
             <Typography color="#A51008" fontWeight="500">
               {doctorDetail.specialty}
             </Typography>
