@@ -14,6 +14,7 @@ import FileUploadPopup from "./FileUploadPopup";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { Avatar } from "@mui/material";
 
 interface CircularProgressProps {
   screeningProgress: number;
@@ -100,7 +101,7 @@ const Profile: React.FC<ProfileProps> = ({
       year: "numeric",
     };
     console.log(isoDate);
-    
+
     return isoDate
       ? new Intl.DateTimeFormat("en-US", options).format(new Date(isoDate))
       : "";
@@ -130,7 +131,7 @@ const Profile: React.FC<ProfileProps> = ({
 
   function toReadableLabel(text: string): string {
     return text
-      .replace(/([a-z])([A-Z])/g, "$1 $2") 
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
       .replace(/^./, (char) => char.toUpperCase());
   }
 
@@ -173,19 +174,21 @@ const Profile: React.FC<ProfileProps> = ({
 
       <div className="px-8 sm:px-10 space-y-6">
         <div className="flex space-x-6 mb-6 w-full sm:w-[70%]">
-          <div className="w-3/5 bg-white rounded-lg block md:flex items-center space-x-2 p-3 border border-black">
-            <div className="flex-1 sm:w-1/2 w-full ">
-              <div className="w-[100px] h-[100px] sm:h-[200px] sm:w-[200px] rounded-full overflow-hidden ">
-                <Image
-                  src="https://i.pravatar.cc/300"
-                  alt="Profile"
-                  className="object-cover w-full h-full"
-                  width={200}
-                  height={200}
-                />
-              </div>
+          <div className="w-3/5 bg-white rounded-lg block md:flex  items-center p-3 border border-black min-w-[500px]">
+            <div className="flex-1 w-1/4 ">
+              <Avatar
+                sx={{
+                  bgcolor: "#9e9b9b",
+                  width: 150,
+                  height: 150,
+                  fontSize: 60,
+                  fontWeight: "bold",
+                }}
+              >
+                {user.name[0].toUpperCase()}
+              </Avatar>
             </div>
-            <div className="flex-1 w-1/2 space-y-3">
+            <div className="flex-1 w-1/2 space-y-3 pr-32">
               <h2 className="text-xl font-semibold">
                 {profileData.personal.name}
               </h2>
@@ -244,7 +247,9 @@ const Profile: React.FC<ProfileProps> = ({
             <div className="grid grid-cols-3 gap-4 mb-6">
               {Object.entries(profileData.personal).map(([key, value]) => (
                 <div key={key} className="flex flex-col">
-                  <p className="font-semibold text-gray-600">{toReadableLabel(key)}</p>
+                  <p className="font-semibold text-gray-600">
+                    {toReadableLabel(key)}
+                  </p>
                   <p>{key === "birthDay" ? toReadableDate(value) : value}</p>
                 </div>
               ))}
@@ -275,7 +280,9 @@ const Profile: React.FC<ProfileProps> = ({
             <div className="grid grid-cols-3 gap-4 mb-6">
               {Object.entries(profileData.medical).map(([key, value]) => (
                 <div key={key} className="flex flex-col">
-                  <p className="font-semibold text-gray-600">{toReadableLabel(key)}</p>
+                  <p className="font-semibold text-gray-600">
+                    {toReadableLabel(key)}
+                  </p>
                   <p>{value}</p>
                 </div>
               ))}
