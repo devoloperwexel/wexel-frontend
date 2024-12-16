@@ -57,7 +57,7 @@ export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
         alignItems="center"
         paddingX={1}
       >
-        <Typography fontWeight="700">truncateText( user.name, 30 )</Typography>
+        <Typography fontWeight="700">{truncateText( user.name, 30 )}</Typography>
         <StyledTypography color="#A51008" fontSize={14}>
           {truncateText(specialty, 30)}
         </StyledTypography>
