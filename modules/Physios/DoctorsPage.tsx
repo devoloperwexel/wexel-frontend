@@ -19,10 +19,6 @@ type Props = {
 export default function DoctorsPage({ doctorDetails }: Readonly<Props>) {
   const { appointmentDate, setAppointmentDate } = useAppointmentDate();
 
-
-  const [isMedicalScreeningComplete, setMedicalScreeningComplete] =
-    useState(false);
-
   return (
     <>
       {/* <Box marginBottom={5}>
@@ -76,7 +72,10 @@ export default function DoctorsPage({ doctorDetails }: Readonly<Props>) {
               md={3}
               height="78vh"
             >
-              <DoctorDetailCard doctorDetail={doctorDetail} />
+              <DoctorDetailCard
+                doctorDetail={doctorDetail}
+                isBookingEnabled={!!appointmentDate}
+              />
             </Grid>
           ))}
         </Grid>

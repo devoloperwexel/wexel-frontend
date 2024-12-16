@@ -7,6 +7,7 @@ import DoctorDetail from "models/doctor-detail.model";
 import ContainedButton from "@/components/ui/ContainedButton";
 import { truncateText } from "utils/strings";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const StyledBox = styled(Box)({
   width: "90%",
@@ -29,13 +30,23 @@ const StyledTypography = styled(Typography)({
 
 type DoctorDetailCardProp = {
   doctorDetail: DoctorDetail;
+  isBookingEnabled: boolean;
 };
 
-export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
+export const DoctorDetailCard = ({
+  doctorDetail,
+  isBookingEnabled,
+}: DoctorDetailCardProp) => {
   const router = useRouter();
   const { id, specialty, user } = doctorDetail;
 
-  const handleOnclick = () => router.push(`/physios/doctor/${id}`);
+  const handleOnclick = () => {
+    if(!isBookingEnabled){
+      toast.warn("Select Appointment Date & Time!");
+      return
+    }
+    router.push(`/physios/doctor/${id}`);
+  };
 
   return (
     <StyledBox>
@@ -57,7 +68,7 @@ export const DoctorDetailCard = ({ doctorDetail }: DoctorDetailCardProp) => {
         alignItems="center"
         paddingX={1}
       >
-        <Typography fontWeight="700">{truncateText( user.name, 30 )}</Typography>
+        <Typography fontWeight="700">{truncateText(user.name, 30)}</Typography>
         <StyledTypography color="#A51008" fontSize={14}>
           {truncateText(specialty, 30)}
         </StyledTypography>

@@ -31,20 +31,18 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
   const user = sessionData?.user;
   const { specialty, description, hourlyRate, id } = doctorDetail;
   const handleOnclick = async () => {
-    if (time && date) {
-      try {
-        const response = await createAppointment({
-          userId: user?.id,
-          body: {
-            id,
-            appointmentTime: appointmentDate,
-          },
-        });
+    try {
+      const response = await createAppointment({
+        userId: user?.id,
+        body: {
+          appointmentTime: appointmentDate,
+          doctorDetailId: doctorDetail.id
+        },
+      });
 
-        setAppointmentId((response as any).data.data.id);
-      } catch (e) {
-        toast.error("Some thing went to wrong! Please try again later");
-      }
+      setAppointmentId((response as any).data.data.id);
+    } catch (e) {
+      toast.error("Some thing went to wrong! Please try again later");
     }
   };
 
@@ -101,11 +99,9 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
                     sizes="100vw"
                     style={{ width: "100%", height: "80%", borderRadius: 6 }}
                   />
-                  <Typography
-                    fontWeight="700"
-                    fontSize="22px"
-                    marginTop={2}
-                  >{truncateText(name, 50)}</Typography>
+                  <Typography fontWeight="700" fontSize="22px" marginTop={2}>
+                    {truncateText(name, 50)}
+                  </Typography>
                   <Typography color="#A51008" fontWeight="500" fontSize="17">
                     {specialty}
                   </Typography>
