@@ -77,17 +77,17 @@ export const DashboardLayout2 = () => {
   const handleSignout = () => signOut({ callbackUrl: "/signin" });
 
   return (
-    <div className="flex h-screen bg-primary-color/5">
+    <div className="flex h-screen bg-primary-color/5 z-50">
       {/* AppBar */}
       <div
         className={`fixed top-0 justify-between w-full ${
           open ? "w-full lg:w-[calc(100%)] md:w-[calc(100%)]" : "w-full z-1"
-        } transition-all duration-300 bg-white`}
+        } transition-all duration-300 bg-white z-50`}
       >
-        <div className="flex items-center justify-between py-4 px-4 sm:px-6 md:px-10">
+        <div className="flex items-center justify-between py-4 px-4 sm:px-6 md:px-10 z-50">
           {/* Title */}
-          <div className="flex items-center space-x-4 md:space-x-6 ml-[70px] md:ml-[300px]">
-            <h1 className="text-lg sm:text-xl md:text-2xl font-bold">
+          <div className="flex items-center space-x-4 md:space-x-6 ml-[70px] md:ml-[300px] z-20">
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold z-50">
               {` Hi, ${user?.name}`}
             </h1>
           </div>

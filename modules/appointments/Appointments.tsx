@@ -9,7 +9,7 @@ const Appointments = ({ appointments }: Props) => {
   return (
     <div className="min-h-screen ">
        <div>
-        <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 px-8 sm:px-10 sm:py-10">
+        <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 px-8 sm:px-10 sm:py-10 mt-4">
           My Appointments
         </h1>
       </div>

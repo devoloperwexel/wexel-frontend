@@ -175,7 +175,7 @@ const Profile: React.FC<ProfileProps> = ({
       <div className="px-8 sm:px-10 space-y-6">
         <div className="flex space-x-6 mb-6 w-full sm:w-[70%]">
           <div className="w-3/5 bg-white rounded-lg block md:flex  items-center p-3 border border-black min-w-[500px]">
-            <div className="flex-1 w-1/4 ">
+            <div className="flex-1 w-1/4 z-30">
               <Avatar
                 sx={{
                   bgcolor: "#9e9b9b",
@@ -183,6 +183,7 @@ const Profile: React.FC<ProfileProps> = ({
                   height: 150,
                   fontSize: 60,
                   fontWeight: "bold",
+                  zIndex:0
                 }}
               >
                 {user.name[0].toUpperCase()}
@@ -290,7 +291,7 @@ const Profile: React.FC<ProfileProps> = ({
           </div>
 
           {/* Payment Section (Optional) */}
-          <div className="bg-white p-4 rounded-lg mb-6 border border-black">
+          {/* <div className="bg-white p-4 rounded-lg mb-6 border border-black">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Payment Information</h2>
               <button
@@ -322,12 +323,12 @@ const Profile: React.FC<ProfileProps> = ({
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Upload Image Section */}
         <div className="flex w-full space-x-6">
-          <div className="flex w-1/2 flex-col space-y-6">
+          {/* <div className="flex w-1/2 flex-col space-y-6">
             <button className="bg-white text-black py-3 px-4 rounded-lg border border-black flex-1 flex items-center justify-between">
               <div className="bg-[#ECD0CF] rounded-full w-16 h-16 flex justify-center items-center">
                 <RiBillFill className="w-full h-[60%]" />
@@ -346,7 +347,7 @@ const Profile: React.FC<ProfileProps> = ({
                 <IoIosArrowForward className="w-full h-[70%]" />
               </div>
             </button>
-          </div>
+          </div> */}
           <div className="flex w-1/2 ">
             <button
               className="bg-white text-black py-2 px-4 rounded flex-2 border border-black flex flex-col space-y-1 items-center justify-center"

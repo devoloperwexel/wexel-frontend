@@ -17,7 +17,7 @@ export default function MedicalScreeningCard({date, status, result}:Props) {
   };
 
   return (
-    <div className="bg-white rounded-2xl px-6  pb-4 flex flex-col justify-between shadow-md h-full">
+    <div className="bg-white rounded-2xl px-6  pb-4 flex flex-col justify-between shadow-md h-full w-full">
       <div className="flex flex-col items-start space-y-2 sm:space-y-7">
         <h2 className="text-[18px] sm:text-[22px] font-semibold text-primary-color pt-3">Medical screening</h2>
         

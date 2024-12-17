@@ -88,7 +88,7 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
   const handleOnClick = () => {};
 
   return (
-    <div className=" z-50">
+    <div className=" z-50 h-screen">
       {/* AppBar */}
       <div
         className={`fixed top-0 justify-between w-full  ${
@@ -199,7 +199,7 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
       <main
         className={`${
           open ? "ml-[300px]" : "ml-[50px] sm:ml-[70px]"
-        }  overflow-x-hidden mt-[50px]  py-[35px] sm:py-[50px] min:h-screen bg-primary-color/5`}
+        }  overflow-x-hidden pt-[300px]  py-[35px] sm:py-[50px] min:h-screen bg-primary-color/5 h-full`}
       >
         {children}
       </main>

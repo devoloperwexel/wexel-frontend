@@ -60,13 +60,16 @@ const AppointmentPageView = ({ appointment }: Props) => {
               width={0}
               height={0}
               sizes="100vw"
-              style={{ width: "100%", height: "44%", borderRadius: 6 }}
+              style={{
+                width: "100%",
+                height: "65%",
+                borderRadius: 6,
+                objectFit: "cover",
+              }}
             />
-            <Typography
-              fontWeight="700"
-              fontSize="22px"
-              marginTop={2}
-            >{truncateText(doctorDetail.user.name, 50)}</Typography>
+            <Typography fontWeight="700" fontSize="22px" marginTop={2}>
+              {truncateText(doctorDetail.user.name, 50)}
+            </Typography>
             <Typography color="#A51008" fontWeight="500">
               {doctorDetail.specialty}
             </Typography>

@@ -12,7 +12,7 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ title,physioName, eventTitle, eventDate, eventTime, duration }) => {
   return (
-    <div className="bg-white rounded-2xl px-6 py-4 flex flex-col justify-center items-center space-y-3 shadow-md h-[300px]">
+    <div className="bg-white rounded-2xl px-6 py-4 flex flex-col justify-center items-center space-y-3 shadow-md h-[300px] w-full">
       <p className="text-[18px] font-semibold text-primary-color">{title}</p>
       <div className="text-center my-4">
         <div className="text-md font-semibold">{physioName}</div>
