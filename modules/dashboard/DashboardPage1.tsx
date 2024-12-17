@@ -29,7 +29,7 @@ export default function DashboardPage1({
   return (
     <>
       <div>
-        <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 px-8 sm:px-10 sm:py-10">
+        <h1 className="text-[20px] sm:text-[32px] font-bold text-primary-color py-3 px-8 sm:px-10 sm:py-10 mt-4">
           Dashboard
         </h1>
       </div>
@@ -56,7 +56,7 @@ export default function DashboardPage1({
             <Calender />
           </div>
         </div>
-        <div className="flex-1 w-full md:w-full lg:w-[85%]">
+        {/* <div className="flex-1 w-full md:w-full lg:w-[85%]">
           <InformationSection />
         </div>
         <div className="flex flex-col md:flex-col lg:flex-row gap-10 sm:gap-16">
@@ -66,7 +66,7 @@ export default function DashboardPage1({
           <div className="flex-1">
             <Achievements hours={2} reps={8} totalReps={10} />
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
