@@ -15,6 +15,7 @@ import {
   ChatOutlined as ChatIcon,
 } from "@mui/icons-material";
 import Link from "next/link";
+import Avatar from "@mui/material/Avatar";
 
 const drawerWidth = "w-64 sm:w-72";
 
@@ -49,9 +50,8 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
   const [open, setOpen] = useState(true);
   const [language, setLanguage] = useState("EN");
   const pathname = usePathname();
-  const {data: sessionsData} = useSession();
-  const user= sessionsData?.user;
-  
+  const { data: sessionsData } = useSession();
+  const user = sessionsData?.user;
 
   useEffect(() => {
     const handleResize = () => {
@@ -99,7 +99,7 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
           {/* Title */}
           <div className="flex items-center space-x-4 md:space-x-6 ml-[70px] md:ml-[300px]">
             <h1 className="text-[18px] sm:text-xl md:text-2xl font-bold">
-            {`Hi, ${user?.name}`}
+              {`Hi, ${user?.name}`}
             </h1>
           </div>
           <div className="flex items-center space-x-3 md:space-x-6">
@@ -123,13 +123,17 @@ export const UserLayout = ({ children }: DashboardLayoutProps) => {
 
             {/* Profile Avatar */}
             <button>
-              <Image
-                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
-                src="https://i.pravatar.cc/300"
-                alt="User Avatar"
-                width={40}
-                height={40}
-              />
+              <Avatar
+                sx={{
+                  bgcolor: "#9e9b9b",
+                  width: 36,
+                  height: 36,
+                  fontSize: 14,
+                  fontWeight: "bold",
+                }}
+              >
+                {user.name[0].toUpperCase()}
+              </Avatar>
             </button>
           </div>
         </div>
