@@ -70,6 +70,7 @@ const SignupPageView = () => {
               email,
               password,
               name,
+              role:'patient'
             });
             router.push("/signin");
             toast.success(
