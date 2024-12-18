@@ -12,7 +12,10 @@
  * console.log(`Date: ${formattedDate}`); // Date: 2024-08-01
  * console.log(`Time: ${formattedTime}`); // Time: 08:00
  */
-export function formatISODateTime(isoString: string) {
+export function formatISODateTime(isoString?: string) {
+  if (!isoString) {
+    return { formattedDate: null, formattedTime: null };
+  }
   const date = new Date(isoString);
 
   // Get the date parts

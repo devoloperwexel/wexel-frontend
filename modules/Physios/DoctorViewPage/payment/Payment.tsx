@@ -14,8 +14,8 @@ type Props = {
   doctorName: string;
   doctorSpecialty: string;
   totalAmount: number;
-  appointmentDate: string;
-  appointmentTime: string;
+  appointmentDate?: string;
+  appointmentTime?: string;
   note?: string;
 };
 const Payment = ({

@@ -14,14 +14,15 @@ import { useCreateAppointmentMutation } from "services/appointment-api";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { useAppointmentDate } from "hooks/useAppointmentDate";
+import LoadingButton from "@/components/ui/LoadingButton";
+import { formatISODateTime } from "utils/time";
 
 type Props = {
   doctorDetail: DoctorDetail;
 };
 
 const DoctorViewPage = ({ doctorDetail }: Props) => {
-  const [date, setDate] = useState<string>();
-  const [time, setTime] = useState<string>();
+
   const { appointmentDate } = useAppointmentDate();
   const [appointmentId, setAppointmentId] = useState<string>();
   const router = useRouter();
@@ -30,16 +31,20 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
   const { data: sessionData } = useSession();
   const user = sessionData?.user;
   const { specialty, description, hourlyRate, id } = doctorDetail;
+  const {formattedDate, formattedTime}=formatISODateTime(appointmentDate?.toISOString())
   const handleOnclick = async () => {
     try {
+      if(appointmentDate){
+        router.back();
+        return
+      }
       const response = await createAppointment({
         userId: user?.id,
         body: {
           appointmentTime: appointmentDate,
-          doctorDetailId: doctorDetail.id
+          doctorDetailId: doctorDetail.id,
         },
       });
-
       setAppointmentId((response as any).data.data.id);
     } catch (e) {
       toast.error("Some thing went to wrong! Please try again later");
@@ -74,13 +79,13 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
           padding={3}
         >
           <>
-            {appointmentId ? (
+            {appointmentId && appointmentDate ? (
               <Payment
                 appointmentId={appointmentId}
                 doctorName={name}
                 doctorSpecialty={specialty}
-                appointmentDate={date!}
-                appointmentTime={time!}
+                appointmentDate={formattedDate!}
+                appointmentTime={formattedTime!}
                 totalAmount={hourlyRate}
               />
             ) : (
@@ -128,14 +133,31 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
                       /30min
                     </Typography>
                   </Box>
-                  <ContainedButton
-                    sx={{ width: 180, mt: 4 }}
+                  <LoadingButton
                     backgroundColor="#000000"
                     onClick={handleOnclick}
+                    loading={isCreating}
                     disabled={isCreating}
+                    sx={{
+                      width: 180,
+                      mt: 4,
+                      fontWeight: 600,
+                      marginTop: "30px",
+                      textTransform: "none",
+                      backgroundColor: "#000",
+                      "&:hover": {
+                        backgroundColor: "#0a0909",
+                        opacity: 0.7,
+                      },
+                      "&.Mui-disabled": {
+                        backgroundColor: "#000",
+                        color: "#fff",
+                        opacity: 0.7,
+                      },
+                    }}
                   >
                     Continue
-                  </ContainedButton>
+                  </LoadingButton>
                 </Box>
               </>
             )}
