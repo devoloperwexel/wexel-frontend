@@ -10,6 +10,7 @@ export default async function page() {
 
     const appointments = await request(API.GET_APPOINTMENTS, {
       userId: authRes?.user.id,
+      query:"sortBy=appointmentTime:asc",
     });
     return <Appointments appointments={appointments?.data?.results} />;
   } catch (error) {
