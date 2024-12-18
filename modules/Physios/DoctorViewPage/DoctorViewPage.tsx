@@ -34,7 +34,7 @@ const DoctorViewPage = ({ doctorDetail }: Props) => {
   const {formattedDate, formattedTime}=formatISODateTime(appointmentDate?.toISOString())
   const handleOnclick = async () => {
     try {
-      if(appointmentDate){
+      if(!appointmentDate){
         router.back();
         return
       }
